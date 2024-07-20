@@ -2,13 +2,14 @@
 
 
 \usepackage[british]{babel}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 
 
 \usepackage{fancyhdr}
 \usepackage{indentfirst}
 \usepackage{graphicx}
 \usepackage{newlfont}
+\usepackage{xcolor}
 
 
 \usepackage{amssymb}
@@ -27,6 +28,7 @@
 \cfoot{}
 \linespread{1.3}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%% DEDICATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
@@ -38,7 +40,8 @@
 \large                                  
                                        
 \em                                     
-To Benedetta                   
+To my beloved\\
+Benedetta                   
 \newpage                                
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
@@ -55,13 +58,14 @@ To Benedetta
 
 \chapter*{Introduction}   
 \addcontentsline{toc}{chapter}{Introduction}
-\rhead[\fancyplain{}{\bfseries INTRODUCTION}]{\fancyplain{}{\bfseries\thepage}}\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries INTRODUCTION}}
+\rhead[\fancyplain{}{\bfseries Introduction}]{\fancyplain{}{\bfseries\thepage}}\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Introduction}}
 
 
 
 
-
-  This is the introduction.
+  \textcolor{blue}{
+    Issues with the current state of machine learning research. Category theory as a unifying force. See  \cite{shieblerCategoryTheoryMachine2021}
+  }
 
 
 
@@ -72,7 +76,7 @@ To Benedetta
 
 \chapter*{Introduzione}
 \addcontentsline{toc}{chapter}{Introduzione}
-\rhead[\fancyplain{}{\bfseries INTRODUZIONE}]{\fancyplain{}{\bfseries\thepage}}\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries INTRODUZIONE}}
+\rhead[\fancyplain{}{\bfseries Introduzione}]{\fancyplain{}{\bfseries\thepage}}\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Introduzione}}
 
 
 
@@ -92,7 +96,7 @@ To Benedetta
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% TABLE OF CONTENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \tableofcontents
-\rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}} \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries TABLE OF CONTENTS}}
+\rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}} \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Table of Contents}}
 %\clearpage{\pagestyle{empty}\cleardoublepage}
 
 \listoffigures                         
@@ -160,11 +164,11 @@ To Benedetta
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter*{Conclusion}
+\chapter*{Conclusions}
 \rhead[\fancyplain{}{\bfseries
-CONCLUSIONI}]{\fancyplain{}{\bfseries\thepage}}
-\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries CONCLUSIONI}}
-\addcontentsline{toc}{chapter}{Conclusioni} 
+Conclusions}]{\fancyplain{}{\bfseries\thepage}}
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Conclusions}}
+\addcontentsline{toc}{chapter}{Conclusions} 
 
 
 
@@ -175,32 +179,14 @@ This is the conclusion.
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% APPENDIX A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\appendix
-\chapter{Placeholder title}
-\rhead[\fancyplain{}{\bfseries \thechapter \:Placeholder title}]{\fancyplain{}{\bfseries\thepage}}                           
-               
-
-
-
-This is the first appendix.
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAPY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{thebibliography}{90}
-  \rhead[\fancyplain{}{\bfseries \leftmark}]{\fancyplain{}{\bfseries \thepage}}
-  \addcontentsline{toc}{chapter}{Bibliografia}
+\bibliographystyle{alpha}
+\bibliography{references}
+\rhead[\fancyplain{}{\bfseries \:Bibliography}]{\fancyplain{}{\bfseries\thepage}} 
+\addcontentsline{toc}{chapter}{Bibliography}
 
-  \bibitem{K1} Primo oggetto bibliografia.
-  \bibitem{K2} Secondo oggetto bibliografia.
-  \bibitem{K3} Terzo oggetto bibliografia.
-  \bibitem{K4} Quarto oggetto bibliografia.
-\end{thebibliography}
+
 
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 
