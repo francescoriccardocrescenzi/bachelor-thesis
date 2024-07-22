@@ -187,14 +187,14 @@ Benedetta
 
 
 
-  \subsection{Lenses}
+  \subsection{Lenses}\label{subsec: lenses}
 
   Lenses are a mathematical construct used to model bidirectional flows of information\footnote{The theory of optics generalizes lenses to a much wider family of constructs that model these same bidirectional flows. See \cite{rileyCategoriesOptics2018}.}. Such flows are extremely important in machine learning as a machine learning model needs both to carry out a computation and to update its parameters based on the training data.
 
   \begin{defin}[Lenses]
     Let $\mathcal{C}$ be a Cartesian category. We define $\mathbf{Lens}(\mathcal{C})$ as the category constituted by the following objects and morphisms.
-    An object of $\mathbf{Lens}(\mathcal{C})$ is a pair $\begin{pmatrix} A \\ A' \end{pmatrix}$ of objects in $\mathcal{C}$; 
-    A $\begin{pmatrix} A \\ A' \end{pmatrix} \to \begin{pmatrix} B \\ B' \end{pmatrix}$ morphism (or lens) is a pair $\begin{pmatrix} f \\ f^* \end{pmatrix}$ of morphisms of $\mathcal{C}$ such that $f: A \to B$ and $f^*: A \times A'$. $f$ is known as get part of the lens $\begin{pmatrix} f \\ f^* \end{pmatrix}$, whereas $f^*$ is known as get part. Given a pair $\begin{pmatrix} A \\ A' \end{pmatrix}$, the associated identical lens is $\begin{pmatrix} 1_A \\ \pi_1 \end{pmatrix}$. Lens composition is illustrated by ADDIM.
+    An object of $\mathbf{Lens}(\mathcal{C})$ is a pair $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right)$ of objects in $\mathcal{C}$; 
+    A $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)$ morphism (or lens) is a pair $\left(\begin{smallmatrix} f \\ f^* \end{smallmatrix}\right)$ of morphisms of $\mathcal{C}$ such that $f: A \to B$ and $f^*: A \times A'$. $f$ is known as get part of the lens $\left(\begin{smallmatrix} f \\ f^* \end{smallmatrix}\right)$, whereas $f^*$ is known as get part. Given a pair $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right)$, the associated identical lens is $\left(\begin{smallmatrix} 1_A \\ \pi_1 \end{smallmatrix}\right)$. Lens composition is illustrated by ADDIM.
   \end{defin}
 
   Lenses can be represented using the language string diagrams (see \cite{cruttwellDeepLearningParametric}), both in compact form and in expanded form.
@@ -203,13 +203,13 @@ Benedetta
   It is important to note the following (see \cite{cruttwellDeepLearningParametric}):
   
   \begin{prop}
-    If $\mathcal{C}$ is a Cartesian category, $\mathbf{Lens}(\mathcal{C})$ is a monoidal category under the monoidal product $\begin{pmatrix} A \\ A' \end{pmatrix} \otimes \begin{pmatrix} B \\ B' \end{pmatrix} = \begin{pmatrix} A \times B \\ A' \times B' \end{pmatrix}$.
+    If $\mathcal{C}$ is a Cartesian category, $\mathbf{Lens}(\mathcal{C})$ is a monoidal category under the monoidal product $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) \otimes \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right) = \left(\begin{smallmatrix} A \times B \\ A' \times B' \end{smallmatrix}\right)$.
   \end{prop}
 
   Another important result from \cite{cruttwellDeepLearningParametric} is (according the formulation found in \cite{shieblerCategoryTheoryMachine2021}):
 
-  \begin{prop}
-    If $\mathcal{C}$ is a CRDC, there exists a canonical Cartesian left-additive functor $R_\mathcal{C}$ which embeds $\mathcal{C} \to \mathbf{Lens}(\mathcal{C})$. Such functor maps objects as $A \mapsto \begin{pmatrix}A \\ A\end{pmatrix}$ and maps morphisms as $f \mapsto \begin{pmatrix}f \\ \mathrm{R}[f]\end{pmatrix}$.
+  \begin{prop}\label{prop: canembedding1}
+    If $\mathcal{C}$ is a CRDC, there exists a canonical Cartesian left-additive functor $R_\mathcal{C}$ which embeds $\mathcal{C} \to \mathbf{Lens}(\mathcal{C})$. Such functor maps objects as $A \mapsto \left(\begin{smallmatrix}A \\ A\end{smallmatrix}\right)$ and maps morphisms as $f \mapsto \left(\begin{smallmatrix}f \\ \mathrm{R}[f]\end{smallmatrix}\right)$.
   \end{prop}
 
   \begin{rem}
@@ -219,7 +219,8 @@ Benedetta
 
 
 
-  \subsection{The $\mathbf{Para}$ Construction}
+  \subsection{The $\mathbf{Para}$ Construction}\label{subsec: para}
+
 
   In machine learning, it is often necessary to work with parameters. Although lenses can model bidirectional flow, they don't afford us the machinery needed to work with such parameters. The $\mathbf{Para}$ construction allows us to overcome such limit. For the sake of simplicity, we shall only examine the case where parameters and values are taken from the same category $\mathcal{C}$ (as in \cite{cruttwellDeepLearningParametric}). A more general $\mathbf{Para}$ construction is described in \cite{shieblerCategoryTheoryMachine2021}, where actegories are used to handle a much wider choice of possible parameters.
 
@@ -242,12 +243,14 @@ Benedetta
   It is quite handy to represent such cells using the string diagram notation illustrated in figure ADDIM.
   
   
-  It is shown in \cite{cruttwellDeepLearningParametric} that $\mathbf{Para}(\mathcal{C})$ is natural with respect to $\mathcal{C}$. In other words, as emphasized in \cite{shieblerCategoryTheoryMachine2021},
+  The category of parametric lenses associated with a given Cartesian left-additive category $\mathcal{C}$, i.e. $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$ is particularly significant. It is shown in \cite{cruttwellDeepLearningParametric} that $\mathbf{Para}(\mathcal{C})$ is natural with respect to $\mathcal{C}$. In other words, as emphasized in \cite{shieblerCategoryTheoryMachine2021},
   
-  \begin{prop}
+  \begin{prop}\label{prop: canembedding2}
     If $\mathcal{C}$ and $\mathcal{D}$ are symmetric monoidal categories and $F: \mathcal{C} \to \mathcal{D}$ is a symmetric monoidal functor, then  there is a canonical $2$-functor 
     \[\mathbf{Para}(F): \mathbf{Para}(\mathcal{C}) \to \mathbf{Para}(\mathcal{D}).\]
   \end{prop}
+
+  Refer to \textit{Fig. ADDIM} to see a string diagram that shows the inner workings of a parametric lens.
 
 
 
@@ -293,32 +296,48 @@ Benedetta
 
 
 
-\section{Neural Networks as Parametric Lenses}
-
-\textcolor{blue}{Parametric lenses allow us to represent neural networks so that we can model both forward and backward propagation at the same time. This representation is compositional, and the learning iteration can also be represented \cite{cruttwellDeepLearningParametric}.}
+\section{Learning with Parametric Lenses}
 
 
+Pretrained neural networks can be though of as differentiable functions between Euclidean spaces, but a more sophisticated model is needed if we want to study the training process in its entirety. A neural network that needs to be trained is best thought of as a parametric map: training means finding the best parameters for the task at hand. Thus, it makes sense to represent layers of a neural network as parametric maps in $(P,f) \in \mathbf{Para}(\mathcal{C})(A,B)$, for some symmetric monoidal category $\mathcal{C}$.
+
+
+The process of training, however, requires a bidirectional flow of information: we have to test the current parameters and apply some criterion to find new parameters that (hopefully) satisfy the requirements better. In gradient based learning, the aforementioned criterion requires computing the gradient of the loss function using specialized algorithms such as backpropagation. It has been shown numerous time (see e.g. ADDREF) that taking the reverse derivative instead of the forward derivative is more efficient for functions with lower dimensionality in the codomain, which is commonplace in real word neural networks. Hence, it makes sense to require $\mathcal{C}$ to be CRDC. 
+
+The position held by \cite{cruttwellDeepLearningParametric} is that the most natural way to relate forward and backward propagation of information in neural network is to represent the components of the network as parametric lenses where the get map handles forward propragation while the put map handles backward propagation. For instance,  in place of $(P,f)$, we would consider
+\begin{equation}
+  \label{eq: exparametriclens}
+  \left(\begin{pmatrix} P \\ P \end{pmatrix},\begin{pmatrix} f \\ \mathrm{R}[f] \end{pmatrix}\right) 
+  \in \mathbf{Para}(\mathbf{Lens}(\mathcal{C}))
+  \left(\begin{pmatrix} A \\ A \end{pmatrix},\begin{pmatrix} B \\ B \end{pmatrix}\right).
+\end{equation}
+The authors of \cite{cruttwellDeepLearningParametric} take this line of reasoning a step further and show that it is also meaningful to represent other components of learning - such as optimizers, loss functions, and learning rates - within the framework of parametric lenses. 
+
+The main insight that makes parametric lenses as the one above useful is contained in \textit{Prop. \ref{prop: canembedding1}} and \textit{Prop. \ref{prop: canembedding2}}. If $\mathcal{C}$ is CRDC, we can functorially embed $\mathcal{C}$ into $\mathbf{Lens}(\mathcal{C})$ by considering lenses whose put map is the reverse derivative of the get map. Moreover, we can functorially embed $\mathbf{Para}(\mathcal{C})$ into $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$ with the same exact "trick". Hence, lenses as the one in \textit{Eq. \ref{eq: exparametriclens}} are compositional. In addition, (i) the get map of the composition of two lenses is the composition of the get maps, (ii) the put map of the composite lens is the reverse derivative of the composition of the put maps. Hence, if $\left(\left(\begin{smallmatrix} P \\ P \end{smallmatrix}\right),\left(\begin{smallmatrix} f \\ \mathrm{R}[f] \end{smallmatrix}\right)\right)$ represents a linear layer and $\left(\left(\begin{smallmatrix} Q \\ Q \end{smallmatrix}\right),\left(\begin{smallmatrix} g \\ \mathrm{R}[g] \end{smallmatrix}\right)\right)$ represents an activation layer, their composition represents a fully connected layer according to the same convention.
 
 
 
-
-\subsection{Neural Networks as Parametric Maps}
-
-
+Surprisingly, even loss maps can be represented as parametric maps and thus as parametric lenses.
+For instance, we may represent a loss maps as $(P,\mathrm{loss}) \in \mathbf{Para}(\mathcal{C})(B,L)$ for some object $L$. The intuitive meaning of this representation is the following: $\mathrm{loss}$ takes the output of the network of type $B$, compares it with the labels of type $P$ ($P$ and $B$ will often coincide in practical examples), and then returns a loss of type $L$. The parametric lens associated with $\mathrm{loss}$ can thus be post-composed after the parametric lens associated with a neural network to compute the loss generated by such network given some input and the associated labels. This process is illustrated in Fig. ADDIM.
 
 
-
-\subsection{Neural Networks as Parametric Lenses}
-
+This leaves two dangling wires of type $L$. We can use a learning rate lens $\alpha$ to link the wires and allow forward-propagating information to "change direction" and go backwards. $\alpha$ must have domain equal to $\left( \begin{smallmatrix} L \\ L \end{smallmatrix} \right)$ and codomain equal to $\left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right)$, where $1$ is the terminal object of $\mathcal{C}$. For instance, if $\mathcal{C} = \mathbf{Smooth}$, $\alpha$ might just multiply the loss by some $\epsilon$, which is what machine learning practitioners would ordinarily call learning rate. Fig. ADDIM shows how a learning rate can be linked to the loss function and the model using post-composition.
 
 
+The final element needed for the model $f$ in Fig. ADDIM to learn is an optimizer. It is shown in \cite{cruttwellDeepLearningParametric} that optimizers can be represented as reparametrisations in $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$. More specifically, we might see an optimizer as a lens $\left( \begin{smallmatrix} P \\ P \end{smallmatrix} \right) \to \left( \begin{smallmatrix} Q \\ Q \end{smallmatrix} \right)$. In gradient descent, for example, $P = Q$ and the aforementioned lens is $\left( \begin{smallmatrix} 1_P \\ +_P \end{smallmatrix} \right)$. We can plug such reparametrisation on top of the model to obtain the string diagram in Fig. ADDIM. The diagram shows how the machinery hidden by the $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$ can take care of forward propagation, loss computation, backpropagation and parameter updating in a seamless fashion. This is the true power of the compositional mindset: abstraction hides away unwanted detail so that one can focus on high-level features of the model without worrying about side-effects.
 
 
-\subsection{Learning with Parametric Lenses}
+The authors of \cite{cruttwellDeepLearningParametric} go on to show that their compositional framework can handle a number of non-trivial deep learning architectures such as CNNs, GANs, and deep dreaming. For instance, the copy maps of CRDCs can model weight sharing and batching, and even a whole learning iteration can be represented as a large string diagram. Finally, the authors prove that the compositional point of view afforded by parametric lenses is of practical significance by implementing a proof-of-concept Python library. The library is then used to build a model able to classfy MNIST. In their words, \lq[the] proposed algebraic structures naturally guide programming practice\rq.
 
-\textcolor{blue}{Show that loss functions and optimizers can be represented as parametric lenses. Show that such components can be combined to actually model learning. Show that the learning iteration itself can be handled like this \cite{cruttwellDeepLearningParametric}.}
 
-\textcolor{blue}{Parametric lenses can be successfully applied to software development \cite{cruttwellDeepLearningParametric}.}
+\begin{rem}
+  We have presented the perspective of \cite{cruttwellDeepLearningParametric} within the context of neural networks for the sake of simplicity, but the tools introduced in the paper apply to a much wider context. For instance, it is show in \cite{wilsonCategoriesDifferentiablePolynomial2022} that polynomial circuits form a CRDC, and it is shown in \cite{wilsonReverseDerivativeAscent2021a} that meaningful learning can be carried out in the context of Boolean circuits, as long as a suitable optimizer is chosen. Since the notions is \cite{cruttwellDeepLearningParametric} are developed from the point of view of a generic CRDC - of which $\mathbf{Smooth}$ is just one example - all the above applies to training such networks. This is the advantage of working in an abstract categorical setting. 
+\end{rem}
+
+
+\begin{rem}[Learners]
+  One of the first compositional approaches to training neural networks in the literature can be found in the seminal paper ADDREF. The authors introduce a category of learners, objects which are meant to represent components of a neural network and behave similarly as parametric lenses do. The main difference is that each learner is endowed with its own loss map and optimizer. It is argued in \cite{cruttwellDeepLearningParametric} and ADDREF that the perspective \cite{cruttwellDeepLearningParametric} is more flexible than and largely subsumes the learner approach. 
+\end{rem}
 
 
 
