@@ -460,13 +460,17 @@ Nonetheless, we have decided to write a short appendix detailing all the main ca
   A category $\mathcal{C}$ is defined by the following data: (i) a collection $\mathrm{Ob}(\mathcal{C})$ of objects; (ii) for all $A, B \in \mathrm{Ob}(\mathcal{C})$, a collection of morphisms $\mathrm{Hom}(A,B)$; (iii) for all $A \in \mathrm{Ob}(\mathcal{C})$ an identity morphism $\mathrm{id}_A \in \mathrm{Hom}(A,A)$; (iv) given $A, B, C \in \mathrm{Ob}(\mathcal{C})$, an associative composition operation $\fatsemi:\mathrm{Hom}(A,B) \times \mathrm{Hom}(B,C) \to \mathrm{Hom}(A,C)$  that is unital with respect to the identities.
 \end{definition}
 
+\begin{definition}[Opposite category]
+  Given a category $\mathcal{C}$, we can define a second category $\mathcal{C}^{\mathrm{op}}$ so that $\mathrm{Ob}(\mathcal{C}) = \mathrm{Ob}(\mathcal{C}^{\mathrm{op}})$ and $\mathcal{C}^{\mathrm{op}}(A,B) = \mathcal{C}(B,A)$ for all $A, B \in \mathcal{C}$.
+\end{definition}
+
 \begin{definition}[Isomorphisms]
   Let $\mathcal{C}$ be a category. Let $f:A \to B$ be a morphism in $\mathcal{C}$. Then, $f$ is an isomorphism if and only if there exists a morphisms $g: B \to A$ in $\mathcal{C}$ such that $f \fatsemi g = \mathrm{id}_A$ and $g \fatsemi f = \mathrm{id}_B$.
 \end{definition}
 
 Compositions of morphisms in categories can be represented using handy string diagrams such as the ones in ADDIM. The language of string diagrams is not just an aid for intuition. It has been proved that string diagrams are as rigorous as traditional arguments in numerous settings (see e.g. ADDREF).
 
-\begin{definition}[Discrete categories]
+\begin{definition}[Discrete Categories]
   Categories that don't contain non-identity morphisms are known as discrete categories.
 \end{definition}
 
@@ -482,6 +486,14 @@ Compositions of morphisms in categories can be represented using handy string di
   Let $\mathcal{C}$ and $\mathcal{D}$ be categories and let $F,G: \mathcal{C} \to \mathcal{D}$ be functors. A natural transformation $\alpha: F \Rightarrow G$ is a collection of morphisms ${\alpha_X: F(X) \to G(X)}_{X \in \mathcal{C}}$ that obey the naturality condition in ADDIM for all morphisms $f: X \to Y$ of $\mathcal{C}$.
 \end{definition}
 
+\begin{definition}[Natural isomorphism]
+  A natural isomorphism is a natural transformation whose components are all isomorphisms.
+\end{definition}
+
+\begin{definition}[Product of categories]
+  Let $\mathcal{C}$ and $\mathcal{D}$ be categories. We define the product $\mathcal{C} \times \mathcal{D}$ as the category whose objects are pairs $(C,D)$, where $C \in \mathcal{C}$ and $D \in \mathcal{D}$, and whose $(C,D) \to (C',D')$ morphisms are pairs $(f,g)$, where $f \in \mathcal{C}(C,C')$ and $g \in \mathcal{D}(D,D')$. 
+\end{definition}
+
 \begin{definition}[$2$-category]
   A $2$-category $\mathcal{C}$ consists of the following data: (i) a collection $\mathcal{C}_0$ of $0$-cells; (ii) for every two $0$-cells $A$, $B$, a collection $\mathcal{C}_1(A,B)$ of $1$-cells;  (iii) for every two $1$-cells $f$, $g$, a collection $\mathcal{C}_2(f,g)$ of $2$-cells; (iv) an identity $1$-cell for each $0$-cell; (v) an identity $2$-cell for each $1$-cell; (vi) a composition law $\fatsemi_1$ for $1$-cells (known as horizontal composition); (vii) a composition law $\fatsemi_2$ for $2$-cells (known as vertical composition).
   We ask that $0$-cells and form a category where $1$-cells are morphisms, and we ask that $1$-cells and form a category where $2$-cells are morphisms. Moreover, we ask that horizontal composition and vertical composition satisfy a number of axioms that make them compatible with each other.
@@ -490,7 +502,7 @@ Compositions of morphisms in categories can be represented using handy string di
 The unitality and associativity laws if $2$-categories can be relaxed so that they are only true up to isomorphism. Such weak $2$-categories is known as a bicategories. There is no standard version of string diagrams for $2$-categories and bicategories. An example of one such system can be seen in ADDIM, but we will see other kinds of diagrams in the future.
 
 
-\subsection{Examples of categories}
+\subsection{Examples of Categories}
 
 \begin{definition}
   $\mathbf{0}$ is the category with no objects and no morphisms. $\mathbf{1}$ is the category with one object and the associated identical morphism.
@@ -524,25 +536,77 @@ Free categories can be quotiented by path-congruence relations. If ${\sim}$ is a
   $\mathbf{Cat}$ is the $2$-category of categories\footnote{Actually, we should define $\mathbf{Cat}$ so that it only contains small categories, but we choose not to deal with size in this thesis as size has little relevance in applied category theory.}: its $0$-cells are categories, its $1$-cells are functors between categories, its $2$-cells are natural transformations between such functors.
 \end{definition}
 
-\section{Basics of Category Theory}
 
 
-\textcolor{blue}{Definition of category.}
+\subsection{Limits and Colimits}
 
-\textcolor{blue}{Free category generated by a graph. Discuss equations.}
+\begin{definition}[Terminal object, Initial object]
+  A terminal object in a category $\mathcal{C}$ is an object $T$ such that, if $A$ is any other object, there is a unique morphism $A \to T$ in $\mathcal{C}$. An initial object is a terminal object in $\mathcal{C}^{\mathrm{op}}$.
+\end{definition}
 
-\textcolor{blue}{Discretisation of a category.}
+\begin{proposition}
+  Terminal objects are unique up to isomorphisms.
+\end{proposition}
 
-\textcolor{blue}{Definition of functor.}
-\textcolor{blue}{Definition of natural transformation.}
-\textcolor{blue}{Definition of 2-category.}
+\begin{definition}[Diagram]
+  Let $\mathcal{J}$ and $\mathcal{C}$ be categories. A diagram of shape $\mathcal{J}$ in $\mathcal{C}$ is a functor $\mathcal{J} \to \mathcal{C}$.
+\end{definition}
+
+\begin{definition}[Cones]
+  Let $F: \mathcal{J} \to \mathcal{C}$ be a diagram. A cone over $F$ is a pair $(A,a_*)$ such that $A \in \mathcal{C}$ and, for all $J \in \mathcal{J}$, $a_J$ is a $A \to F(J)$ morphism. Moreover, we ask that $a_*$ be natural in $J$, i.e. if $g: I \to J$ is a morphism in $\mathcal{J}$, it must be true that $a_I \fatsemi F(g) = a_J$.
+  A cone morphism $(A, a_*) \to (A', a_*')$ is a morphism $f: A \to A'$ in $\mathcal{C}$ such that $a_J = f \fatsemi a_J'$ for all $J \in \mathcal{J}$. 
+  Cones and cone morphisms over $F$ form a category $\mathbf{Cone}(F)$.
+\end{definition}
+
+\begin{definition}[Limit]
+  Let $F: \mathcal{J} \to \mathcal{C}$ be a diagram. A limit of $F$ (in symbols $\lim(F)$) is a terminal object $(L, l_{*})$ in $\mathbf{Cone}(F)$. We call the morphisms $l_J: L \to F(J)$ projection maps.
+\end{definition}
+
+\begin{definition}[Cocones]
+  Let $F: \mathcal{J} \to \mathcal{C}$ be a diagram. A cocone over $F$ is a pair $(A,a_*)$ such that $A \in \mathcal{C}$ and, for all $J \in \mathcal{J}$, $a_J$ is a $F(J) \to A$ morphism. Moreover, we ask that $a_*$ be natural in $J$, i.e. if $g: I \to J$ is a morphism in $\mathcal{J}$, it must be true that $a_I \fatsemi F(g) = a_J$.
+  A co-one morphism $(A, a_*) \to (A', a_*')$ is a morphism $f: A \to A'$ in $\mathcal{C}$ such that $a_J \fatsemi f = a_J'$ for all $J \in \mathcal{J}$.
+  Cocones and cocone morphisms over $F$ form a category $\mathbf{CoCone}(F)$.
+\end{definition}
+
+\begin{definition}[Colimit]
+  A colimit of $F: \mathcal{J} \to \mathcal{C}$ is an initial object $(A,a_*)$ in $\mathbf{Cone}(F)^{\mathrm{op}}$. The morphisms $a_J: F(J) -> A$ are known as injection maps.
+\end{definition}
+
+\begin{definition}[Product]
+  Let $\mathbf{2}$ be the discrete category with $2$ objects. A product in a category $\mathcal{C}$ is the limit of a diagram $F: \mathbf{2} \to \mathcal{C}$. More explicitly, if $F(1) = A$ and $F(2) = B$, we say that the limit of $F$ is the product of $A$ and $B$. Such product comes in the form $(\Pi,\pi_A,\pi_B)$, where the projections $\pi_A: \Pi \to A$ and $\pi_B: \Pi \to B$ satisfy the following universal property: if  $(C,f,g)$ is another diagram for the cone, there exists a unique morphism $\langle f,g \rangle: C \to \Pi$ such that the string diagram in ADDIM commutes. Since products are unique up to isomorphisms, it makes sense to write $\Pi = A \times B$.
+\end{definition}
+
+\begin{definition}[Coproduct]
+  Let $\mathbf{2}$ be the discrete category with $2$ objects. A coproduct in a category $\mathcal{C}$ is the colimit of a diagram $F: \mathbf{2} \to \mathcal{C}$.
+\end{definition}
 
 
-\section{Various Families of Categories}
+\section{Families of Monoidal Categories}
+
+Ordinary categories provide the necessary machinery to carry out meaningful sequential composition. Monoidal categories are categories endowed with a monoidal product that allows us to carry out parallel composition. The definition provided in this section omit some detail for the sake of brevity. See ADDREF for complete definitions.
 
 \subsection{Monoidal Categories}
 
-\textcolor{blue}{Definition of monoidal category.}
+\begin{definition}[Monoidal category]
+  A monoidal category is a tuple \\$(\mathcal{M}, I, \otimes, \lambda, \rho, \alpha)$, where: (i) $\mathcal{M}$ is a category; $(ii)$ $I$ is a $\mathbf{1} \to \mathcal{M}$ functor known as monoidal unit\footnote{Such a functor identifies an object $I \in \mathcal{M}$, so it makes sense to also conisider $I$ and object}; (iii) $\otimes$ is an $\mathcal{M} \times \mathcal{M} \to \mathcal{M}$ functor known as monoidal product; (iv) $\lambda$, $\rho$, $\alpha$ are natural isomorphisms that behaved as illustrated in ADDIM. $\lambda$, $\rho$, $\alpha$ are known as left unitor, right unitor, and associator respectively, and they impose weak associavity and unitality to $\otimes$. They must also satisfy coherence axioms.
+\end{definition}
+
+\begin{definition}[Lax monoidal functor]
+  Let $(\mathcal{M}, I, \otimes)$ and $(\mathcal{N}, I', \otimes)'$ be monoidal categories. A lax monoidal functor between such categories is a tuple $(F, \mu, \epsilon)$ where $F: \mathcal{M} \to \mathcal{N}$ is a functor and $\mu$, $\epsilon$ are natural transformations satisfying the diagrams in ADDIM. Such transformations must also satisy coherence laws. If $\mu$ and $\epsilon$ are natural isomorphism, we say that $(F, \mu, \epsilon)$ is a strong monoidal functor. If they are identities, we say that the functor is strict.
+\end{definition}
+
+\begin{definition}[Reverse monoidal category]
+  Let $(\mathcal{M}, I, \otimes)$ be a monoidal category. We define the associated reverse monoidal category as the monoidal category $(\mathcal{M}, I, \otimes^{\mathrm{rev}})$, where $\otimes^{\mathrm{rev}} = \mathcal{M} \times \mathcal{M} \stackrel{\mathsf{swap}}{\rightarrow} \mathcal{M} \times \mathcal{M} \stackrel{\otimes}{\rightarrow} \mathcal{M}$.
+\end{definition}
+
+\begin{definition}[Braided monoidal category]
+  
+\end{definition}
+
+
+\subsection{Cartesian Categories}
+
+
 \textcolor{blue}{Definition of Cartesian category.}
 \textcolor{blue}{Expand on the properties of Cartesian categories. In particular, expand on the existence of copy maps.}
 \textcolor{blue}{Definition of left-additive category.}
