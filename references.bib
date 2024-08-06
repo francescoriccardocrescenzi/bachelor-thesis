@@ -1,199 +1,188 @@
-@incollection{abbottCategoryTheoryArtificial2024,
-  title = {Category {{Theory}} for {{Artificial General Intelligence}}},
-  booktitle = {Artificial {{General Intelligence}}},
-  author = {Abbott, Vincent and Xu, Tom and Maruyama, Yoshihiro},
-  editor = {Thórisson, Kristinn R. and Isaev, Peter and Sheikhlar, Arash},
-  date = {2024},
-  volume = {14951},
-  pages = {119--129},
-  publisher = {Springer Nature Switzerland},
-  location = {Cham},
-  doi = {10.1007/978-3-031-65572-2_13},
-  url = {https://link.springer.com/10.1007/978-3-031-65572-2_13},
-  urldate = {2024-07-23},
-  abstract = {Category theory has been successfully applied beyond pure mathematics and applications to artificial intelligence (AI) and machine learning (ML) have been developed. Here we first give an overview of the current development of category theory for AI and ML, and we then compare and elucidate the essential features of various category-theoretical approaches to AI and ML. Broadly, there are three types of category theory for AI and ML, namely category theory for data representation learning, category theory for learning (optimisation) algorithms and category theory for compositional architecture design and analysis. There are various approaches even within each type of category theory for AI and ML; among other things, we shed new light on the relationships between the two types of category theory for neural network architectures as have been developed by the authors recently (i.e., neural string diagrams and neural circuit diagrams). The three types of category theory can be integrated together and to that end we focus upon a categorical deep learning framework, which integrates categorical structures with a universal probabilistic programming language. We also discuss the significance of categorical approaches in relation with the ultimate goal of development of artificial general intelligence.},
-  isbn = {978-3-031-65571-5 978-3-031-65572-2},
-  langid = {english},
-  file = {/home/frc/Zotero/storage/KIIME4ZG/Abbott et al. - 2024 - Category Theory for Artificial General Intelligenc.pdf}
+@article{vaswani2017attention,
+  title={Attention is all you need},
+  author={Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, {\L}ukasz and Polosukhin, Illia},
+  journal={Advances in neural information processing systems},
+  volume={30},
+  year={2017}
 }
 
-@article{bluteDifferentialCategories2006,
-  title = {Differential {{Categories}}},
-  author = {Blute, R.F. and Seely, R.A.G. and Cockett, J.R.B.},
-  date = {2006},
-  journaltitle = {Mathematical Structures in Computer Science}
+@thesis{gavranovic2024fundamental,
+  title={Fundamental Components of Deep Learning: A category-theoretic approach},
+  author={Gavranovi{\'c}, Bruno},
+  journal={arXiv preprint arXiv:2403.13001},
+  year={2024}
 }
 
-@article{chytasPoolingImageDatasets2024,
-  title = {Pooling {{Image Datasets}} with {{Multiple Covariate Shifts}} and {{Imbalance}}},
-  author = {Chytas, Sotirios Panagiotis and Lokhande, Vishnu Suresh and Li, Peiran and Singh, Vikas},
-  date = {2024},
-  abstract = {Small sample sizes are common in many disciplines, which necessitates pooling roughly similar datasets across multiple institutions to study weak but relevant associations between images and disease outcomes. Such data often manifest shift/imbalance in covariates (i.e., secondary non-imaging data). Controlling for such nuisance variables is common within standard statistical analysis, but the ideas do not directly apply to overparameterized models. Consequently, recent work has shown how strategies from invariant representation learning provides a meaningful starting point, but the current repertoire of methods is limited to accounting for shifts/imbalances in just a couple of covariates at a time. In this paper, we show how viewing this problem from the perspective of Category theory provides a simple and effective solution that completely avoids elaborate multi-stage training pipelines that would otherwise be needed. We show the effectiveness of this approach via extensive experiments on real datasets. Further, we discuss how this style of formulation offers a unified perspective on at least 5+ distinct problem settings, from self-supervised learning to matching problems in 3D reconstruction.},
-  langid = {english},
-  file = {/home/frc/Zotero/storage/L9UQ5DMT/Chytas et al. - 2024 - POOLING IMAGE DATASETS WITH MULTIPLE COVARI- ATE S.pdf}
+@inproceedings{cruttwell2022categorical,
+  title={Categorical foundations of gradient-based learning},
+  author={Cruttwell, Geoffrey SH and Gavranovi{\'c}, Bruno and Ghani, Neil and Wilson, Paul and Zanasi, Fabio},
+  booktitle={European Symposium on Programming},
+  pages={1--28},
+  year={2022},
+  organization={Springer International Publishing Cham}
 }
 
-@unpublished{cockettReverseDerivativeCategories2019,
-  title = {Reverse Derivative Categories},
-  author = {Cockett, Robin and Cruttwell, Geoffrey and Gallagher, Jonathan and Lemay, Jean-Simon Pacaud and MacAdam, Benjamin and Plotkin, Gordon and Pronk, Dorette},
-  date = {2019-10-15},
-  eprint = {1910.07065},
-  eprinttype = {arXiv},
-  eprintclass = {cs, math},
-  url = {http://arxiv.org/abs/1910.07065},
-  urldate = {2024-07-10},
-  abstract = {The reverse derivative is a fundamental operation in machine learning and automatic differentiation [1, 11]. This paper gives a direct axiomatization of a category with a reverse derivative operation, in a similar style to that given by [2] for a forward derivative. Intriguingly, a category with a reverse derivative also has a forward derivative, but the converse is not true. In fact, we show explicitly what a forward derivative is missing: a reverse derivative is equivalent to a forward derivative with a dagger structure on its subcategory of linear maps. Furthermore, we show that these linear maps form an additively enriched category with dagger biproducts.},
-  langid = {english},
-  keywords = {Computer Science - Logic in Computer Science,D.3.1,F.3.2,Mathematics - Category Theory},
-  file = {/home/frc/Zotero/storage/FILS3YV2/Cockett et al. - 2019 - Reverse derivative categories.pdf}
+@article{shiebler2021category,
+  title={Category theory in machine learning},
+  author={Shiebler, Dan and Gavranovi{\'c}, Bruno and Wilson, Paul},
+  journal={arXiv preprint arXiv:2106.07032},
+  year={2021}
 }
 
-@article{cruttwellDeepLearningParametric,
-  title = {Deep {{Learning}} with {{Parametric Lenses}}},
-  author = {Cruttwell, Geoffrey S H and Gavranovic, Bruno and Ghani, Neil and Wilson, Paul and Zanasi, Fabio},
-  abstract = {We propose a categorical semantics for machine learning algorithms in terms of lenses, parametric maps, and reverse derivative categories. This foundation provides a powerful explanatory and unifying framework: it encompasses a variety of gradient descent algorithms such as ADAM, AdaGrad, and Nesterov momentum, as well as a variety of loss functions such as MSE and Softmax cross-entropy, and different architectures, shedding new light on their similarities and differences. Furthermore, our approach to learning has examples generalising beyond the familiar continuous domains (modelled in categories of smooth maps) and can be realised in the discrete setting of Boolean and polynomial circuits. We demonstrate the practical significance of our framework with an implementation in Python.},
-  langid = {english},
-  file = {/home/frc/Zotero/storage/VIM2JFIN/Cruttwell et al. - Deep Learning with Parametric Lenses.pdf}
+@article{gavranovic2024categorical,
+  title={Categorical deep learning: An algebraic theory of architectures},
+  author={Gavranovi{\'c}, Bruno and Lessard, Paul and Dudzik, Andrew and von Glehn, Tamara and Ara{\'u}jo, Jo{\~a}o GM and Veli{\v{c}}kovi{\'c}, Petar},
+  journal={arXiv preprint arXiv:2402.15332},
+  year={2024}
 }
 
-@article{fongBackpropFunctorCompositional2019a,
-  title = {Backprop as {{Functor}}: {{A}} Compositional Perspective on Supervised Learning},
-  shorttitle = {Backprop as {{Functor}}},
-  author = {Fong, Brendan and Spivak, David and Tuyeras, Remy},
-  date = {2019-06},
-  journaltitle = {2019 34th Annual ACM/IEEE Symposium on Logic in Computer Science (LICS)},
-  pages = {1--13},
-  doi = {10.1109/LICS.2019.8785665},
-  url = {https://ieeexplore.ieee.org/document/8785665/},
-  urldate = {2024-07-26},
-  abstract = {A supervised learning algorithm searches over a set of functions A → B parametrised by a space P to find the best approximation to some ideal function f : A → B. It does this by taking examples (a, f (a)) ∈ A × B, and updating the parameter according to some rule. We define a category where these update rules may be composed, and show that gradient descent—with respect to a fixed step size and an error function satisfying a certain property—defines a monoidal functor from a category of parametrised functions to this category of update rules. A key contribution is the notion of request function. This provides a structural perspective on backpropagation, giving a broad generalisation of neural networks and linking it with structures from bidirectional programming and open games.},
-  langid = {english},
-  file = {/home/frc/Zotero/storage/FR2XVT3Q/Fong et al. - 2019 - Backprop as Functor A compositional perspective o.pdf}
+@inproceedings{davidad2019DiopticsAC,
+  title={Dioptics: a Common Generalization of Open Games and Gradient-Based Learners},
+  author={David “davidad” and Dalrymple},
+  year={2019},
+  url={https://api.semanticscholar.org/CorpusID:211526540}
 }
 
-@article{gavranovicLearningFunctorsUsing2020,
-  title = {Learning {{Functors}} Using {{Gradient Descent}}},
-  author = {Gavranović, Bruno},
-  date = {2020-09-15},
-  journaltitle = {Electronic Proceedings in Theoretical Computer Science},
-  shortjournal = {Electron. Proc. Theor. Comput. Sci.},
-  volume = {323},
-  pages = {230--245},
-  issn = {2075-2180},
-  doi = {10.4204/EPTCS.323.15},
-  url = {http://arxiv.org/abs/2009.06837v1},
-  urldate = {2024-07-26},
-  langid = {english},
-  file = {/home/frc/Zotero/storage/I8EA2924/Gavranović - 2020 - Learning Functors using Gradient Descent.pdf}
+@article{riley2018categories,
+  title={Categories of optics},
+  author={Riley, Mitchell},
+  journal={arXiv preprint arXiv:1809.00738},
+  year={2018}
 }
 
-@unpublished{rileyCategoriesOptics2018,
-  title = {Categories of {{Optics}}},
-  author = {Riley, Mitchell},
-  date = {2018-09-07},
-  eprint = {1809.00738},
-  eprinttype = {arXiv},
-  eprintclass = {math},
-  url = {http://arxiv.org/abs/1809.00738},
-  urldate = {2024-07-21},
-  abstract = {Bidirectional data accessors such as lenses, prisms and traversals are all instances of the same general ‘optic’ construction. We give a careful account of this construction and show that it extends to a functor from the category of symmetric monoidal categories to itself. We also show that this construction enjoys a universal property: it freely adds counit morphisms to a symmetric monoidal category. Missing in the folklore is a general definition of ‘lawfulness’ that applies directly to any optic category. We provide such a definition and show that it is equivalent to the folklore profunctor optic laws.},
-  langid = {english},
-  keywords = {Mathematics - Category Theory},
-  file = {/home/frc/Zotero/storage/P6J4DXDK/Riley - 2018 - Categories of Optics.pdf}
+@inproceedings{giannini2024categorical,
+  title={Categorical Foundation of Explainable AI: A Unifying Theory},
+  author={Giannini, Francesco and Fioravanti, Stefano and Barbiero, Pietro and Tonda, Alberto and Li{\`o}, Pietro and Di Lavore, Elena},
+  booktitle={World Conference on Explainable Artificial Intelligence},
+  pages={185--206},
+  year={2024},
+  organization={Springer}
 }
 
-@article{sheshmaniCategoricalRepresentationLearning2022,
-  title = {Categorical Representation Learning: Morphism Is All You Need},
-  shorttitle = {Categorical Representation Learning},
-  author = {Sheshmani, Artan and You, Yi-Zhuang},
-  date = {2022-03-01},
-  journaltitle = {Machine Learning: Science and Technology},
-  shortjournal = {Mach. Learn.: Sci. Technol.},
-  volume = {3},
-  number = {1},
-  pages = {015016},
-  issn = {2632-2153},
-  doi = {10.1088/2632-2153/ac2c5d},
-  url = {https://iopscience.iop.org/article/10.1088/2632-2153/ac2c5d},
-  urldate = {2024-07-26},
-  abstract = {Abstract                            We provide a construction for categorical representation learning and introduce the foundations of ‘               categorifier               ’. The central theme in               representation learning               is the idea of everything to vector. Every object in a dataset                                                                                                                             S                                                                                   can be represented as a vector in                                                                                                                                                    R                                          n                                                                                   by an               encoding map                                                                                                        E                   :                                        O                                      b                   j                   (                                        S                                      )                   →                                                               R                                          n                                                                                   . More importantly, every morphism can be represented as a matrix                                                                                                        E                   :                                        H                                      o                   m                   (                                        S                                      )                   →                                                               R                                                                 n                                                                 n                                                                                                        . The encoding map               E               is generally modeled by a               deep neural network               . The goal of representation learning is to design appropriate tasks on the dataset to train the encoding map (assuming that an encoding is optimal if it universally optimizes the performance on various tasks). However, the latter is still a               set-theoretic               approach. The goal of the current article is to promote the representation learning to a new level via a               category-theoretic               approach. As a proof of concept, we provide an example of a text translator equipped with our technology, showing that our categorical learning model outperforms the current deep learning models by 17 times. The content of the current article is part of a US provisional patent application filed by QGNai, Inc.},
-  langid = {english},
-  file = {/home/frc/Zotero/storage/2EF29LS8/Sheshmani and You - 2022 - Categorical representation learning morphism is a.pdf}
+@inproceedings{wilson2022categories,
+  title={Categories of differentiable polynomial circuits for machine learning},
+  author={Wilson, Paul and Zanasi, Fabio},
+  booktitle={International Conference on Graph Transformation},
+  pages={77--93},
+  year={2022},
+  organization={Springer}
 }
 
-@unpublished{shieblerCategoryTheoryMachine2021,
-  title = {Category {{Theory}} in {{Machine Learning}}},
-  author = {Shiebler, Dan and Gavranović, Bruno and Wilson, Paul},
-  date = {2021-06-13},
-  eprint = {2106.07032},
-  eprinttype = {arXiv},
-  eprintclass = {cs},
-  url = {http://arxiv.org/abs/2106.07032},
-  urldate = {2024-07-10},
-  abstract = {Over the past two decades machine learning has permeated almost every realm of technology. At the same time, many researchers have begun using category theory as a unifying language, facilitating communication between different scientific disciplines. It is therefore unsurprising that there is a burgeoning interest in applying category theory to machine learning. We aim to document the motivations, goals and common themes across these applications. We touch on gradient-based learning, probability, and equivariant learning.},
-  langid = {english},
-  keywords = {Computer Science - Machine Learning},
-  file = {/home/frc/Zotero/storage/3QPN9TYT/Shiebler et al. - 2021 - Category Theory in Machine Learning.pdf}
+
+@article{wilson2021reverse,
+  title={Reverse derivative ascent: A categorical approach to learning boolean circuits},
+  author={Wilson, Paul and Zanasi, Fabio},
+  journal={arXiv preprint arXiv:2101.10488},
+  year={2021}
 }
 
-@thesis{shieblerCompositionalityFunctorialInvariants2023,
-  title = {Compositionality and {{Functorial Invariants}} in {{Machine Learning}}},
-  author = {Shiebler, Dan},
-  date = {2023},
-  institution = {University of Oxford},
-  abstract = {The objective of this thesis is to show that studying the underlying compositional and functorial structure in machine learning systems allows us to better understand them. In order to do this, we explore category theoretic formulations of many subareas of machine learning, including optimization, probability, unsupervised learning, and supervised learning. We begin with an investigation of how various optimization algorithms behave when we replace the gradient with a generic category theoretic structure. We prove that the key properties of these algorithms hold under very relaxed assumptions, and demonstrate this result through numerical experiments. We also explore a category theoretic perspective on dynamical systems that enables us to build powerful optimizers from the composition of simple operations. Next, we take a category theoretic perspective on the relationship between probabilistic modeling and gradient based optimization. We use this perspective to study how maximum likelihood estimation preserves certain key structures in the transformation from a statistical model to a supervised learning algorithm. Next, we take a functorial perspective on unsupervised learning. We develop taxonomies of unsupervised learning algorithms based on the category theoretic properties of their functorial representations, and demonstrate that these taxonomies are predictive of algorithm behavior. We use this perspective to derive a host of new unsupervised learning algorithms for clustering and manifold learning, and demonstrate that these new algorithms can outperform commonly used alternatives on real world data. We also use these tools to prove new results on the behavior and limitations of popular unsupervised learning algorithms, including refinement bounds and stability in the face of noise. Finally, we turn to supervised learning and demonstrate that many of the most common problems in data science and machine learning can be expressed as Kan extensions. We use this perspective to derive novel classification and supervised clustering algorithms. We also explore the performance of these algorithms on real data.},
-  langid = {english},
-  file = {/home/frc/Zotero/storage/JCBNR8RQ/Vasant et al. - 2022 - Intelligent computing & optimization proceedings .pdf}
+
+@article{cockett2019reverse,
+  title={Reverse derivative categories},
+  author={Cockett, Robin and Cruttwell, Geoffrey and Gallagher, Jonathan and Lemay, Jean-Simon Pacaud and MacAdam, Benjamin and Plotkin, Gordon and Pronk, Dorette},
+  journal={arXiv preprint arXiv:1910.07065},
+  year={2019}
 }
 
-@online{vaswaniAttentionAllYou2023,
-  title = {Attention {{Is All You Need}}},
-  author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, Lukasz and Polosukhin, Illia},
-  date = {2023-08-01},
-  eprint = {1706.03762},
-  eprinttype = {arXiv},
-  eprintclass = {cs},
-  url = {http://arxiv.org/abs/1706.03762},
-  urldate = {2024-07-29},
-  abstract = {The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 Englishto-German translation task, improving over the existing best results, including ensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.},
-  langid = {english},
-  pubstate = {prepublished},
-  keywords = {Computer Science - Computation and Language,Computer Science - Machine Learning},
-  file = {/home/frc/Zotero/storage/D8LR27L5/Vaswani et al. - 2023 - Attention Is All You Need.pdf}
+
+@misc{syropoulos2014fuzzycategories,
+      title={Fuzzy Categories}, 
+      author={Apostolos Syropoulos},
+      year={2014},
+      eprint={1410.1478},
+      archivePrefix={arXiv},
+      primaryClass={cs.LO},
+      url={https://arxiv.org/abs/1410.1478}, 
 }
 
-@incollection{wilsonCategoriesDifferentiablePolynomial2022,
-  title = {Categories of {{Differentiable Polynomial Circuits}} for {{Machine Learning}}},
-  booktitle = {Graph {{Transformation}}},
-  author = {Wilson, Paul and Zanasi, Fabio},
-  editor = {Behr, Nicolas and Strüber, Daniel},
-  date = {2022},
-  volume = {13349},
-  pages = {77--93},
-  publisher = {Springer International Publishing},
-  location = {Cham},
-  doi = {10.1007/978-3-031-09843-7_5},
-  url = {https://link.springer.com/10.1007/978-3-031-09843-7_5},
-  urldate = {2024-07-22},
-  abstract = {Reverse derivative categories (RDCs) have recently been shown to be a suitable semantic framework for studying machine learning algorithms. Whereas emphasis has been put on training methodologies, less attention has been devoted to particular model classes: the concrete categories whose morphisms represent machine learning models. In this paper we study presentations by generators and equations of classes of RDCs. In particular, we propose polynomial circuits as a suitable machine learning model. We give an axiomatisation for these circuits and prove a functional completeness result. Finally, we discuss the use of polynomial circuits over specific semirings to perform machine learning with discrete values.},
-  isbn = {978-3-031-09842-0 978-3-031-09843-7},
-  langid = {english},
-  file = {/home/frc/Zotero/storage/6MGW6ADK/Wilson and Zanasi - 2022 - Categories of Differentiable Polynomial Circuits f.pdf}
+
+@misc{chytas2024poolingimagedatasetsmultiple,
+      title={Pooling Image Datasets With Multiple Covariate Shift and Imbalance}, 
+      author={Sotirios Panagiotis Chytas and Vishnu Suresh Lokhande and Peiran Li and Vikas Singh},
+      year={2024},
+      eprint={2403.02598},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2403.02598}, 
 }
 
-@article{wilsonReverseDerivativeAscent2021a,
-  title = {Reverse {{Derivative Ascent}}: {{A Categorical Approach}} to {{Learning Boolean Circuits}}},
-  shorttitle = {Reverse {{Derivative Ascent}}},
-  author = {Wilson, Paul and Zanasi, Fabio},
-  date = {2021-02-08},
-  journaltitle = {Electronic Proceedings in Theoretical Computer Science},
-  shortjournal = {Electron. Proc. Theor. Comput. Sci.},
-  volume = {333},
-  pages = {247--260},
-  issn = {2075-2180},
-  doi = {10.4204/EPTCS.333.17},
-  url = {http://arxiv.org/abs/2101.10488v1},
-  urldate = {2024-07-21},
-  langid = {english},
-  file = {/home/frc/Zotero/storage/VKR7JTU5/Wilson and Zanasi - 2021 - Reverse Derivative Ascent A Categorical Approach .pdf}
+@article{sheshmani2021categorical,
+  title={Categorical representation learning: morphism is all you need},
+  author={Sheshmani, Artan and You, Yi-Zhuang},
+  journal={Machine Learning: Science and Technology},
+  volume={3},
+  number={1},
+  pages={015016},
+  year={2021},
+  publisher={IOP Publishing}
+}
+
+
+@article{gavranovic2019compositional,
+  title={Compositional deep learning},
+  author={Gavranovi{\'c}, Bruno},
+  journal={arXiv preprint arXiv:1907.08292},
+  year={2019}
+}
+
+
+@inproceedings{abbott2024category,
+  title={Category theory for artificial general intelligence},
+  author={Abbott, Vincent and Xu, Tom and Maruyama, Yoshihiro},
+  booktitle={International Conference on Artificial General Intelligence},
+  pages={119--129},
+  year={2024},
+  organization={Springer}
+}
+
+@article{blute2006differential,
+  title={Differential categories},
+  author={Blute, Richard F and Cockett, J Robin B and Seely, Robert AG},
+  journal={Mathematical structures in computer science},
+  volume={16},
+  number={6},
+  pages={1049--1083},
+  year={2006},
+  publisher={Cambridge University Press}
+}
+
+
+@inproceedings{fong2019backprop,
+  title={Backprop as functor: A compositional perspective on supervised learning},
+  author={Fong, Brendan and Spivak, David and Tuy{\'e}ras, R{\'e}my},
+  booktitle={2019 34th Annual ACM/IEEE Symposium on Logic in Computer Science (LICS)},
+  pages={1--13},
+  year={2019},
+  organization={IEEE}
+}
+
+
+@article{capucci2022actegories,
+  title={Actegories for the working amthematician},
+  author={Capucci, Matteo and Gavranovi{\'c}, Bruno},
+  journal={arXiv preprint arXiv:2203.16351},
+  year={2022}
+}
+
+@article{clarke2024profunctor,
+  title={Profunctor optics, a categorical update},
+  author={Clarke, Bryce and Elkins, Derek and Gibbons, Jeremy and Loregian, Fosco and Milewski, Bartosz and Pillmore, Emily and Rom{\'a}n, Mario},
+  journal={Compositionality},
+  volume={6},
+  year={2024},
+  publisher={Episciences. org}
+}
+
+@article{steckermeier2015lenses,
+  title={Lenses in functional programming},
+  author={Steckermeier, Albert},
+  journal={Preprint, available at https://sinusoid.es/misc/lager/lenses.pdf},
+  year={2015}
+}
+
+@article{fong2019lenses,
+  title={Lenses and learners},
+  author={Fong, Brendan and Johnson, Michael},
+  journal={arXiv preprint arXiv:1903.03671},
+  year={2019}
 }
