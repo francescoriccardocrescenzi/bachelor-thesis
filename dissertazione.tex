@@ -257,13 +257,14 @@ Benedetta
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 \pagenumbering{arabic}
 
-In this chapter, we illustrate a few categorical tools that have been developed to provide compositional frameworks for gradient-based learning and Bayesian learning. In particular, we will focus on parametric weighted optics and compositional models. Although such frameworks have been developed separately, they do interact, and they share a common philosophy: their purpose is to unify the field of machine learning and replace unreliable, non-compositional, \textit{ad hoc} tools with reliable, compositional, elegant tools.
+In this chapter, we illustrate a few categorical tools that have been developed to provide compositional frameworks for machine learning. In particular, we will focus on parametric weighted optics and compositional models. Although such frameworks have been developed separately, they do interact, and they share a common philosophy: their purpose is to unify the field of machine learning and replace unreliable, non-compositional, \textit{ad hoc} tools with reliable, compositional, elegant tools.
 
 
 We are forced by space and time constraints to skip over the details of many constructions, but we hope the reader can get a good picture of how the proposed tools work. All the necessary details can be found in the cited references.
 
 
 Note that this chapter is devoted to illustrating our categorical toolkit itself, not its applications. Hence, we will focus on the mathematical and categorical aspects of the presented frameworks, and we will postpone applications to the following chapters.
+
 
 \section{Parametric weighted optics}
 
@@ -550,12 +551,6 @@ As argued in \cite{gavranovic2024fundamental}, the symbol $\mathbf{Lens}_A$ is j
 Since the conjecture hasn't been formally proved yet, the author abandons the weighted optics perspective in favor of the lens perspective, and so do we. As it has already been shown in \cite{cruttwell2022categorical}, lenses are expressive enough to satisfyingly model gradient based learning, and thus, while weighted optics seem to offer great future potential, lens-theoretic approaches are far from being disadvantageous.
 
 
-\subsubsection{}
-
-
-
-
-
 \subsubsection{Generalized reverse differential categories}
 
 \cite{gavranovic2024fundamental} proposes the $\mathbf{Lens}_A$ construct as foundation for generalizing reverse differential categories. This is possible because $\mathbf{Lens}_A$ is an endofunctors, as shown by the following definitions and propositions.
@@ -780,6 +775,59 @@ We have presented the perspective of \cite{cruttwell2022categorical} within the 
 For instance, it is shown in \cite{wilson2022categories} that polynomial circuits form a CRDC, and it is shown in \cite{wilson2021reverse} that meaningful learning can be carried out in the context of Boolean circuits, as long as a suitable optimizer is chosen. Learning polynomial circuits are promising because they 
 
 Hence, the framework described in this section can be applied as is to Boolean circuits. Working in an abstract categorical setting allows for this kind of generality. 
+
+
+
+
+
+\section{Categorical deep learning}
+
+Optic-based learning provides a structured general-purpose compositional framework for gradient-based learning. However, such great versatility has a price: optics are unable to guide the architectural design of our model. 
+
+It has been shown times and times again that a better architecture makes as much of a difference in machine learning as an algorithm with better asymptotic cost does in classical computer science. In fact, even if we ignore performance concerns, selecting the right architecture is synonymous with selecting the right inductive bias, which is essential fot effective learning.
+
+Therefore, it is of paramount importance to find a principled mathematical framework able to guide such architectural choices. Designing an architecture is almost synonymous to imposing a set of constraints: for instance, convolutional layers are notoriously translationally invariant (ADDREF).
+Hence, it makes sense to inform the choice of architecture by informing the choice of constraint.
+
+Among the various attempts at developing a principled theory of machine learning constraints, geometric deep learning (see e.g. ADDREF) is particulary relevant.
+Geometric deep learning (GDL) focuses on equivariance constraints defined with respect to group actions, and has thus seen a lot of success in context where the transformations data can be subjected to can be expressed in group-theoretical terms. Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (ADDREF). Moreover, as highlighted in ADDREF, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented.  
+
+
+Categorical deep learning (CDL), introduced by ADDREF, attempts to solve the aforementioned problems by categorical means.
+The main insight behind CDL is that group actions are only one instance of a much larger class of transformation with respect to which equivariance is desirable. Thus, CDL aims to subsume and generalize GDL by weakening the assumptions regarding the examined transformations. At the moment, to the best of our knowledge,  ADDREF is the only publicly available paper that discusses categorical deep learning. In this section, we will sketch the main ideas contained in the paper, and we will then compare CDL to other categorical approaches.
+
+
+\subsection{Generalizing geometric deep learning}
+
+\subsubsection{Equivariance}
+
+Equivariance is a highly sought after property in machine learning for many reasons. We list some below.
+\begin{enumerate}
+  \item \textit{Dimensionality reduction.} Implementing invariance or equivariance with respect to the right transformations can help ignore superfluous information, reducing the number of parameters of a model. For instance, convolutional layers, which are translationally equivariant, require significantly fewer weights than linear layers of the same size (ADDREF).
+  \item \textit{Robustness.} An image classifier which is equivariant to rotations can recognize images even if their features are rotated, and is thus less vulnerable to errors or adversarial attacks (ADDREF).
+  \item \textit{Pooling.} Similar data pooled from different datasets will likely display shifts and imbalanced in many covariates due to differences in context and data collection protocols. Thus, when training a neural network on a pooled dataset, it is advantageous to enforce equivariance with respect to such shifts and imbalances (\cite{chytas2024poolingimagedatasetsmultiple})\footnote{This is one of those cases where invariance alone does not suffice. Using the example studied in \cite{chytas2024poolingimagedatasetsmultiple}, if we are training a neural network to diagnose Alzheimer's disease, invariance to age is not an option as age is strongly correlated with the disease. On the other hand, equivariance with respect to age is desirable and prevents the model from learning biases due to the presence of imbalances in the dataset.}.
+  \item \textit{Fairness.} A neural network used for CV screening can only be considered fair if it displays equivariance with respect to sensitive attributes of the candidates, such as their age, gender, ethnicity, and so on (ADDREF).
+\end{enumerate}
+
+It is thus extremely important to provide a good definition of equivariance. The definition used in GDL is the following.
+
+
+\begin{definition}[Group action equivariance and invariance]
+  Let $G$ be a group and let $(S, \cdot)$ and $(T, \ast)$ be $G$-actions. A function $f: S \to T$ is equivariant with respect to the aforementioned actions if $f(g \cdot s) = g \ast f(s)$ for all $s \in \mathcal{S}$ and for all $g \in \mathcal{G}$. We say that $f$ is invariant if $\ast$ is the trivial action on $T$, and thus $f(g \cdot s) = f(s)$ for all $s$ and $g$.
+\end{definition}
+
+
+\subsubsection{From geometry to category theory}
+
+
+As stated in ADDREF, GDL is inspired by the \textit{Erlangen Programme}, which unified geometry around the notions of invariance at the end of the nineteenth century. Since category theory can be seen as an extension of the \textit{Programme} (as we already remarked in the introduction to this thesis), it is only natural to attempt to generalize GDL by categorical means.
+
+
+Categorical deep learning (CDL) is a categorical framework for deep learning which aims to subsume and generalize GDL proposing, in the words of the authors of ADDREF, (co)algebras over functors and monads (ADDREF, ADDREF) as a "theory of all architectures". 
+
+
+
+
 
 
 
@@ -1055,92 +1103,6 @@ The ADNI classifier model also shows very promising results which are on par wit
 
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% APPENDIX A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\appendix
-\chapter{Miscellaneous Categories}
-\rhead[\fancyplain{}{\bfseries \thechapter \:Miscellaneous Categories}]{\fancyplain{}{\bfseries\thepage}}   
-
-
-We include here the definitions of a number of categories used throughout the text for convenience’s sake.
-
-
-
-\section{Families of Monoidal Categories}
-
-Ordinary categories provide the necessary machinery to carry out meaningful sequential composition. Monoidal categories are categories endowed with a monoidal product that allows us to carry out parallel composition. The definition provided in this section omit some detail for the sake of brevity. See ADDREF for complete definitions.
-
-\subsection{Monoidal Categories}
-
-\begin{definition}[Monoidal category]
-  A monoidal category is a tuple \\$(\mathcal{M}, I, \otimes, \lambda, \rho, \alpha)$, where: (i) $\mathcal{M}$ is a category; $(ii)$ $I$ is a $\mathbf{1} \to \mathcal{M}$ functor known as monoidal unit\footnote{Such a functor identifies an object $I : \mathcal{M}$, so it makes sense to also conisider $I$ and object}; (iii) $\otimes$ is an $\mathcal{M} \times \mathcal{M} \to \mathcal{M}$ functor known as monoidal product; (iv) $\lambda$, $\rho$, $\alpha$ are natural isomorphisms that behaved as illustrated in ADDIM. $\lambda$, $\rho$, $\alpha$ are known as left unitor, right unitor, and associator respectively, and they impose weak associavity and unitality to $\otimes$. They must also satisfy coherence axioms.
-\end{definition}
-
-\begin{definition}[Lax monoidal functor]
-  Let $(\mathcal{M}, I, \otimes)$ and $(\mathcal{N}, I', \otimes)'$ be monoidal categories. A lax monoidal functor between such categories is a tuple $(F, \mu, \epsilon)$ where $F: \mathcal{M} \to \mathcal{N}$ is a functor and $\mu$, $\epsilon$ are natural transformations satisfying the diagrams in ADDIM. Such transformations must also satisy coherence laws. If $\mu$ and $\epsilon$ are natural isomorphism, we say that $(F, \mu, \epsilon)$ is a strong monoidal functor. If they are identities, we say that the functor is strict.
-\end{definition}
-
-\begin{definition}[Reverse monoidal category]
-  Let $(\mathcal{M}, I, \otimes)$ be a monoidal category. We define the associated reverse monoidal category as the monoidal category $(\mathcal{M}, I, \otimes^{\mathrm{rev}})$, where $\otimes^{\mathrm{rev}} = \mathcal{M} \times \mathcal{M} \stackrel{\mathsf{swap}}{\rightarrow} \mathcal{M} \times \mathcal{M} \stackrel{\otimes}{\rightarrow} \mathcal{M}$.
-\end{definition}
-
-\begin{definition}[Braided monoidal category]
-  
-\end{definition}
-
-
-\subsection{Cartesian Categories}
-
-
-\textcolor{blue}{Definition of Cartesian category.}
-\textcolor{blue}{Expand on the properties of Cartesian categories. In particular, expand on the existence of copy maps.}
-\textcolor{blue}{Definition of left-additive category.}
-\textcolor{blue}{Definition of Cartesian left-additive category.}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%\begin{figure}[h]
-%  \begin{center}                         
-%    \includegraphics[width=5cm]{figures/triangle.jpg}
-%    \caption[Placeholder]{Placeholder figure.}\label{fig:first}
-%  \end{center}
-%\end{figure}
-
-%\begin{table}[h]                        
-%  \begin{center}                          
-%    \begin{tabular}{r|c|c}                  
-%      \hline \hline                           
-%      $(1,1)$ & $(1,2)$ & $(1,3)$\\           
-%      \hline                                  
-%      $(2,1)$ & $(2,2)$ & $(2,3)$\\           
-%      \hline                                  
-%      $(3,1)$ & $(3,2)$ & $(3,3)$\\
-%      \hline \hline                           
-%    \end{tabular}
-%    \caption[Placeholder Table]{Placeholder table.}\label{tab:uno}
-%  \end{center}
-%\end{table}
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%
