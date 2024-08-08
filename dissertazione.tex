@@ -471,9 +471,6 @@ We can then write the following definition:
 Parametric weighted optics are an even more sophisticated piece of categorical machinery than non-parametric ones, and thus the consistent use of string diagrams is extremely helpful. Refer to ADDIM to see examples of such diagrams.
 
 
-
-
-
 \subsection{Differential categories}
 \label{subsec: diffcats}
 
@@ -574,7 +571,7 @@ Since the conjecture hasn't been formally proved yet, the author abandons the we
 \end{proof}
 
 \begin{proposition}
-  $\mathbf{Lens}_A$ has a copointed structure.
+  $\mathbf{Lens}_A$ has a copointed structure (\textit{Def. \ref{def: copointend}}).
 \end{proposition}
 \begin{proof}
   It suffices to endow $\mathbf{Lens}_A$ with the natural transformation $\epsilon$ whose components are the forgetful functors $\epsilon_{\mathcal{C}}: \mathbf{Lens}_A(\mathcal{C}) \to \mathcal{C}$ which strip away the backward passes.
@@ -583,7 +580,7 @@ Since the conjecture hasn't been formally proved yet, the author abandons the we
 Finally, \cite{gavranovic2024fundamental} provides generalizes CRDCs as follows.
 
 \begin{definition}[Generalized Cartesian reverse differential category]
-  A generalized Cartesian reverse differential category is a coalegbra for the pointed endofunctor $\mathbf{Lens}_A$. 
+  A generalized Cartesian reverse differential category is a coalgebra (\textit{Def. \ref{def: copendcoalg}}) for the pointed endofunctor $\mathbf{Lens}_A$. 
 \end{definition}
 
 Explicitly, a generalized CRDC is a pair $(\mathcal{C}, \mathbf{R}_{\mathcal{C}})$ such that $\mathcal{C}: \mathbf{CLACat}$ and $\mathbf{R}_{\mathcal{C}}: \mathcal{C} \to \mathbf{Lens}_A(\mathcal{C})$ satisfies $\mathbf{R}_{\mathcal{C}} \fatsemi \epsilon_{\mathcal{C}} = \mathbf{id}_{\mathcal{C}}$. The intuition behind such definition is that $\mathbf{R}_{\mathcal{C}}$ should map $f \mapsto \left(\begin{smallmatrix} f \\ R[f] \end{smallmatrix}\right)$, where $R[f]$ is a generalized reverse derivative combinator. \cite{gavranovic2024fundamental} shows that such a definition of $\mathbf{R}_{\mathcal{C}}$ does indeed prove that ordinary CRDC fall into the definition of generalized CRDC. 
@@ -784,17 +781,17 @@ Hence, the framework described in this section can be applied as is to Boolean c
 
 Optic-based learning provides a structured general-purpose compositional framework for gradient-based learning. However, such great versatility has a price: optics are unable to guide the architectural design of our model. 
 
-It has been shown times and times again that a better architecture makes as much of a difference in machine learning as an algorithm with better asymptotic cost does in classical computer science. In fact, even if we ignore performance concerns, selecting the right architecture is synonymous with selecting the right inductive bias, which is essential fot effective learning.
+It has been shown times and times again that a better architecture makes as much of a difference in machine learning as an algorithm with better asymptotic cost does in classical computer science. In fact, even if we ignore performance concerns, selecting the right architecture is synonymous with selecting the right inductive bias, which is essential for effective learning.
 
 Therefore, it is of paramount importance to find a principled mathematical framework able to guide such architectural choices. Designing an architecture is almost synonymous to imposing a set of constraints: for instance, convolutional layers are notoriously translationally invariant (ADDREF).
 Hence, it makes sense to inform the choice of architecture by informing the choice of constraint.
 
-Among the various attempts at developing a principled theory of machine learning constraints, geometric deep learning (see e.g. ADDREF) is particulary relevant.
-Geometric deep learning (GDL) focuses on equivariance constraints defined with respect to group actions, and has thus seen a lot of success in context where the transformations data can be subjected to can be expressed in group-theoretical terms. Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (ADDREF). Moreover, as highlighted in ADDREF, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented.  
+Among the various attempts at developing a principled theory of machine learning constraints, geometric deep learning (see e.g. \cite{bronstein2021geometric}) is particulary relevant.
+Geometric deep learning (GDL) focuses on equivariance constraints defined with respect to group actions, and has thus seen a lot of success in context where the transformations data can be subjected to can be expressed in group-theoretical terms. Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (\cite{gavranovicposition}). Moreover, as highlighted in \cite{gavranovicposition}, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented.  
 
 
-Categorical deep learning (CDL), introduced by ADDREF, attempts to solve the aforementioned problems by categorical means.
-The main insight behind CDL is that group actions are only one instance of a much larger class of transformation with respect to which equivariance is desirable. Thus, CDL aims to subsume and generalize GDL by weakening the assumptions regarding the examined transformations. At the moment, to the best of our knowledge,  ADDREF is the only publicly available paper that discusses categorical deep learning. In this section, we will sketch the main ideas contained in the paper, and we will then compare CDL to other categorical approaches.
+Categorical deep learning (CDL), introduced by \cite{gavranovicposition}, attempts to solve the aforementioned problems by categorical means.
+The main insight behind CDL is that group actions are only one instance of a much larger class of transformation with respect to which equivariance is desirable. Thus, CDL aims to subsume and generalize GDL by weakening the assumptions regarding the examined transformations. At the moment, to the best of our knowledge,  \cite{gavranovicposition} is the only publicly available paper that discusses categorical deep learning. In this section, we will sketch the main ideas contained in the paper, and we will then compare CDL to other categorical approaches.
 
 
 \subsection{Generalizing geometric deep learning}
@@ -820,20 +817,38 @@ It is thus extremely important to provide a good definition of equivariance. The
 \subsubsection{From geometry to category theory}
 
 
-As stated in ADDREF, GDL is inspired by the \textit{Erlangen Programme}, which unified geometry around the notions of invariance at the end of the nineteenth century. Since category theory can be seen as an extension of the \textit{Programme} (as we already remarked in the introduction to this thesis), it is only natural to attempt to generalize GDL by categorical means.
+As stated in \cite{bronstein2021geometric}, GDL is inspired by the \textit{Erlangen Programme}, which unified geometry around the notions of invariance at the end of the nineteenth century. Since category theory can be seen as an extension of the \textit{Programme} (as we already remarked in the introduction to this thesis), it is only natural to attempt to generalize GDL by categorical means.
 
 
-Categorical deep learning (CDL) is a categorical framework for deep learning which aims to subsume and generalize GDL proposing, in the words of the authors of ADDREF, (co)algebras over functors and monads (ADDREF, ADDREF) as a "theory of all architectures". 
+Categorical deep learning is a categorical framework for deep learning which aims to subsume and generalize GDL proposing, in the words of the authors of \cite{gavranovicposition}, the theory of (co)algebras over endofunctors and monads (see \textit{Sec. \ref{sec: algebras}}) as a "theory of all architectures". Consider the following example to see how monad algebras can model group actions and how the associated homomorphisms are the sought after equivariant maps.
+
+\begin{example}[Group action monad]
+  Let $(G,e,\cdot)$ be a group. Consider the endomorphism $G \times -: \mathbf{Set} \to \mathbf{Set}$ which maps $S \mapsto G \times X$ and $f \mapsto G \times f$. $G$ can be given a monad structure using the natural transformations $\eta$, with components $\eta_S: s \mapsto (e,s)$, and $\mu$, with components $(g,h,s) \mapsto (g \times h, s)$. 
+  The monad $(G \times -, \eta, \mu)$ models the structure that lies under $G$-actions. The actions themselves can be recovered by considering algebras $(S,\ast)$ for the monad. Since $\ast$ must satisfy the commutative diagrams in ADDIM, $\ast$ satisfies the equations $e \ast s = s$ and $g \ast (h \ast s) = (g \times h) \ast s$ for all $s \in S$ and for all $g \in G$.
+  Finally, an $S \to T$ map which is equivariant with respect to the actions $(S,\ast)$ and $(T,\star)$ is a $(S,\ast) \to (T,\star)$ monad algebra homomorphism because the diagram in ADDIM is commutative if and only if $f(g \ast s) = g \star f(s)$ for all $s \in S$ and for all $g \in G$.
+\end{example}
+
+The previous example shows the role that monads (or endomorphisms), the associated algebras, and the associated algebra homomorphisms play in CDL: monads (or endomorphisms) provide a shared but inert structure, algebras provide actions built on such structure, and, finally, algebra homomorphisms are maps that preserve such actions. The following example, taken from (\cite{gavranovicposition}), shows how the monad algebra paradigm can be used to impose equivariance by weight sharing.
+
+\begin{example}[Linear equivariant layer]
+  \label{ex: translationaction}
+  Consider a carrier set $S = \mathbb{R}^{\mathbb{Z}_2}$, which can be seen as a pair of pixels. Consider the translation action $(i \ast s)(j) = s(i-j)$ of $G = \mathbb{Z}_2$ on $S$, which can be seen as swapping the pixels.
+  We want to find a linear map $f: S \to S$ which is equivariant with respect to the action. Imposing the equivariance constraints as equations on the entries of the matricial representation $W_f \in \mathbb{R}^{2 \times 2}$ of the map, we can prove that $f$ is equivariant if and only if $W_f$ is symmetric.
+\end{example}
+
+\textit{Ex. \ref{ex: translationaction}
+} is a simple application of geometric deep learning, but the problem is presented using the formalism of categorical deep learning. In the rest of the section, we will see applications where geometric deep learning alone does not suffice.
+
+\subsection{From data structures to neural networks}
+
+\subsubsection{Lists, trees, automata}
 
 
 
 
 
 
-
-
-
-\section{Functor Learning}
+\section{Functor learning}
 
 In the parametric lens framework presented above, learning happens at the morphism level. The framework is very convenient because its categorical structure hides away the automatic differentiation machinery needed for backpropagation, and thus we can just compose the parametric lenses as modules, so that we can form any network we wish. However, parametric lenses cannot be used to abstract away computations and extract the schema of the model, as they inherently carry out computations. Moreover, the generality of the parametric lens framework means that no tools are developed to study and exploit the inherent structure of the data. Finally, parametric lenses do not offer high level tools to deal with invariance ad equivariance constraints. 
 
@@ -1103,6 +1118,104 @@ The ADNI classifier model also shows very promising results which are on par wit
 
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% APPENDIX A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\appendix
+\chapter{Miscellaneous Categorical Definitions}
+\rhead[\fancyplain{}{\bfseries \thechapter \:Miscellaneous Categorical Definitions}]{\fancyplain{}{\bfseries\thepage}}   
+
+
+We include here a brief summary of a few interesting categorical definitions, so that we can refer back to them in the main body of this thesis. No impactful ideas are discussed in this appendix.
+
+
+
+\section{Algebras and coalgebras}
+\label{sec: algebras}
+
+In this section we discuss algebras and (co)algebras over endofunctors, copointed endofunctors, and monads. We will only provide the definitions necessary to understand this thesis, but the interested reader can find more information in \cite{jacobs1997tutorial} and \cite{wisbauer2008algebras}.
+
+
+\subsection{Providing endofunctors with structure}
+
+It makes sense to use natural transformations to add structure to an endofunctor $F: \mathcal{C} \to \mathcal{C}$.
+
+\begin{definition}[Pointed endofunctor]
+  \label{def: pointend}
+  A pointed endofunctor over a category $\mathcal{C}$ is a pair $(F, \eta)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor and $\eta: \mathrm{id}_{\mathcal{C}} \Rightarrow F$ is a natural transformation. 
+\end{definition}
+
+\begin{definition}[Copointed endofunctor]\label{def: copointend}
+  A copointed endofunctor over a category $\mathcal{C}$ is a pair $(F, \epsilon)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor and $\epsilon: F \Rightarrow \mathrm{id}_{\mathcal{C}}$ is a natural transformation. 
+\end{definition}
+
+The transformation $\eta$ in the definition of pointed endofunctor looks like the identity in a categorical monoid. Thus, it makes perfect sense to extend the definition to include an associated product.
+
+\begin{definition}[Monad]
+  \label{def: monad}
+  A monad over a category $\mathcal{C}$ is a triplet $(F, \eta, \mu)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor, and $\eta: \mathrm{id}_{\mathcal{C}} \Rightarrow F$  and $\mu: F \fatsemi F \Rightarrow F$ are natural transformations. Moreover, $\eta$ and $\mu$ must satisfy the coherence diagrams in ADDIM.  
+\end{definition}
+
+Reversing all the natural transformation arrows in the definition above and in the diagrams yields the definition of comonad.
+
+
+\subsection{Building upon the structure}
+
+Endofunctors, (co)pointed endofunctors and (co)monads provide a frame for a category $\mathcal{C}$. We can use the internal machinery of $\mathcal{C}$ to build upon such frame and harvest the benefits of having such structure.
+
+\begin{definition}[Algebra over an endofunctor]
+  \label{def: endalg}
+  Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(F(A),A)$.
+\end{definition}
+
+\begin{definition}[Coalgebra over an endofunctor]
+  \label{def: endcoalg}
+  Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(A,F(A))$.
+\end{definition}
+
+\begin{definition}[Coalgebra over a copointed endofunctor]
+  \label{def: copendcoalg}
+  An algebra over a copointed endofunctor $(F, \epsilon)$ on $\mathcal{C}$ is a pair $(A,a)$ where $A: \mathcal{C}$, $a:\mathcal{C}(F(A),A)$ and the commutative diagram in ADDIM is satisfied.
+\end{definition}
+
+\begin{definition}[Algebra over a monad]
+  \label{def: monalg}
+  An algebra over a monad $(F, \eta, \mu)$ on $\mathcal{C}$ is a pair $(A,a)$ where $A: \mathcal{C}$, $a:\mathcal{C}(F(A),A)$ and the commutative diagrams in ADDIM are satisfied.
+\end{definition}
+
+Coalgebras over monads are defined by reversing all the arrows in the definition of algebras over monads.
+
+\subsection{Algebra homomorphisms}
+
+After defining algebras, we go on to define algebra homomorphisms, that is, arrows that preserve the algebraic structure.
+
+\begin{definition}[Homomorphisms of algebras over an endofunctor]
+  Let $(A,a)$ and $(B,b)$ be algebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. An algebra homomorphism $(A,a)\to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
+\end{definition}
+
+\begin{definition}[Homomorphisms of coalgebras over an endofunctor]
+  Let $(A,a)$ and $(B,b)$ be coalgebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. A coalgebra homomorphism $(A,a) \to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
+\end{definition}
+
+Homomorphisms of (co)algebras over monads are define in the same way. 
+
+
+
+
+
+
+
+
+\section{Miscellaneous categories}
+
+Here we list the definitions of various specific categories that are used in this thesis.
+
+
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%
