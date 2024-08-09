@@ -752,7 +752,7 @@ Empirical evidence for the effectiveness of parametric lenses can be found in \c
 Since parametric lenses can easily be implemented functionally and without side effects, success stories as the one mentioned above foreshadow a future where popular machine learning libraries also follow elegant functional paradigms informed by category theory. Quoting  \cite{cruttwell2022categorical} directly, \lq[the] proposed algebraic structures naturally guide programming practice\rq.
 
 
-\subsection{Learners and polynomial circuits}
+\subsection{Comparisons and generalizations}
 
 \subsubsection{Learners}
 
@@ -760,12 +760,24 @@ Since parametric lenses can easily be implemented functionally and without side 
 One of the first compositional approaches to training neural networks in the literature can be found in the seminal paper \cite{fong2019backprop}, which spurred much research in the field, including what is presented in \cite{gavranovic2024fundamental} and \cite{cruttwell2022categorical}. The authors introduce a category of learners, objects which are meant to represent components of a neural network and behave similarly to parametric lenses. 
 
 
-We don't have the space to talk about learners at length, but we wish to draw a short comparison between parametric lenses and the approach of \cite{fong2019backprop}, given the relevant position held by the paper in the machine learning literature. The main difference between $\mathbf{Learn}$ and $\mathbf{Lens}_A(\mathcal{C})$ is that each learner is endowed with its own loss map and optimizer, which does not happen in the framework illustrated in this section. Moreover, although the authors of \cite{fong2019backprop} do define $\mathbf{Para}$, they define the construction within the scope of $1$-categories, and they specialize it to the Cartesian self-action of $\mathbf{Smooht}$. Thus, learners as presented in \cite{fong2019backprop} lack the flexibility of the approaches of \cite{gavranovic2024categorical} and \cite{cruttwell2022categorical}. 
+\begin{definition}[Category of learners]
+  Let $A$ and $B$ be sets. A learner $A \to B$ is a tuple $(P, I, U, r)$ where $P$ is a set, and $I: P \times A \to B$, $U: P \times A \times B \to P$, and $r: P \times A \times B \to A$ are functions.
+  $P$ is known as parameter space, $I$ as implement functions, $U$ as update function, and $r$ as request function. Two learners $(P, I, U, r): A \to B$ and $(Q, J, V, s): B \to C$ compose forming $(P \times Q, I \ast J, U \ast V, r \ast s ): A \to C$, where
+  \[(I \ast J)(p,q,a) = J(q,I(p,a)),\]
+  \[(U \ast V)(p,q,a,c) = (U(p,a,s(q,I(p,a),c)), V(q,I(p,a),c)),\]
+  \[(r \ast s)(p,q,a,c) = r(p,a,s(q,I(p,a),c)).\]
+  Learners quotiented by an appropriate reparametrization relationship\footnote{As argued in \cite{fong2019backprop}, learners could be studied from a bicategorical point of view, where reparametrizations would just be $2$-cells. We could then use a connected component projection to compress $\mathbf{Learn}$ into a $1$-category $\mathbf{Learn}$, as it is done for $\mathbf{coPara}$ when defining weighted optics.} form a category $\mathbf{Learn}$.
+\end{definition}
+
+A learner represents an instance of supervised learning: the implement function takes a parameter and implements a function and the update function updates the parameters using a data from a dataset. The request function is necessary to implement backpropagation when optimizing a composition of learners. Suppose we select a learning rate $\epsilon$ and an error function $e: \mathbb{R}^2 \to \mathbb{R}$ such that $y \mapsto \frac{\partial e }{\partial x}(x_0, y)$ is invertible for all $y$. It is argued in \cite{fong2019backprop} that we can define a functor $L_{\epsilon, e}: \mathbf{Para}_{\times}(\mathbf{Smooth}) \to \mathbf{Learn}$ which takes a parametric map and yields an associated learner that implements gradient descent. 
 
 
-Interestingly, \cite{fong2019lenses} (which shares a co-author with  \cite{fong2019backprop}) shows can learners and lenses are tightly linked. It si argued in \cite{shiebler2021category} and \cite{cruttwell2022categorical} that the work in \cite{cruttwell2022categorical} largely subsumes the learner approach. MOre information regarding the comparison can also be found in \cite{gavranovic2024fundamental}.
+We don't have the space to talk about learners at length, but we wish to draw a short comparison between parametric weighted optics (and, in particular, parametric lenses) and the approach of \cite{fong2019backprop}, given the relevant position held by the paper in the machine learning literature. The similarities between learner-based learning and lens-based learning are evident: every learner $(P, I, U, r)$ looks like a parametric lens, where $I$ passes information forward, $r$ passes information backwards and $P$ is the parameter space. Moreover, the role of $L_{\epsilon, e}$ is very similar to the role played by $\mathbf{Para}(\mathbf{R}_{\mathcal{C}})$ in optic-based learning. Such similarities were even discussed in the original paper \cite{fong2019backprop} and have been researched at length: it has been proved in \cite{fong2019lenses} that learners can be functorially and faithfully embedded in a special category of symmetric lenses (as opposed to the lenses of \textit{Def. \ref{def: lenses}}, which are asymmetric).
 
-\subsubsection{Polynomial circuits}
+
+Despite the similarities, there is one fundamental difference between the lens-based approach and the learner-based approach: each learner carries its own optimizer, whereas optimization of lenses is usually carried out separately. Moreover, if we compare parametric weighted optics with learners, the latter clearly win in versatility, generality, and (at least from our point of view) conceptual clarity. It is argued in \cite{shiebler2021category} and \cite{cruttwell2022categorical} that the parametric lens framework largely subsumes the learner approach. More information regarding the comparison can also be found in \cite{gavranovic2024fundamental}.
+
+\subsubsection{Parametric optics over exotic differential categories}
 
 We have presented the perspective of \cite{cruttwell2022categorical} within the context of neural networks for the sake of simplicity, but the tools introduced in the paper apply to a much wider context. More precisely, lenses and parametric lenses can model any system trained according to a gradient-based learning algorithm, as long as such gradient is computed in the form of a reverse derivative in a CRDC.  
 
@@ -779,19 +791,15 @@ Hence, the framework described in this section can be applied as is to Boolean c
 
 \section{Categorical deep learning}
 
-Optic-based learning provides a structured general-purpose compositional framework for gradient-based learning. However, such great versatility has a price: optics are unable to guide the architectural design of our model. 
+Optic-based learning provides a structured general-purpose compositional framework for gradient-based learning. However, such great versatility has a price: optics are unable to guide the architectural design of our models. It has been shown times and times again that a better architecture makes as much of a difference in machine learning as an algorithm with better asymptotic cost does in classical computer science. In fact, even if we ignore performance concerns, selecting the right architecture is synonymous with selecting the right inductive bias, which is essential for effective learning.
 
-It has been shown times and times again that a better architecture makes as much of a difference in machine learning as an algorithm with better asymptotic cost does in classical computer science. In fact, even if we ignore performance concerns, selecting the right architecture is synonymous with selecting the right inductive bias, which is essential for effective learning.
-
-Therefore, it is of paramount importance to find a principled mathematical framework able to guide such architectural choices. Designing an architecture is almost synonymous to imposing a set of constraints: for instance, convolutional layers are notoriously translationally invariant (ADDREF).
-Hence, it makes sense to inform the choice of architecture by informing the choice of constraint.
-
-Among the various attempts at developing a principled theory of machine learning constraints, geometric deep learning (see e.g. \cite{bronstein2021geometric}) is particulary relevant.
-Geometric deep learning (GDL) focuses on equivariance constraints defined with respect to group actions, and has thus seen a lot of success in context where the transformations data can be subjected to can be expressed in group-theoretical terms. Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (\cite{gavranovicposition}). Moreover, as highlighted in \cite{gavranovicposition}, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented.  
+Therefore, finding a principled mathematical framework able to guide such architectural choices is of paramount importance. Designing an architecture is almost synonymous to imposing a set of constraints: for instance, convolutional layers are notoriously equivalent to translationally equivariant linear layers (ADDREF).
+Hence, it makes sense to inform the choice of architecture by informing the choice of constraint. Among the various attempts at developing a principled theory of machine learning constraints, geometric deep learning (see e.g. \cite{bronstein2021geometric}) is particularly relevant.
+Geometric deep learning (GDL) focuses on equivariance constraints defined with respect to group actions, and has thus seen a lot of success in contexts where data transformations can be expressed in group-theoretical terms. Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (\cite{gavranovicposition}). Moreover, as highlighted in \cite{gavranovicposition}, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented.  
 
 
 Categorical deep learning (CDL), introduced by \cite{gavranovicposition}, attempts to solve the aforementioned problems by categorical means.
-The main insight behind CDL is that group actions are only one instance of a much larger class of transformation with respect to which equivariance is desirable. Thus, CDL aims to subsume and generalize GDL by weakening the assumptions regarding the examined transformations. At the moment, to the best of our knowledge,  \cite{gavranovicposition} is the only publicly available paper that discusses categorical deep learning. In this section, we will sketch the main ideas contained in the paper, and we will then compare CDL to other categorical approaches.
+The main insight behind CDL is that group actions are only one instance of a much larger class of transformation with respect to which equivariance is desirable. Thus, CDL aims to subsume and generalize GDL by weakening the assumptions regarding the examined transformations. At the moment, to the best of our knowledge,  \cite{gavranovicposition} is the only publicly available paper that discusses this concept. In this section, we will sketch the main ideas contained in the paper, and we will then compare CDL to other categorical approaches.
 
 
 \subsection{Generalizing geometric deep learning}
@@ -801,9 +809,9 @@ The main insight behind CDL is that group actions are only one instance of a muc
 Equivariance is a highly sought after property in machine learning for many reasons. We list some below.
 \begin{enumerate}
   \item \textit{Dimensionality reduction.} Implementing invariance or equivariance with respect to the right transformations can help ignore superfluous information, reducing the number of parameters of a model. For instance, convolutional layers, which are translationally equivariant, require significantly fewer weights than linear layers of the same size (ADDREF).
-  \item \textit{Robustness.} An image classifier which is equivariant to rotations can recognize images even if their features are rotated, and is thus less vulnerable to errors or adversarial attacks (ADDREF).
-  \item \textit{Pooling.} Similar data pooled from different datasets will likely display shifts and imbalanced in many covariates due to differences in context and data collection protocols. Thus, when training a neural network on a pooled dataset, it is advantageous to enforce equivariance with respect to such shifts and imbalances (\cite{chytas2024poolingimagedatasetsmultiple})\footnote{This is one of those cases where invariance alone does not suffice. Using the example studied in \cite{chytas2024poolingimagedatasetsmultiple}, if we are training a neural network to diagnose Alzheimer's disease, invariance to age is not an option as age is strongly correlated with the disease. On the other hand, equivariance with respect to age is desirable and prevents the model from learning biases due to the presence of imbalances in the dataset.}.
-  \item \textit{Fairness.} A neural network used for CV screening can only be considered fair if it displays equivariance with respect to sensitive attributes of the candidates, such as their age, gender, ethnicity, and so on (ADDREF).
+  \item \textit{Robustness.} For example, an image classifier which is equivariant to rotations can recognize images even if their features are rotated, and is thus less vulnerable to errors or adversarial attacks (ADDREF).
+  \item \textit{Pooling.} Similar data pooled from different datasets will likely display shifts and imbalanced in many covariates due to differences in context and data collection protocols. Thus, when training a neural network on a pooled dataset, it is advantageous to enforce equivariance with respect to such shifts and imbalances (\cite{chytas2024poolingimagedatasetsmultiple})\footnote{This is one of those cases where invariance alone does not suffice. Using the example studied in \cite{chytas2024poolingimagedatasetsmultiple}, if we are training a neural network to diagnose Alzheimer's disease, invariance to age is not an option as age is strongly correlated with the disease. On the other hand, equivariance with respect to age is desirable and prevents the model from learning biases due to imbalances in the dataset.}.
+  \item \textit{Fairness.} Neural networks should not hold unfair biases, especially when used to inform decisions with high societal impact. Equivariance can help prevent this (ADDREF). For instance, a neural network used to screen CVs can only be considered fair if it displays equivariance with respect to sensitive attributes of the candidates, such as their age, gender, ethnicity, and so on.
 \end{enumerate}
 
 It is thus extremely important to provide a good definition of equivariance. The definition used in GDL is the following.
@@ -814,21 +822,23 @@ It is thus extremely important to provide a good definition of equivariance. The
 \end{definition}
 
 
+Following the approach of GDL, once a desired constraint is expressed in terms of equivariance with respect to group actions, as in the previous definition, we can derive characterizing equations. Solving such equations usually implies tying weights, which reduces the net number of parameters in the models and provides the other advantages described above.
+
+
 \subsubsection{From geometry to category theory}
 
 
-As stated in \cite{bronstein2021geometric}, GDL is inspired by the \textit{Erlangen Programme}, which unified geometry around the notions of invariance at the end of the nineteenth century. Since category theory can be seen as an extension of the \textit{Programme} (as we already remarked in the introduction to this thesis), it is only natural to attempt to generalize GDL by categorical means.
+As stated in \cite{bronstein2021geometric}, GDL is inspired by the \textit{Erlangen Programme}, which unified geometry around the notion of invariant at the end of the nineteenth century. Since category theory can be seen as an extension of the \textit{Programme} (as we already remarked in the introduction to this thesis), it is only natural to attempt to generalize GDL by categorical means. Categorical deep learning aims to subsume GDL and proses, in the words of the authors of \cite{gavranovicposition}, a theory of (co)algebras over endofunctors and monads (see \textit{Sec. \ref{sec: algebras}}) as a "theory of all architectures". Consider the following proposition to see how monad algebras can model group actions, and how the associated homomorphisms are the sought after equivariant maps.
 
-
-Categorical deep learning is a categorical framework for deep learning which aims to subsume and generalize GDL proposing, in the words of the authors of \cite{gavranovicposition}, the theory of (co)algebras over endofunctors and monads (see \textit{Sec. \ref{sec: algebras}}) as a "theory of all architectures". Consider the following example to see how monad algebras can model group actions and how the associated homomorphisms are the sought after equivariant maps.
-
-\begin{example}[Group action monad]
+\begin{proposition}
   Let $(G,e,\cdot)$ be a group. Consider the endomorphism $G \times -: \mathbf{Set} \to \mathbf{Set}$ which maps $S \mapsto G \times X$ and $f \mapsto G \times f$. $G$ can be given a monad structure using the natural transformations $\eta$, with components $\eta_S: s \mapsto (e,s)$, and $\mu$, with components $(g,h,s) \mapsto (g \times h, s)$. 
-  The monad $(G \times -, \eta, \mu)$ models the structure that lies under $G$-actions. The actions themselves can be recovered by considering algebras $(S,\ast)$ for the monad. Since $\ast$ must satisfy the commutative diagrams in ADDIM, $\ast$ satisfies the equations $e \ast s = s$ and $g \ast (h \ast s) = (g \times h) \ast s$ for all $s \in S$ and for all $g \in G$.
-  Finally, an $S \to T$ map which is equivariant with respect to the actions $(S,\ast)$ and $(T,\star)$ is a $(S,\ast) \to (T,\star)$ monad algebra homomorphism because the diagram in ADDIM is commutative if and only if $f(g \ast s) = g \star f(s)$ for all $s \in S$ and for all $g \in G$.
-\end{example}
+  The monad $(G \times -, \eta, \mu)$ can serve as a signature for $G$-actions. The actions themselves can be recovered by considering algebras $(S,\ast)$ for the monad, and, given two actions $(S,\ast)$ and $(T,\star)$, an associated equivariant map $f: S \to T$ is a $(S,\ast) \to (T,\star)$ monad algebra homomorphism.
+\end{proposition}
+\begin{proof}
+  It suffices to compare the equations that define group actions and group action invariance with the commutative diagrams in ADDIM and ADDIM.
+\end{proof}
 
-The previous example shows the role that monads (or endomorphisms), the associated algebras, and the associated algebra homomorphisms play in CDL: monads (or endomorphisms) provide a shared but inert structure, algebras provide actions built on such structure, and, finally, algebra homomorphisms are maps that preserve such actions. The following example, taken from (\cite{gavranovicposition}), shows how the monad algebra paradigm can be used to impose equivariance by weight sharing.
+The proposition above shows the role that monads (or endomorphisms), the associated algebras, and the associated algebra homomorphisms play in CDL: monads (or endomorphisms) provide a signature of sorts, algebras build structure using the aforementioned signature, and, finally, algebra homomorphisms are maps that preserve the structure. The following example, taken from (\cite{gavranovicposition}), shows how the monad algebra paradigm can be used to impose equivariance by weight sharing.
 
 \begin{example}[Linear equivariant layer]
   \label{ex: translationaction}
@@ -836,16 +846,39 @@ The previous example shows the role that monads (or endomorphisms), the associat
   We want to find a linear map $f: S \to S$ which is equivariant with respect to the action. Imposing the equivariance constraints as equations on the entries of the matricial representation $W_f \in \mathbb{R}^{2 \times 2}$ of the map, we can prove that $f$ is equivariant if and only if $W_f$ is symmetric.
 \end{example}
 
-\textit{Ex. \ref{ex: translationaction}
-} is a simple application of geometric deep learning, but the problem is presented using the formalism of categorical deep learning. In the rest of the section, we will see applications where geometric deep learning alone does not suffice.
+\begin{remark}
+  \textit{Ex. \ref{ex: translationaction}} is a simple application of geometric deep learning, but the problem is presented using the formalism of categorical deep learning. In the rest of the section, we will examine problems for which geometric deep learning alone does is not sufficient.
+\end{remark}
+
 
 \subsection{From data structures to neural networks}
 
 \subsubsection{Lists, trees, automata}
 
+Algebras and coalgebras over functors have been of interest to computer scientists long before their application to artificial intelligence was conceived. The reason is that algebras allow us to model induction, while coalgebras are a model for coinduction. We shall not go into explicit details about the general definitions of these principles, except for saying that induction is used to define processes which are guaranteed to end, while coinduction is used to define processes that are guaranteed to be productive (\cite{gavranovicposition}). Another (largely equivalent) perspective is that induction creates while coinduction consumes. The interested reader can find much more detail about this topic in \cite{jacobs1997tutorial} and \cite{kozen2017practical}: the former discusses the link between (co)algebras and (co)induction, while the latter focuses on coinduction. 
 
 
+Induction and coinduction are very important in computer science because they can be used to define data structures and reason about them and the associated algorithms. We will provide a few interesting examples, all taken from \cite{gavranovicposition}. Before we do that, let us introduce a piece of notation, namely, polynomial functors. Let us restrict our focus to $\mathbf{Set}$: the category of sets and functions. $\mathbf{Set}$ has both products, in the form of Cartesian products represented by $\times$, and coproducts, in the form of disjoint unions represented by $+$. We will assume that the reader is familiar with both. We can use these operations to define functors that are remindful of polynomials. Let $X$ be an unknown representing any set (just like $x$ represents any real number in a real polynomial). Given $n+1$ of specific sets $\{A_j\}_{j = 0,\dots,n}$ (which can be compared to coefficients in a polynomial), we can define a polynomial (of sorts) in the form
+\[F(X) = A_n \times X^n + \cdots + A_1 \times X^1 + A_0,\]
+where $X^j$ stands for the Cartesian product of $j$ copies of $X$. 
+The polynomial $F$ clearly defines a $\mathrm{Ob}(\mathbf{Set}) \to \mathrm{Ob}(\mathbf{Set})$ map, which we can easily extend to a functor $F: \mathbf{Set} \to \mathbf{Set}$, since a map $f:X \to Y$ map can be easily applied across Cartesian products and disjoint unions thanks to their universal properties as categorical products and coproducts. We call such functors polynomial functors (see \cite{jacobs1997tutorial} for more information on this topic). We are now ready for the examples.
 
+
+\begin{example}[Lists]
+  Let $A$ be a set. Consider the functor $1 + A \times -$ that maps
+\end{example}
+
+\begin{example}[Binary trees]
+  
+\end{example}
+
+\begin{example}[Mealy's machines]
+  
+\end{example}
+
+\begin{example}[Moore's machines]
+  
+\end{example}
 
 
 \section{Functor learning}
@@ -1186,6 +1219,10 @@ Endofunctors, (co)pointed endofunctors and (co)monads provide a frame for a cate
 \end{definition}
 
 Coalgebras over monads are defined by reversing all the arrows in the definition of algebras over monads.
+
+\begin{remark}[Nomenclature]
+  Given a (co)algebra $(A, a)$, we often refer to $a$ as the structure of the (co)algebra and $A$ as the carrier of such structure. The underlying endofunctor or monad is often known as the signature of the (co)algebra.
+\end{remark}
 
 \subsection{Algebra homomorphisms}
 
