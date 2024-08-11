@@ -266,7 +266,7 @@ We are forced by space and time constraints to skip over the details of many con
 Note that this chapter is devoted to illustrating our categorical toolkit itself, not its applications. Hence, we will focus on the mathematical and categorical aspects of the presented frameworks, and we will postpone applications to the following chapters.
 
 
-\section{Parametric weighted optics}
+\section{Parametric and differential categories}
 
 Neural networks have two main properties: they depend on parameters and information flows through them bidirectionally (forward propagation and back propagation). Any aspiring categorical model of neural networks must take these two aspects into consideration: the framework of parametric weighted optics (see \cite{gavranovic2024fundamental} for a thorough and mostly novel treatment of the subject and see \cite{cruttwell2022categorical} for experimental results) does just that, as it offers bidirectionality using weighted optics and parametrization using the $\mathbf{Para}$ construction.
 In this section, we will sketch out the construction of this framework loosely following \cite{gavranovic2024fundamental}.
@@ -306,6 +306,14 @@ We will also be interested in actegories that interact with the monoidal structu
 \end{definition}
 
 
+We may also be interested in studying the interaction between actegorical structures and endofunctors. This interaction can happen owing to a natural transformation known as strength. We will not provide coherence diagrams in the definition below for the sake of brevity, but the interested reader can find more detail in \cite{gavranovicposition}. The paper also provides a definition of actegorical strong monad, which is a very similar concept.
+
+
+\begin{definition}[Actegorical strong functor]
+  Let $(\mathcal{C}, \bullet)$ be an $\mathcal{M}$-actegory. A strong actegorical endofunctor on $(\mathcal{C}, \bullet)$ is a pair $(F, \sigma)$ where $F: \mathcal{C} \to \mathcal{C}$ is an endofunctor and $\sigma$ is a natural transformation with components $\sigma_{P,A}: P \bullet F(A) \to F(P \bullet A)$ which satisfies a few coherence conditions that we do not list here.
+\end{definition}
+
+
 
 \subsubsection{The $\mathbf{Para}$ construction}
 
@@ -341,9 +349,17 @@ Both $\mathbf{Para}_{\bullet}(\mathcal{C})$ and $\mathbf{coPara}_{\bullet}(\math
 \end{remark}
 
 
+If we take a parametrized category $\mathbf{Para}_\bullet(\mathcal{C})$ and we restrict our attention to morphisms parametrized with the monoidal identity $I$, we get back the original category $\mathcal{C}$. This is expressed by the following proposition (\cite{gavranovic2024fundamental}).
+
+\begin{proposition}
+  \label{prop: embeddingth}
+  Let $(\mathcal{C}, \bullet)$ be an $\mathcal{M}$-actegory. Then, there exists an identity-on-objects pseudofunctor $\gamma: \mathcal{C} \to \mathbf{Para}_\bullet(\mathcal{C})$ that maps $f \mapsto (I,f)$. If $\mathcal{M}$ is strict, this is a $2$-functor.
+\end{proposition}
 
 
-\subsection{Bidirectionality through optics}
+
+
+\subsection{Optics}
 
 Modelling bidirectional flows of information is not only useful in machine learning, but also in game theory, database theory, and more. As such, categorical tools for bidirectionality have been sought after for a long time: in particular, the greatest deal of efforts has been devoted to developing lens theory. Lenses have then been generalized into optics (see e.g. \cite{riley2018categories}) to subsume other tools such as prisms and traversals into the same framework. Finally, there have also been various attempts at generalizing optics (see e.g. \cite{clarke2024profunctor} for a definition of mixed optics). We will introduce lenses and optics, and focus on the generalization of optics that appears (to us) to be the most versatile: weighted optics (first introduced in \cite{gavranovic2024fundamental}). 
 
@@ -469,6 +485,84 @@ We can then write the following definition:
 \end{definition}
 
 Parametric weighted optics are an even more sophisticated piece of categorical machinery than non-parametric ones, and thus the consistent use of string diagrams is extremely helpful. Refer to ADDIM to see examples of such diagrams.
+
+
+\subsection{(Co)algebras over functors and monads}
+\label{subsec: algebras}
+
+
+We go on a short tangent about (co)algebras which will be useful later on in this chapter and also in the following one. We will only provide a few definitions and an intuition for them, but the interested reader can find more information in \cite{jacobs1997tutorial} and \cite{wisbauer2008algebras}.
+
+
+\subsubsection{Providing endofunctors with structure}
+
+It makes sense to use natural transformations to add structure to an endofunctor $F: \mathcal{C} \to \mathcal{C}$.
+
+\begin{definition}[Pointed endofunctor]
+  \label{def: pointend}
+  A pointed endofunctor over a category $\mathcal{C}$ is a pair $(F, \eta)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor and $\eta: \mathrm{id}_{\mathcal{C}} \Rightarrow F$ is a natural transformation. 
+\end{definition}
+
+\begin{definition}[Copointed endofunctor]\label{def: copointend}
+  A copointed endofunctor over a category $\mathcal{C}$ is a pair $(F, \epsilon)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor and $\epsilon: F \Rightarrow \mathrm{id}_{\mathcal{C}}$ is a natural transformation. 
+\end{definition}
+
+The transformation $\eta$ in the definition of pointed endofunctor looks like the identity in a categorical monoid. Thus, it makes perfect sense to extend the definition to include an associated product\footnote{We do not claim that monads were discovered in this way. Our point of view is purely pedagogical.}.
+
+\begin{definition}[Monad]
+  \label{def: monad}
+  A monad over a category $\mathcal{C}$ is a triplet $(F, \eta, \mu)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor, and $\eta: \mathrm{id}_{\mathcal{C}} \Rightarrow F$  and $\mu: F \fatsemi F \Rightarrow F$ are natural transformations. Moreover, $\eta$ and $\mu$ must satisfy the coherence diagrams in ADDIM.  
+\end{definition}
+
+Reversing all the natural transformation arrows in the definition above and in the diagrams yields the definition of comonad.
+
+
+\subsubsection{Building upon the structure}
+
+Endofunctors, (co)pointed endofunctors and (co)monads provide a frame for a category $\mathcal{C}$. We can use the internal machinery of $\mathcal{C}$ to build upon such frame and harvest the benefits of having such structure.
+
+\begin{definition}[Algebra over an endofunctor]
+  \label{def: endalg}
+  Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(F(A),A)$.
+\end{definition}
+
+\begin{definition}[Coalgebra over an endofunctor]
+  \label{def: endcoalg}
+  Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(A,F(A))$.
+\end{definition}
+
+\begin{definition}[Coalgebra over a copointed endofunctor]
+  \label{def: copendcoalg}
+  An algebra over a copointed endofunctor $(F, \epsilon)$ on $\mathcal{C}$ is a pair $(A,a)$ where $A: \mathcal{C}$, $a:\mathcal{C}(F(A),A)$ and the commutative diagram in ADDIM is satisfied.
+\end{definition}
+
+\begin{definition}[Algebra over a monad]
+  \label{def: monalg}
+  An algebra over a monad $(F, \eta, \mu)$ on $\mathcal{C}$ is a pair $(A,a)$ where $A: \mathcal{C}$, $a:\mathcal{C}(F(A),A)$ and the commutative diagrams in ADDIM are satisfied.
+\end{definition}
+
+Coalgebras over monads are defined by reversing all the arrows in the definition of algebras over monads.
+
+\begin{remark}[Nomenclature]
+  Given a (co)algebra $(A, a)$, we often refer to $a$ as the structure of the (co)algebra and $A$ as the carrier of such structure. The underlying endofunctor or monad is often known as the signature of the (co)algebra.
+\end{remark}
+
+\subsubsection{(Co)algebra homomorphisms}
+
+(Co)algebras over the same endofunctor can be given a categorical structure by providing an appropriate notion of (co)algebra homomorphism.
+
+\begin{definition}[Homomorphisms of algebras over an endofunctor]
+  Let $(A,a)$ and $(B,b)$ be algebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. An algebra homomorphism $(A,a)\to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
+\end{definition}
+
+\begin{definition}[Homomorphisms of coalgebras over an endofunctor]
+  Let $(A,a)$ and $(B,b)$ be coalgebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. A coalgebra homomorphism $(A,a) \to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
+\end{definition}
+
+Homomorphisms of (co)algebras over monads are define in the same way. 
+
+All concepts discussed in this subsection can be extended to sphere of $2$-categories, defining $2$-endofunctors, $2$-monads, and the associated (co)algebras and (co)algebra homomorphisms. The only delicate point is that diagrams such as the one defining the homomorphism condition have to become lax-commutative instead of strictly commutative in the $2$-categorical setting. We do not insist on this subject for lack of space, but the interested reader is referred to \cite{gavranovicposition} for further information.
+
 
 
 \subsection{Differential categories}
@@ -615,13 +709,21 @@ Explicitly, a generalized CRDC is a pair $(\mathcal{C}, \mathbf{R}_{\mathcal{C}}
   Thus, $\mathbf{R}_{\mathcal{C}}$ makes it possible for us to focus on architecture by automatically handling differentiation in a compositional and functional fashion. We shall see how important this point is in the next chapter.
 \end{remark}
 
+\subsubsection{Functional reverse-mode automatic differentiation}
+
+We wish to highlight the similarities between the formal theory of differential categories illustrated here and the work in \cite{elliott2018simple}. The paper describes the Haskell implementation of a purely functional automatic differentiation library, which is able to handle both forward mode and backward mode AD without resorting to the mutable computational graphs used by most current day libraries. 
+
+Among the main insights of \cite{elliott2018simple}, it is stated that derivatives should not be treated as simple vectors, but as linear maps, or multilinear maps in the case of uncurried higher-order derivatives. Moreover, the author shows that differentiation can be made compositional by working on pairs $(f, Df)$, which behaved very similarly to lenses. As noted by \cite{shiebler2021category}, however, \cite{cruttwell2022categorical} and other lens-theoretical perspectives do not subsume the work in \cite{elliott2018simple} because of the latter's programming focus. See \cite{shiebler2021category} for more information regarding this comparison.
 
 
+\subsection{Applying $\mathbf{Para}$ over functors}
+
+We conclude this section discussing the relation between $\mathcal{C} \to \mathcal{D}$ functors and $\mathbf{Para}_{\bullet}(\mathcal{C}) \to \mathbf{Para}_{\bullet}(\mathcal{D})$. We do not have the space necessary to provide a full account of what is known on the subject, but we will discuss two specific cases which are relevant to this thesis. More information can be found in \cite{gavranovic2024fundamental} and \cite{gavranovicposition}.
 
 
 \subsubsection{Applying $\mathbf{Para}$ over $\mathbf{Lens}_A$}
 
-\cite{gavranovic2024fundamental} shows that, under an appropriate definition, \lq morphisms of actegories induce morphisms of parametric bicategories\rq. As a consequence, it can be shown that, if  $(\mathcal{C}, \mathbf{R}_{\mathcal{C}})$ is a generalized CRDC,  $\mathbf{R}_{\mathcal{C}}$ induces a functor $\mathbf{Para}(\mathbf{R}_{\mathcal{C}}): \mathbf{Para}(\mathcal{C}) \to \mathbf{Para}(\mathbf{Lens}_A(\mathcal{C}))$, which takes a parametric map $f: P \times A \to B$ and augments is with its reverse derivative $\mathrm{R}[f]$, forming a parametric lens. Parametric lenses behave very similarly to lenses, but we provide a separate stand-alone definition (which we take from ADDREF\footnote{The contents of ADDREF where anticipated in a number of papers, among which ADDREF.}) for the reader's convenience.
+\cite{gavranovic2024fundamental} shows that, under an appropriate definition, \lq morphisms of actegories induce morphisms of parametric bicategories\rq. As a consequence, it can be shown that, if  $(\mathcal{C}, \mathbf{R}_{\mathcal{C}})$ is a generalized CRDC,  $\mathbf{R}_{\mathcal{C}}$ induces a functor $\mathbf{Para}(\mathbf{R}_{\mathcal{C}}): \mathbf{Para}_{\times}(\mathcal{C}) \to \mathbf{Para}_{\bullet}(\mathbf{Lens}_A(\mathcal{C}))$, which takes a parametric map $f: P \times A \to B$ and augments is with its reverse derivative $\mathrm{R}[f]$, forming a parametric lens. Parametric lenses behave very similarly to lenses, but we provide a separate stand-alone definition (which we take from ADDREF\footnote{The contents of ADDREF where anticipated in a number of papers, among which ADDREF.}) for the reader's convenience.
 
 \begin{definition}[Parametric lenses]
   The category of parametric lenses over a Cartesian category $(\mathcal{C},1,\times)$ is $\mathbf{Para}_{\bullet}(\mathbf{Lens}(\mathcal{C}))$, where $\bullet$ is the action on the lenses generated by the Cartesian structure of $\mathcal{C}$:
@@ -636,11 +738,27 @@ Explicitly, a generalized CRDC is a pair $(\mathcal{C}, \mathbf{R}_{\mathcal{C}}
 
 Refer to \textit{Fig. ADDIM} to see a string diagram that shows the inner workings of a parametric lens.
 
-\subsubsection{The simple essence of automatic differentiation}
+\subsubsection{Algebras over parametric endofunctors}
 
-We conclude this section by highlighting the similarities between the formal theory of differential categories illustrated here and the work in \cite{elliott2018simple}. The paper describes the Haskell implementation of a purely functional automatic differentiation library, which is able to handle both forward mode and backward mode AD without resorting to the mutable computational graphs used by most current day libraries. 
+The following proposition (proved in \cite{gavranovicposition} where it is stated as an example) shows that actegorical strong endofunctors induce $2$-endofunctors over parametric categories.
 
-Among the main insights of \cite{elliott2018simple}, it is stated that derivatives should not be treated as simple vectors, but as linear maps, or multilinear maps in the case of uncurried higher-order derivatives. Moreover, the author shows that differentiation can be made compositional by working on pairs $(f, Df)$, which behaved very similarly to lenses. As noted by \cite{shiebler2021category}, however, \cite{cruttwell2022categorical} and other lens-theoretical perspectives do not subsume the work in \cite{elliott2018simple} because of the latter's programming focus. See \cite{shiebler2021category} for more information regarding this comparison.
+\begin{proposition}
+  \label{prop: paraend}
+  Suppose $(\mathcal{C}, \bullet)$ is an $\mathcal{M}$-actegory and $F: \mathcal{C} \to \mathcal{C}$ is an actegorical endofunctor with strength $\sigma$. Then, $F$ induces a  $2$-functor $\mathbf{Para}(F): \mathbf{Para}_{\bullet}(\mathcal{C}) \to \mathbf{Para}_{\bullet}(\mathcal{C})$.
+\end{proposition}
+\begin{proof}
+  Define $\mathbf{Para}(F)$ so that: 
+  \begin{enumerate}
+    \item $\mathbf{Para}(F)$ acts like $F$ on objects $A: \mathcal{C}$;
+    \item $\mathbf{Para}(F)(f) = P \bullet F(A) \stackrel{\sigma_{P,A}}{\longrightarrow} F(P \bullet A) \stackrel{F(f)}{\longrightarrow} F(B)$ for all $(P,f):\mathbf{Para}_{\bullet}(\mathcal{C})(A,B)$;
+    \item $\mathbf{Para}(F)$ leaves reparametrizations unchanged.
+  \end{enumerate}
+\end{proof}
+
+
+
+
+
 
 
 \section{Compositional models}
@@ -718,6 +836,7 @@ A number of authors (ADDREF) have proposed category theory as a general theoreti
 \end{enumerate}
 
 \section{Optic-based learning}
+\label{sec: opticbasedlearning}
 
 Although the framework of parametric weighted lenses presented in \textit{Chap. 1} is very general and offers exciting possibilities, no one (to the best of our knowledge) has applied it in its fullest potential to machine learning yet. Therefore, following \cite{gavranovic2024fundamental} and \cite{cruttwell2022categorical}, we present the framework from the more specialized point of view of parametric lenses, which are nonetheless sufficient to model gradient-based compositionally.
 
@@ -798,7 +917,7 @@ One of the first compositional approaches to training neural networks in the lit
 A learner represents an instance of supervised learning: the implement function takes a parameter and implements a function and the update function updates the parameters using a data from a dataset. The request function is necessary to implement backpropagation when optimizing a composition of learners. Suppose we select a learning rate $\epsilon$ and an error function $e: \mathbb{R}^2 \to \mathbb{R}$ such that $y \mapsto \frac{\partial e }{\partial x}(x_0, y)$ is invertible for all $y$. It is argued in \cite{fong2019backprop} that we can define a functor $L_{\epsilon, e}: \mathbf{Para}_{\times}(\mathbf{Smooth}) \to \mathbf{Learn}$ which takes a parametric map and yields an associated learner that implements gradient descent. 
 
 
-We don't have the space to talk about learners at length, but we wish to draw a short comparison between parametric weighted optics (and, in particular, parametric lenses) and the approach of \cite{fong2019backprop}, given the relevant position held by the paper in the machine learning literature. The similarities between learner-based learning and lens-based learning are evident: every learner $(P, I, U, r)$ looks like a parametric lens, where $I$ passes information forward, $r$ passes information backwards and $P$ is the parameter space. Moreover, the role of $L_{\epsilon, e}$ is very similar to the role played by $\mathbf{Para}(\mathbf{R}_{\mathcal{C}})$ in optic-based learning. Such similarities were even discussed in the original paper \cite{fong2019backprop} and have been researched at length: it has been proved in \cite{fong2019lenses} that learners can be functorially and faithfully embedded in a special category of symmetric lenses (as opposed to the lenses of \textit{Def. \ref{def: lenses}}, which are asymmetric).
+We do not have the space to talk about learners at length, but we wish to draw a short comparison between parametric weighted optics (and, in particular, parametric lenses) and the approach of \cite{fong2019backprop}, given the relevant position held by the paper in the machine learning literature. The similarities between learner-based learning and lens-based learning are evident: every learner $(P, I, U, r)$ looks like a parametric lens, where $I$ passes information forward, $r$ passes information backwards and $P$ is the parameter space. Moreover, the role of $L_{\epsilon, e}$ is very similar to the role played by $\mathbf{Para}(\mathbf{R}_{\mathcal{C}})$ in optic-based learning. Such similarities were even discussed in the original paper \cite{fong2019backprop} and have been researched at length: it has been proved in \cite{fong2019lenses} that learners can be functorially and faithfully embedded in a special category of symmetric lenses (as opposed to the lenses of \textit{Def. \ref{def: lenses}}, which are asymmetric).
 
 
 Despite the similarities, there is one fundamental difference between the lens-based approach and the learner-based approach: each learner carries its own optimizer, whereas optimization of lenses is usually carried out separately. Moreover, if we compare parametric weighted optics with learners, the latter clearly win in versatility, generality, and (at least from our point of view) conceptual clarity. It is argued in \cite{shiebler2021category} and \cite{cruttwell2022categorical} that the parametric lens framework largely subsumes the learner approach. More information regarding the comparison can also be found in \cite{gavranovic2024fundamental}.
@@ -936,6 +1055,46 @@ We can similarly define folds over binary trees and unfolds over Mealy and Moore
 
 
 \subsubsection{(Co)inductive definitions for neural networks}
+
+The most significant piece of novel contribution delineated in \cite{gavranovicposition} is the use of (co)algebras and (co)algebra homomorphisms over parametric categories to define (co)inductively recurrent and recursive neural networks. (Co)algebras are used to define cells, whereas the associated homomorphisms provide the weight-sharing mechanics used to unroll them. We use two of the same examples discussed in the paper.
+
+\begin{example}[Folding recurrent neural network cell]
+  \label{ex: frnncell}
+  Consider the endofunctor $1 + A \times X: \mathbf{Set} \to \mathbf{Set}$ from \textit{Ex. \ref{ex: lists}}. Consider the Cartesian action of $\mathbf{Set}$ on itself and associate the following actegorical strength to the functor: $\sigma_{P,X}(p,\mathrm{inl}) = \mathrm{inl}$ and  $\sigma_{P,A}(p,\mathrm{inr}(x,x')) = \mathrm{inr}((p,x), (p,x'))$. Now that the functor is actegorical strong, we can use \textit{Prop. \ref{prop: paraend}} to construct an endofunctor $\mathbf{Para}(1 + A \times X): \mathbf{Para}_{\bullet}(\mathbf{Set}) \to \mathbf{Para}_{\bullet}(\mathbf{Set})$. Consider an algebra $(S,(P,\mathsf{Cell}))$ for this functor. Via the isomorphism $P \times (1 + A \times X) \cong P + P \times A \times X$, we deduce that $\mathsf{Cell} = [\mathsf{Cell}_0, \mathsf{Cell}_1]$, where $\mathsf{Cell}_0: P \to S$ and  $\mathsf{Cell}_0: P \to S$. We can interpret $\mathsf{Cell}_0$ and $\mathsf{Cell}_1$ as folding recurrent neural network cells: $\mathsf{Cell}_0$ provides the initial state based on its parameter and $\mathsf{Cell}_1$ takes in the old state, a parameter, and an input, which are then used to return a new state (ADDIM).
+\end{example}
+
+\begin{example}[Unrolling of a folding recurrent neural network]
+  \label{ex: frnnunroll}
+  Use \textit{Prop. \ref{prop: embeddingth}} to embed the list algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ from \textit{Ex. \ref{ex: lists}} as an algebra over the endofunctor $\mathbf{Para}(1 + A \times X)$ from the previous example. Now consider an algebra homomorphism $(P,f): (\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}]) \to (S,(P,\mathsf{Cell}))$. Since we are working with algebras over a $2$-endofunctor, we also need to specify a $2$-cell that makes the diagram in ADDIM lax-commutative. Using the weight-tying reparameterization $\Delta_P$, yields the lax commutative diagram in ADDIM, which uniquely identifies $f$ as the fold function which takes a list of inputs in $A$ and unrolls a folding recurrent neural network that reads such inputs. The weight-tying reparametrization makes sure that each cell of the unrolled network uses the same parameters (see ADDIM for a graphical representation). 
+\end{example}
+
+The same line of reasoning of \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: frnnunroll}} can be applied to produce unfolding recurrent neural networks, complete recurrent neural networks, and even recursive neural networks (\cite{gavranovicposition}). In all these cases, the homomorphism map returns parametric maps $(P,\mathsf{model})$, which we can then feed into the $\mathbf{R}_{\mathcal{C}}$ functor associated with a generalized Cartesian reverse differential category\footnote{The examples illustrated in this section have been developed in $\mathbf{Set}$, but we see no reason why they couldn't be specialized to an appropriate CRDC.} to augment them with their reverse derivative. The framework of parametric lenses described in 
+\textit{Sec. \ref{sec: opticbasedlearning}} can then be used to train these networks. Geometric deep learning and optic-based learning are thus compatible with each other, and even serve to complement each other.
+
+
+\subsection{Related work and future directions}
+
+\subsubsection{Machine learning and classical computer science}
+
+Categorical deep learning highlights a very interesting connection between machine learning and classical\footnote{The word \lq classical \rq here stands for \lq non-machine learning \rq .} computer science. For instance, the derivation in \cite{gavranovicposition} allows us to give a precise mathematical formalization to the intuitive link between lists and folding recurrent neural networks. 
+
+This is particularly relevant because other such links may not be intuitive outisde of a categorical perspective. For example, it is argued in \cite{gavranovicposition} that full recurrent neural networks (i.e. such that each cell takes an input, produces an output and also updates state) are a parametric generalizations of Mealy machines, which is a seldomly consider point of view, according to the paper. This begs the question: if Mealy machines generalize to recurrent neural networks, what do Moore machines generalize to? It is argued in the paper that they generalize to a variant of full recurrent neural networks where different cells (which share the same weight) are used to update the internal state and produce an output.
+
+Hopefully, future work in this direction will prove insightful enough to inform the design of new architectures based on parametrizations of already known classical concepts. At the very least, connecting classical notions to neural network architectures should be a source of conceptual clarity for the currently "chaotic" field of machine learning.
+
+
+
+\subsubsection{}
+
+
+
+
+
+
+
+
+
+
 
 
 \section{Functor learning}
@@ -1296,106 +1455,6 @@ The ADNI classifier model also shows very promising results which are on par wit
 
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% APPENDIX A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\appendix
-\chapter{Miscellaneous Categorical Definitions}
-\rhead[\fancyplain{}{\bfseries \thechapter \:Miscellaneous Categorical Definitions}]{\fancyplain{}{\bfseries\thepage}}   
-
-
-We include here a brief summary of a few interesting categorical definitions, so that we can refer back to them in the main body of this thesis. No impactful ideas are discussed in this appendix.
-
-
-
-\section{Algebras and coalgebras}
-\label{sec: algebras}
-
-In this section we discuss algebras and (co)algebras over endofunctors, copointed endofunctors, and monads. We will only provide the definitions necessary to understand this thesis, but the interested reader can find more information in \cite{jacobs1997tutorial} and \cite{wisbauer2008algebras}.
-
-
-\subsection{Providing endofunctors with structure}
-
-It makes sense to use natural transformations to add structure to an endofunctor $F: \mathcal{C} \to \mathcal{C}$.
-
-\begin{definition}[Pointed endofunctor]
-  \label{def: pointend}
-  A pointed endofunctor over a category $\mathcal{C}$ is a pair $(F, \eta)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor and $\eta: \mathrm{id}_{\mathcal{C}} \Rightarrow F$ is a natural transformation. 
-\end{definition}
-
-\begin{definition}[Copointed endofunctor]\label{def: copointend}
-  A copointed endofunctor over a category $\mathcal{C}$ is a pair $(F, \epsilon)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor and $\epsilon: F \Rightarrow \mathrm{id}_{\mathcal{C}}$ is a natural transformation. 
-\end{definition}
-
-The transformation $\eta$ in the definition of pointed endofunctor looks like the identity in a categorical monoid. Thus, it makes perfect sense to extend the definition to include an associated product.
-
-\begin{definition}[Monad]
-  \label{def: monad}
-  A monad over a category $\mathcal{C}$ is a triplet $(F, \eta, \mu)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor, and $\eta: \mathrm{id}_{\mathcal{C}} \Rightarrow F$  and $\mu: F \fatsemi F \Rightarrow F$ are natural transformations. Moreover, $\eta$ and $\mu$ must satisfy the coherence diagrams in ADDIM.  
-\end{definition}
-
-Reversing all the natural transformation arrows in the definition above and in the diagrams yields the definition of comonad.
-
-
-\subsection{Building upon the structure}
-
-Endofunctors, (co)pointed endofunctors and (co)monads provide a frame for a category $\mathcal{C}$. We can use the internal machinery of $\mathcal{C}$ to build upon such frame and harvest the benefits of having such structure.
-
-\begin{definition}[Algebra over an endofunctor]
-  \label{def: endalg}
-  Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(F(A),A)$.
-\end{definition}
-
-\begin{definition}[Coalgebra over an endofunctor]
-  \label{def: endcoalg}
-  Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(A,F(A))$.
-\end{definition}
-
-\begin{definition}[Coalgebra over a copointed endofunctor]
-  \label{def: copendcoalg}
-  An algebra over a copointed endofunctor $(F, \epsilon)$ on $\mathcal{C}$ is a pair $(A,a)$ where $A: \mathcal{C}$, $a:\mathcal{C}(F(A),A)$ and the commutative diagram in ADDIM is satisfied.
-\end{definition}
-
-\begin{definition}[Algebra over a monad]
-  \label{def: monalg}
-  An algebra over a monad $(F, \eta, \mu)$ on $\mathcal{C}$ is a pair $(A,a)$ where $A: \mathcal{C}$, $a:\mathcal{C}(F(A),A)$ and the commutative diagrams in ADDIM are satisfied.
-\end{definition}
-
-Coalgebras over monads are defined by reversing all the arrows in the definition of algebras over monads.
-
-\begin{remark}[Nomenclature]
-  Given a (co)algebra $(A, a)$, we often refer to $a$ as the structure of the (co)algebra and $A$ as the carrier of such structure. The underlying endofunctor or monad is often known as the signature of the (co)algebra.
-\end{remark}
-
-\subsection{Algebra homomorphisms}
-
-After defining algebras, we go on to define algebra homomorphisms, that is, arrows that preserve the algebraic structure.
-
-\begin{definition}[Homomorphisms of algebras over an endofunctor]
-  Let $(A,a)$ and $(B,b)$ be algebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. An algebra homomorphism $(A,a)\to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
-\end{definition}
-
-\begin{definition}[Homomorphisms of coalgebras over an endofunctor]
-  Let $(A,a)$ and $(B,b)$ be coalgebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. A coalgebra homomorphism $(A,a) \to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
-\end{definition}
-
-Homomorphisms of (co)algebras over monads are define in the same way. 
-
-
-
-
-
-
-
-
-\section{Miscellaneous categories}
-
-Here we list the definitions of various specific categories that are used in this thesis.
-
-
-
 
 
 
