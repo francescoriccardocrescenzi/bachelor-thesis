@@ -487,81 +487,6 @@ We can then write the following definition:
 Parametric weighted optics are an even more sophisticated piece of categorical machinery than non-parametric ones, and thus the consistent use of string diagrams is extremely helpful. Refer to ADDIM to see examples of such diagrams.
 
 
-\subsection{(Co)algebras over functors and monads}
-\label{subsec: algebras}
-
-
-We go on a short tangent about (co)algebras which will be useful later on in this chapter and also in the following one. We will only provide a few definitions and an intuition for them, but the interested reader can find more information in \cite{jacobs1997tutorial} and \cite{wisbauer2008algebras}.
-
-
-\subsubsection{Providing endofunctors with structure}
-
-It makes sense to use natural transformations to add structure to an endofunctor $F: \mathcal{C} \to \mathcal{C}$.
-
-\begin{definition}[Pointed endofunctor]
-  \label{def: pointend}
-  A pointed endofunctor over a category $\mathcal{C}$ is a pair $(F, \eta)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor and $\eta: \mathrm{id}_{\mathcal{C}} \Rightarrow F$ is a natural transformation. 
-\end{definition}
-
-\begin{definition}[Copointed endofunctor]\label{def: copointend}
-  A copointed endofunctor over a category $\mathcal{C}$ is a pair $(F, \epsilon)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor and $\epsilon: F \Rightarrow \mathrm{id}_{\mathcal{C}}$ is a natural transformation. 
-\end{definition}
-
-The transformation $\eta$ in the definition of pointed endofunctor looks like the identity in a categorical monoid. Thus, it makes perfect sense to extend the definition to include an associated product\footnote{We do not claim that monads were discovered in this way. Our point of view is purely pedagogical.}.
-
-\begin{definition}[Monad]
-  \label{def: monad}
-  A monad over a category $\mathcal{C}$ is a triplet $(F, \eta, \mu)$, where $F: \mathcal{C} \to \mathcal{C}$ is a functor, and $\eta: \mathrm{id}_{\mathcal{C}} \Rightarrow F$  and $\mu: F \fatsemi F \Rightarrow F$ are natural transformations. Moreover, $\eta$ and $\mu$ must satisfy the coherence diagrams in ADDIM.  
-\end{definition}
-
-Reversing all the natural transformation arrows in the definition above and in the diagrams yields the definition of comonad.
-
-
-\subsubsection{Building upon the structure}
-
-Endofunctors, (co)pointed endofunctors and (co)monads provide a frame for a category $\mathcal{C}$. We can use the internal machinery of $\mathcal{C}$ to build upon such frame and harvest the benefits of having such structure.
-
-\begin{definition}[Algebra over an endofunctor]
-  \label{def: endalg}
-  Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(F(A),A)$.
-\end{definition}
-
-\begin{definition}[Coalgebra over an endofunctor]
-  \label{def: endcoalg}
-  Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(A,F(A))$.
-\end{definition}
-
-\begin{definition}[Coalgebra over a copointed endofunctor]
-  \label{def: copendcoalg}
-  An algebra over a copointed endofunctor $(F, \epsilon)$ on $\mathcal{C}$ is a pair $(A,a)$ where $A: \mathcal{C}$, $a:\mathcal{C}(F(A),A)$ and the commutative diagram in ADDIM is satisfied.
-\end{definition}
-
-\begin{definition}[Algebra over a monad]
-  \label{def: monalg}
-  An algebra over a monad $(F, \eta, \mu)$ on $\mathcal{C}$ is a pair $(A,a)$ where $A: \mathcal{C}$, $a:\mathcal{C}(F(A),A)$ and the commutative diagrams in ADDIM are satisfied.
-\end{definition}
-
-Coalgebras over monads are defined by reversing all the arrows in the definition of algebras over monads.
-
-\begin{remark}[Nomenclature]
-  Given a (co)algebra $(A, a)$, we often refer to $a$ as the structure of the (co)algebra and $A$ as the carrier of such structure. The underlying endofunctor or monad is often known as the signature of the (co)algebra.
-\end{remark}
-
-\subsubsection{(Co)algebra homomorphisms}
-
-(Co)algebras over the same endofunctor can be given a categorical structure by providing an appropriate notion of (co)algebra homomorphism.
-
-\begin{definition}[Homomorphisms of algebras over an endofunctor]
-  Let $(A,a)$ and $(B,b)$ be algebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. An algebra homomorphism $(A,a)\to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
-\end{definition}
-
-\begin{definition}[Homomorphisms of coalgebras over an endofunctor]
-  Let $(A,a)$ and $(B,b)$ be coalgebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. A coalgebra homomorphism $(A,a) \to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
-\end{definition}
-
-Homomorphisms of (co)algebras over monads are define in the same way. 
-
-All concepts discussed in this subsection can be extended to sphere of $2$-categories, defining $2$-endofunctors, $2$-monads, and the associated (co)algebras and (co)algebra homomorphisms. The only delicate point is that diagrams such as the one defining the homomorphism condition have to become lax-commutative instead of strictly commutative in the $2$-categorical setting. We do not insist on this subject for lack of space, but the interested reader is referred to \cite{gavranovicposition} for further information.
 
 
 
@@ -812,11 +737,14 @@ The following proposition (proved in \cite{gavranovicposition} where it is state
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%% GRADIENT-BASED LEARNING %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\chapter{Gradient-Based Learning}
+
+\chapter{Optic-Based Learning}
+
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
+
+
 
 
 
@@ -938,46 +866,174 @@ For instance, is argued in \cite{wilson2022categories} that polynomial circuits 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{From Algorithms to Neural Networks}
+
+
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
+
+
+
+
+Classical computer science focuses on discovering algorithms, i.e. ordered sequences of steps which operate in precisely set idealized conditions and have strong guarantees of correctness due to their exact mathematical formulations. Neural networks, on the other hand, are able to work in messy real-world conditions, but offer very so few guarantees of correctness that their performance is often described as unreasonably good. Moreover, whereas algorithsms generalize very well (most software engineers will only need a few dozen algorithms in their entire career), neural networks are often completely helpless when pitted against out of distribution inputs. Hence, algorithms and neural networks can be seen as complementary opposites (ADDREF).
+
+
+Recent attempts group under then label of neural algorithmic reasoning (see ADDREF for a very short introduction to the subject) have tried to get the best of both worlds by training neural networks to apply algorithms (see e.g ADDREF). The CLRS benchmark (ADDREF) uses graphs to represent the computations associated with a few classical algorithms from the famous CLRS introductory textbook so that graph neural networks (GNNs) can be trained to learn these algorithms. The benchmark has spurred a large amount of research in this direction, with very promising results (see e.g. ADDREF).
+
+
+More generally, linking machine learning to classical informatics may hold the key for interesting advances. For example, recovering neural networks as parametric versions of known algorithms may help embew the ever chaotic field of machine learning with new-found conceptual clarity. Moreover, such a link could even help develop new neural network architectures by taking inspiration from well-researched classical notions. In this chapter we will illustrate two lines of inquiry which use category theory to build such a bridge: \textit{categorical deep learning} and \textit{categorical graph neural networks}\footnote{While the label \textit{categorical deep learning} has been chosen by main proponents of the approach, the label \textit{categorical graph neural networks} is our own and, at least to our knowledge, no other label has been proposed at this point.}. Before proceeding with such topics, we will go on a short tangent categorical tangent regarding (co)algebras and the integral transform.
+
+
+
+
+\section{Categorical toolkit}
+
+\subsection{(Co)algebras}
+\label{subsec: algebras}
+
+Algebras and coalgebras are a categorical formalization of the principles of induction and coinduction. Induction and coinduction are fundamental to computer science because the allow us to give precise definitions for a very large number of data structures, and because they allow us to formalize the algorithms that operate on these structure within the schemas of recursion and corecursion. We will touch on (co)algebras very briefly and we encurage the interested reader to refer to \cite{jacobs1997tutorial} and \cite{wisbauer2008algebras} for further detail.
+
+\begin{definition}[(Co)algebra over an endofunctor]
+  \label{def: endalg}
+  Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(F(A),A)$. A coalgebra is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(A,F(A))$. In both cases $A$ is known as carrier set and $a$ as structure map.
+\end{definition}
+
+(Co)algebras can also be defined on monads: the only difference (co)algebras over an endofunctor and (co)algebras over a monad is that the latter also need to be compatbile with the monad structure, i.e. satisfy commutative diagrams that represent coherence conditions (see \cite{gavranovicposition}).
+
+
+(Co)algebras over the same functor can be given a categorical structure by using the following notion of homomorphism.
+
+\begin{definition}[Homomorphisms of (co)algebras over an endofunctor]
+  Let $(A,a)$ and $(B,b)$ be algebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. An algebra homomorphism $(A,a)\to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
+
+
+  Now suppose $(A,a)$ and $(B,b)$ are coalgebras. A homomorphism between them is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
+\end{definition}
+
+The main intutition behind algebras and coalgebras is the following: the underlying functor defines a signature for the (co)algebraic structure; the structure of an algebra is a constructor that takes data from $F(A)$ and uses it to build data from $A$, whereas the structure of a coalgebra observes data from $A$ and produces an observation in the form of data from $F(A)$; (co)algebra homomorphism are arrows that preserve the underlying structure. Consider the following clarifying examples from \cite{gavranovicposition}\footnote{In the examples below we use polynomial and exponential expressions to define endofunctors over $\mathbf{Set}$. In this context, $X$ is the argument of the functor, $\times$ is the Cartesian product, $+$ is the disjoint union, $\langle f,g \rangle$ is the pairing induced by $\times$, $[f,g]$ is the pairing induced by $+$, and $B^A$ is the set of functions $A \to B$.}.
+
+
+\begin{example}[Lists]
+  \label{ex: lists}
+  Let $A$ be a set. Consider the polynomial endofunctor $1 + A \times X: \mathbf{Set} \to \mathbf{Set}$. If $\mathsf{List}(A)$ is the set of $A$-labeled lists, $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ is an algebra over $1 + A \times X$. Here, $\mathsf{Nil}: 1 \to {List}(A)$ is the map which takes the unique object of $1$ and returns the empty list, while $\mathsf{Cons}: A \times \mathsf{List}(A) \to \mathsf{List}(A)$ is the map which takes an element $a \in A$ and a list $l$ of elements of $A$ and returns the concatenated list $l \cup \{a\}$. This described lists in $\mathsf{List}(A)$ inductively as object formed by concatenating elements of $A$ to other such lists. The base case is the empty list.
+\end{example}
+
+\begin{example}[Mealy machines]
+  \label{ex: mealy}
+  Now consider two sets $I$ and $O$ of possible inputs and outputs, respectively. Consider the endofunctor $(O \times X)^I: \mathbf{Set} \to \mathbf{Set}$.  Define $\mathsf{Mealy}_{I,O}$ as the set of Mealy machines with inputs and outputs in $I$ and $O$, respectively. Now we can consider the coalgebra $(\mathsf{Mealy}_{I,O}, \mathsf{Next})$, where $\mathsf{Next}$ is the map that takes a Mealy machine $m \in \mathsf{Mealy}_{I,O}$ and yields a function which in turn, given $i \in I$, returns the output of $m$ at $i$ and a new machine. This is a coinductive description of Mealy machines.
+\end{example}
+
+\begin{remark}
+  Notice how the description we have given of Mealy machines does not mention the internal states of these objects. This is a recurring aspect of coinductive descriptions: as argued in \cite{jacobs1997tutorial}, coinduction is best interpreted as a process where an observer track the behavior of an object from the outside, with no access to its internal state. This is very useful in machine learning because the internal state of a learning model is often unknown or uninterpretable.
+\end{remark}
+
+The link between (co)algebras and (co)induction does not stop at the definition level. The example below shows that an algebra homomorphism can model a recursive fold procedure. A similar corecursive unfold procedure can be defined by using a coalgebra homomorphism (see \cite{gavranovicposition} for further detail).
+
+\begin{example}[List folds]
+  \label{ex: listfold}
+  Consider the algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ of lists from \textit{Ex. \ref{ex: lists}}, and consider a second algebra $(Z, [r_0,r_1])$ over the same functor. A homomorphism $f: \mathsf{List}(A) \to Z$ from the former into the latter must satisfy 
+  \begin{align*}
+    f(\mathsf{Nil}) &= r_0,\\
+    f(\mathsf{Cons}(a,l)) &= r_1(a,f(l)). 
+  \end{align*}
+  Hence, $f$ is necessarily a fold over a list with recursive components $r_0$ and $r_1$. Incidentally, this proves that $f$ is unique, making $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ an initial object in the category of algebras over the polynomial endofunctor $1 + A \times X$.
+\end{example}
+
+The notion of (co)algebra over a functor can be generalized to the sphere $2$-categories, defining the notion of (co)algebra over a $2$-endofunctor. The basic concepts stay the same but the commutativity of the diagrams definining (co)algebra homomorphisms is relaxed into lax-commutativity. A square diagram of $1$-cells is lax-commutative if there exists a $2$-cell that carries the composition of the top and the right edge onto the composition of the left and bottom edge, as in ADDIM. Once again we refer to \cite{gavranovicposition} for further information.
+
+
+\subsection{Integral transform}
+
+TODO
+
+
+
 \section{Categorical deep learning}
 
-Optic-based learning provides a structured general-purpose compositional framework for gradient-based learning. However, such great versatility has a price: optics are unable to guide the architectural design of our models. It has been shown times and times again that a better architecture makes as much of a difference in machine learning as an algorithm with better asymptotic cost does in classical computer science. In fact, even if we ignore performance concerns, selecting the right architecture is synonymous with selecting the right inductive bias, which is essential for effective learning.
-
-Therefore, finding a principled mathematical framework able to guide such architectural choices is of paramount importance. Designing an architecture is almost synonymous to imposing a set of constraints: for instance, convolutional layers are notoriously equivalent to translationally equivariant linear layers (ADDREF).
-Hence, it makes sense to inform the choice of architecture by informing the choice of constraint. Among the various attempts at developing a principled theory of machine learning constraints, geometric deep learning (see e.g. \cite{bronstein2021geometric}) is particularly relevant.
-Geometric deep learning (GDL) focuses on equivariance constraints defined with respect to group actions, and has thus seen a lot of success in contexts where data transformations can be expressed in group-theoretical terms. Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (\cite{gavranovicposition}). Moreover, as highlighted in \cite{gavranovicposition}, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented.  
+The optic-based framework we presented in the last chapter provides a structured general-purpose compositional framework for gradient-based learning. However, such great versatility has a price: optics are unable to guide the architectural design of our models. It has been shown times and times again that a better architecture makes as much of a difference in machine learning as an algorithm with better asymptotic cost does in classical computer science. 
+Therefore, finding a principled mathematical framework able to guide such architectural choices is of paramount importance. 
 
 
-Categorical deep learning (CDL), introduced by \cite{gavranovicposition}, attempts to solve the aforementioned problems by categorical means.
-The main insight behind CDL is that group actions are only one instance of a much larger class of transformation with respect to which equivariance is desirable. Thus, CDL aims to subsume and generalize GDL by weakening the assumptions regarding the examined transformations. At the moment, to the best of our knowledge,  \cite{gavranovicposition} is the only publicly available paper that discusses this concept. In this section, we will sketch the main ideas contained in the paper, and we will then compare CDL to other categorical approaches.
+Designing an architecture is almost synonymous to imposing a set of constraints: for instance, convolutional layers are notoriously equivalent to translationally equivariant linear layers (ADDREF).
+Hence, it makes sense to inform the choice of architecture by informing the choice of constraint. Among the various attempts at developing a principled theory of machine learning constraints, geometric deep learning (see e.g. \cite{bronstein2021geometric}), or GDL is particularly relevant. Categorical deep learning, or CDL, which is the protagonist of this section, evolved as categorical generalization of GDL.
 
 
-\subsection{Generalizing geometric deep learning}
+\subsection{From GDL to CDL}
 
-\subsubsection{Equivariance}
-
-Equivariance is a highly sought after property in machine learning for many reasons. We list some below.
-\begin{enumerate}
-  \item \textit{Dimensionality reduction.} Implementing invariance or equivariance with respect to the right transformations can help ignore superfluous information, reducing the number of parameters of a model. For instance, convolutional layers, which are translationally equivariant, require significantly fewer weights than linear layers of the same size (ADDREF).
-  \item \textit{Robustness.} For example, an image classifier which is equivariant to rotations can recognize images even if their features are rotated, and is thus less vulnerable to errors or adversarial attacks (ADDREF).
-  \item \textit{Pooling.} Similar data pooled from different datasets will likely display shifts and imbalanced in many covariates due to differences in context and data collection protocols. Thus, when training a neural network on a pooled dataset, it is advantageous to enforce equivariance with respect to such shifts and imbalances (\cite{chytas2024poolingimagedatasetsmultiple})\footnote{This is one of those cases where invariance alone does not suffice. Using the example studied in \cite{chytas2024poolingimagedatasetsmultiple}, if we are training a neural network to diagnose Alzheimer's disease, invariance to age is not an option as age is strongly correlated with the disease. On the other hand, equivariance with respect to age is desirable and prevents the model from learning biases due to imbalances in the dataset.}.
-  \item \textit{Fairness.} Neural networks should not hold unfair biases, especially when used to inform decisions with high societal impact. Equivariance can help prevent this (ADDREF). For instance, a neural network used to screen CVs can only be considered fair if it displays equivariance with respect to sensitive attributes of the candidates, such as their age, gender, ethnicity, and so on.
-\end{enumerate}
-
-It is thus extremely important to provide a good definition of equivariance. The definition used in GDL is the following.
-
+Geometric deep learning focuses on equivariance constraints defined with respect to group actions, according to the following definition.
 
 \begin{definition}[Group action equivariance and invariance]
   Let $G$ be a group and let $(S, \cdot)$ and $(T, \ast)$ be $G$-actions. A function $f: S \to T$ is equivariant with respect to the aforementioned actions if $f(g \cdot s) = g \ast f(s)$ for all $s \in \mathcal{S}$ and for all $g \in \mathcal{G}$. We say that $f$ is invariant if $\ast$ is the trivial action on $T$, and thus $f(g \cdot s) = f(s)$ for all $s$ and $g$.
 \end{definition}
 
-
-Following the approach of GDL, once a desired constraint is expressed in terms of equivariance with respect to group actions, as in the previous definition, we can derive characterizing equations. Solving such equations usually implies tying weights, which reduces the net number of parameters in the models and provides the other advantages described above.
-
-
-\subsubsection{From geometry to category theory}
+The GDL approach prescribes that a desired constraint should be expressed in terms of equivariance with respect to group action so that associated equations can be derived. Solving such equations usually implies tying weights, which reduces the net number of parameters in the models and provides the various advantages (ADDREF, ADDREF, ADDREF) afforded by equivariance.
 
 
-As stated in \cite{bronstein2021geometric}, GDL is inspired by the \textit{Erlangen Programme}, which unified geometry around the notion of invariant at the end of the nineteenth century. Since category theory can be seen as an extension of the \textit{Programme} (as we already remarked in the introduction to this thesis), it is only natural to attempt to generalize GDL by categorical means. Categorical deep learning aims to subsume GDL and proses, in the words of the authors of \cite{gavranovicposition}, a theory of (co)algebras over endofunctors and monads (see \textit{Sec. \ref{sec: algebras}}) as a "theory of all architectures". Consider the following proposition to see how monad algebras can model group actions, and how the associated homomorphisms are the sought after equivariant maps.
+GLD and has seen a lot of success in contexts where data transformations can be expressed in group-theoretical terms. Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (\cite{gavranovicposition}). Moreover, as highlighted in \cite{gavranovicposition}, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented since solving the equations associated with a constraint might be extremely challenging.  
+Categorical deep learning, introduced by \cite{gavranovicposition}, attempts to solve the aforementioned problems using category theory\footnote{As stated in \cite{bronstein2021geometric}, GDL is inspired by the \textit{Erlangen Programme}, which unified geometry around the notion of invariant at the end of the nineteenth century. Since category theory can be seen as an extension of the \textit{Programme} (as we already remarked in the introduction to this thesis), it is only natural to attempt to generalize GDL by categorical means.} to generalize the notion of equivariance and to tie specific constraints to specific architectures.
+
+\begin{remark}
+  At the moment, to the best of our knowledge,  \cite{gavranovicposition} is the only publicly available paper that discusses the ideas of CDL. 
+\end{remark}
+
+The main insight of categorical deep learning is that group actions can be represented as algebras over the group action monads, and that maps that are equivariant with respect to these actions are homomorphisms between these algebras. Hence, GDL can be generalized by taking into consideration (co)algebras over other monads and also generic endofcuntors. Hence, CDL generalizes GDL into a theory of (co)algebras over endofunctors and monads, yielding, in the words of the authors of \cite{gavranovicposition}, as a "theory of all architectures". The last statement might be a bit too optimistic, since the only architecture examined at the moment are recurrent and recursive neural networks, but the results shown in \cite{gavranovicposition} are very promising and, hopefully, future work will widen the scope of CDL to include derivations for other architectures.
+
+The following proposition and the associated example show how exactly CDL subsumes GDL.
 
 \begin{proposition}
   Let $(G,e,\cdot)$ be a group. Consider the endomorphism $G \times -: \mathbf{Set} \to \mathbf{Set}$ which maps $S \mapsto G \times X$ and $f \mapsto G \times f$. $G$ can be given a monad structure using the natural transformations $\eta$, with components $\eta_S: s \mapsto (e,s)$, and $\mu$, with components $(g,h,s) \mapsto (g \times h, s)$. 
@@ -987,76 +1043,16 @@ As stated in \cite{bronstein2021geometric}, GDL is inspired by the \textit{Erlan
   It suffices to compare the equations that define group actions and group action invariance with the commutative diagrams in ADDIM and ADDIM.
 \end{proof}
 
-The proposition above shows the role that monads (or endomorphisms), the associated algebras, and the associated algebra homomorphisms play in CDL: monads (or endomorphisms) provide a signature of sorts, algebras build structure using the aforementioned signature, and, finally, algebra homomorphisms are maps that preserve the structure. The following example, taken from (\cite{gavranovicposition}), shows how the monad algebra paradigm can be used to impose equivariance by weight sharing.
-
 \begin{example}[Linear equivariant layer]
   \label{ex: translationaction}
   Consider a carrier set $S = \mathbb{R}^{\mathbb{Z}_2}$, which can be seen as a pair of pixels. Consider the translation action $(i \ast s)(j) = s(i-j)$ of $G = \mathbb{Z}_2$ on $S$, which can be seen as swapping the pixels.
   We want to find a linear map $f: S \to S$ which is equivariant with respect to the action. Imposing the equivariance constraints as equations on the entries of the matricial representation $W_f \in \mathbb{R}^{2 \times 2}$ of the map, we can prove that $f$ is equivariant if and only if $W_f$ is symmetric.
 \end{example}
 
-\begin{remark}
-  \textit{Ex. \ref{ex: translationaction}} is a simple application of geometric deep learning, but the problem is presented using the formalism of categorical deep learning. In the rest of the section, we will examine problems for which geometric deep learning alone does is not sufficient.
-\end{remark}
 
+\subsection{(Co)inductive definitions for RNNs}
 
-\subsection{From data structures to neural networks}
-
-\subsubsection{Lists, trees, automata}
-
-Algebras and coalgebras over functors have been of interest to computer scientists long before their application to artificial intelligence was conceived. The reason is that algebras allow us to model induction, while coalgebras are a model for coinduction. We shall not go into explicit details about the general definitions of these principles, except for saying that induction is used to define processes which are guaranteed to end, while coinduction is used to define processes that are guaranteed to be productive (\cite{gavranovicposition}). Another (largely equivalent) perspective is that induction creates while coinduction consumes. The interested reader can find much more detail about this topic in \cite{jacobs1997tutorial} and \cite{kozen2017practical}: the former discusses the link between (co)algebras and (co)induction, while the latter focuses on coinduction. 
-
-
-Induction and coinduction are very important in computer science because they can be used to define data structures and reason about them and the associated algorithms. We will provide a few interesting examples, all taken from \cite{gavranovicposition}. Before we do that, let us introduce a piece of notation, namely, polynomial endofunctors. Let us restrict our focus to $\mathbf{Set}$: the category of sets and functions. $\mathbf{Set}$ has both products, in the form of Cartesian products represented by $\times$ ($\langle,\rangle$ when acting on functions), and coproducts, in the form of disjoint unions represented by $+$ ($[,]$ when acting on functions). We assume the reader is familiar with both. We can use these operations to define functors that are remindful of polynomials. Let $X$ be an unknown representing any set (just like $x$ represents any real number in a real polynomial). Given $n+1$ of specific sets $\{A_j\}_{j = 0,\dots,n}$ (which can be compared to coefficients in a polynomial), we can define a polynomial (of sorts) in the form
-\[F(X) = A_n \times X^n + \cdots + A_1 \times X^1 + A_0,\]
-where $X^j$ stands for the Cartesian product of $j$ copies of $X$. 
-The polynomial $F$ clearly defines a $\mathrm{Ob}(\mathbf{Set}) \to \mathrm{Ob}(\mathbf{Set})$ map, which we can easily extend to a functor $F: \mathbf{Set} \to \mathbf{Set}$, since a map $f:X \to Y$ map can be easily applied across Cartesian products and disjoint unions thanks to their universal properties as categorical products and coproducts. We call these functors polynomial endofunctors (see \cite{jacobs1997tutorial} for more information on this topic). We are now ready for the examples.
-
-
-\begin{example}[Lists]
-  \label{ex: lists}
-  Let $A$ be a set. Consider the polynomial endofunctor $1 + A \times X: \mathbf{Set} \to \mathbf{Set}$. If $\mathsf{List}(A)$ is the set of $A$-labeled lists, $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ is an algebra over $1 + A \times X$. Here, $\mathsf{Nil}: 1 \to {List}(A)$ is the map which takes the unique object of $1$ and returns the empty list, while $\mathsf{Cons}: A \times \mathsf{List}(A) \to \mathsf{List}(A)$ is the map which takes an element $a \in A$ and a list $l$ of elements of $A$ and returns the concatenated list $l \cup \{a\}$. This described lists in $\mathsf{List}(A)$ inductively as object formed by concatenating elements of $A$ to other such lists. The base case is the empty list.
-\end{example}
-
-\begin{example}[Binary trees]
-  \label{ex: trees}
-  Let $A$ be a set. Consider the polynomial endofunctor $A + X^2: \mathbf{Set} \to \mathbf{Set}$. Let $\mathsf{Tree}(A)$ be the set of binary tree with $A$-labeled leaves. Once again we can form an algebra $(\mathsf{Tree}(A), [\mathsf{Leaf},\mathsf{Node}])$, where $\mathsf{Leaf}$ takes $a \in A$ and returns a leaf labeled with this element, while $\mathsf{Node}$ takes two trees and joins them as by creating a new node and adding the two arguments as its childer. Once again this is an inductive description of $A$-labeled binary trees.
-\end{example}
-
-Now consider another two examples where the endofunctors are not merely polynomial but are defined by expressions containing the symbol $B^A$, which represents the set of $A \to B$ functions\footnote{We facetiously suggest calling endofunctors using this notation exponential.}.
-
-\begin{example}[Mealy machines]
-  \label{ex: mealy}
-  Now consider two sets $I$ and $O$ of possible inputs and outputs, respectively. Consider the endofunctor $(O \times X)^I: \mathbf{Set} \to \mathbf{Set}$.  Define $\mathsf{Mealy}_{I,O}$ as the set of Mealy machines with inputs and outputs in $I$ and $O$, respectively. Now we can consider the coalgebra $(\mathsf{Mealy}_{I,O}, \mathsf{Next})$, where $\mathsf{Next}$ is the map that takes a Mealy machine $m \in \mathsf{Mealy}_{I,O}$ and yields a function which in turn, given $i \in I$, returns the output of $m$ at $i$ and a new machine. This is a coinductive description of Mealy machines.
-\end{example}
-
-\begin{example}[Moore machines]
-  \label{ex: moore}
-  Consider once again the input set $I$ and the output set $O$. Consider the endofunctor $O \times X^I: \mathbf{Set} \to \mathbf{Set}$. If $\mathsf{Moore}_{I,O}$ is the set of Moore machines with input in $I$ and output in $O$, we can consider the coalgebra $(\mathsf{Moore}_{I,O}, \langle \mathsf{Output}, \mathsf{Next} \rangle)$, where $\mathsf{Output}$ takes a Moore machine $m$ and returns its output, while $\mathsf{Next}$ takes the same $m$ and yields a function, which in turn taken an input $i$ and produces a new Moore machine. Once again, this is a coinductive description of Moore machines.
-\end{example}
-
-
-\begin{remark}
-  Notice how the descriptions we have given of Mealy machines and Moore machines do not mention the internal states of these objects. This is a recurring aspect of coinductive descriptions: as argued in \cite{jacobs1997tutorial}, coinduction is best interpreted as a process where an observer track the behavior of an object from the outside, with no access to its internal state. This is very useful in machine learning because the internal state of a learning model is often unknown or uninterpretable.
-\end{remark}
-
-The true power of the (co)algebraic approach becomes manifest when we consider homomorphisms between (co)algebas, as in the examples below.
-
-\begin{example}[List folds]
-  Consider the algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ of lists from \textit{Ex. \ref{ex: lists}}, and consider a second algebra $(Z, [r_0,r_1])$ over the same functor. A homomorphism $f: \mathsf{List}(A) \to Z$ from the former into the latter must satisfy 
-  \begin{align*}
-    f(\mathsf{Nil}) &= r_0,\\
-    f(\mathsf{Cons}(a,l)) &= r_1(a,f(l)). 
-  \end{align*}
-  Hence, $f$ is necessarily a fold over a list with recursive components $r_0$ and $r_1$. Incidentally, this proves that $f$ is unique, making $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ an initial object in the category of algebras over the polynomial endofunctor $1 + A \times X$.
-\end{example}
-
-We can similarly define folds over binary trees and unfolds over Mealy and Moore machines. The algebra of binary trees is also initial, while the coalgebras of Mealy machines and more machines are final in their respective categories. We can see the recursion and corecursion that such homomorphisms must satisfy are structural, and can be interpreted as generalizations of equivariance constraints over group actions (\cite{gavranovicposition}).
-
-
-\subsubsection{(Co)inductive definitions for neural networks}
-
-The most significant piece of novel contribution delineated in \cite{gavranovicposition} is the use of (co)algebras and (co)algebra homomorphisms over parametric categories to define (co)inductively recurrent and recursive neural networks. (Co)algebras are used to define cells, whereas the associated homomorphisms provide the weight-sharing mechanics used to unroll them. We use two of the same examples discussed in the paper.
+As seen in \textit{Ex. \ref{ex: translationaction}}, the formalism of CDL subsumes the formalism of GDL, but the the difference between the two is not a simple matter of notation. CDL is much more general. The most significant piece of novel contribution delineated in \cite{gavranovicposition} is the use of (co)algebras and (co)algebra homomorphisms over parametric categories to define (co)inductively recurrent and recursive neural networks. (Co)algebras are used to define cells, whereas the associated homomorphisms provide the weight-sharing mechanics used to unroll them. Let us build on \textit{Ex. \ref{ex: lists}} and \textit{Ex. \ref{ex: listfold}}, as is done in \cite{gavranovicposition}.
 
 \begin{example}[Folding recurrent neural network cell]
   \label{ex: frnncell}
@@ -1068,23 +1064,20 @@ The most significant piece of novel contribution delineated in \cite{gavranovicp
   Use \textit{Prop. \ref{prop: embeddingth}} to embed the list algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ from \textit{Ex. \ref{ex: lists}} as an algebra over the endofunctor $\mathbf{Para}(1 + A \times X)$ from the previous example. Now consider an algebra homomorphism $(P,f): (\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}]) \to (S,(P,\mathsf{Cell}))$. Since we are working with algebras over a $2$-endofunctor, we also need to specify a $2$-cell that makes the diagram in ADDIM lax-commutative. Using the weight-tying reparameterization $\Delta_P$, yields the lax commutative diagram in ADDIM, which uniquely identifies $f$ as the fold function which takes a list of inputs in $A$ and unrolls a folding recurrent neural network that reads such inputs. The weight-tying reparametrization makes sure that each cell of the unrolled network uses the same parameters (see ADDIM for a graphical representation). 
 \end{example}
 
-The same line of reasoning of \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: frnnunroll}} can be applied to produce unfolding recurrent neural networks, complete recurrent neural networks, and even recursive neural networks (\cite{gavranovicposition}). In all these cases, the homomorphism map returns parametric maps $(P,\mathsf{model})$, which we can then feed into the $\mathbf{R}_{\mathcal{C}}$ functor associated with a generalized Cartesian reverse differential category\footnote{The examples illustrated in this section have been developed in $\mathbf{Set}$, but we see no reason why they couldn't be specialized to an appropriate CRDC.} to augment them with their reverse derivative. The framework of parametric lenses described in 
-\textit{Sec. \ref{sec: opticbasedlearning}} can then be used to train these networks. Geometric deep learning and optic-based learning are thus compatible with each other, and even serve to complement each other.
+
+The construction in  \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: frnnunroll}} constitutes a precise mathematical link between the classical data structure of lists and the machine learning construct of folding RNN. Similarly, \cite{gavranovicposition} constructs recursive neural networks building upon classical binary trees and, even more interestingly, complete RNNs are build upon the coalgebra of \textit{Ex. \ref{ex: mealy}}, which reveals an unexpected link between RNNs and Mealy machines. This begs the question: if Mealy machines generalize to recurrent neural networks, what do Moore machines generalize to? It is argued in the paper that they generalize to a variant of RNN where different cells (which share the same weight) are used for state update and output production. ADDIM shows how different classical concepts generalize to difference NN cells. Hopefully, more work in this direction will lead to new NN arhictecutres inspired from other classical concepts.
+
+\begin{remark}[CDL and optic-based learning]
+  In all the cases discussed above, the (co)algebra homomorphism map returns parametric maps $(P,\mathsf{model})$, which we can interpreted as untrained NN models. We can feed these maps into the $\mathbf{R}_{\mathcal{C}}$ functor associated with a generalized Cartesian reverse differential category\footnote{The examples illustrated in this section have been developed in $\mathbf{Set}$, but we see no reason why they couldn't be specialized to an appropriate CRDC.} to augment them with their reverse derivative. The framework of parametric lenses described in 
+  \textit{Sec. \ref{sec: opticbasedlearning}} can then be used to train these networks. CDL and optic-based learning are thus perfectly compatible, and even complement each other.
+\end{remark}
 
 
-\subsection{Related work and future directions}
+\section{Categorical graph neural networks}
 
-\subsubsection{Machine learning and classical computer science}
+\subsection{Graph neural networks are dynamic programmers}\footnote{The title of this subsection is lifted from the title of ADDREF.}
 
-Categorical deep learning highlights a very interesting connection between machine learning and classical\footnote{The word \lq classical \rq here stands for \lq non-machine learning \rq .} computer science. For instance, the derivation in \cite{gavranovicposition} allows us to give a precise mathematical formalization to the intuitive link between lists and folding recurrent neural networks. 
-
-This is particularly relevant because other such links may not be intuitive outisde of a categorical perspective. For example, it is argued in \cite{gavranovicposition} that full recurrent neural networks (i.e. such that each cell takes an input, produces an output and also updates state) are a parametric generalizations of Mealy machines, which is a seldomly consider point of view, according to the paper. This begs the question: if Mealy machines generalize to recurrent neural networks, what do Moore machines generalize to? It is argued in the paper that they generalize to a variant of full recurrent neural networks where different cells (which share the same weight) are used to update the internal state and produce an output.
-
-Hopefully, future work in this direction will prove insightful enough to inform the design of new architectures based on parametrizations of already known classical concepts. At the very least, connecting classical notions to neural network architectures should be a source of conceptual clarity for the currently "chaotic" field of machine learning.
-
-
-
-\subsubsection{}
+\subsection{Asynchronous algorithmic alignement with cocycles}\footnote{The title of this subsection is lifted from the title of ADDREF.}
 
 
 
@@ -1096,6 +1089,23 @@ Hopefully, future work in this direction will prove insightful enough to inform 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Learning Funtcors}
+
+
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 
 \section{Functor learning}
 
