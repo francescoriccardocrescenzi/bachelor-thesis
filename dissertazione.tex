@@ -10,6 +10,7 @@
 \usepackage{xcolor}
 
 \usepackage{stmaryrd}
+\usepackage{enumitem}
 
 
 \usepackage{amssymb}
@@ -30,6 +31,7 @@
 \cfoot{}
 \linespread{1}
 
+
 % Style theorem boxes
 
 \theoremstyle{plain}
@@ -45,12 +47,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% DEDICATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+\setlist[itemize]{noitemsep}
 
 \begin{titlepage}
 \thispagestyle{empty}                   
 \topmargin=6.5cm                        
 \raggedleft                             
-\large                                  
+\large 
+                                 
                                        
 \em                                     
 To my beloved\\
@@ -245,64 +249,41 @@ Benedetta
 
 
 
+\chapter{Parametric Optics for Gradient-Based Learning}
 
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%% CATEGORICAL TOOLKIT %%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\chapter{Categorical Toolkit}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
+
 \pagenumbering{arabic}
 
-In this chapter, we illustrate a few categorical tools that have been developed to provide compositional frameworks for machine learning. In particular, we will focus on parametric weighted optics and compositional models. Although such frameworks have been developed separately, they do interact, and they share a common philosophy: their purpose is to unify the field of machine learning and replace unreliable, non-compositional, \textit{ad hoc} tools with reliable, compositional, elegant tools.
 
 
-We are forced by space and time constraints to skip over the details of many constructions, but we hope the reader can get a good picture of how the proposed tools work. All the necessary details can be found in the cited references.
+General purpose deep learning libraries like PyTorch or TensorFlow are rich toolkits for gradient-based learning that allow machine learning practitioners to delegate low-level computations and automatic differentiation (AD) so that their focus can be directed to the high-level architectural design. Despite the unquestionable success of these libraries, their internal structure is not informed by a principled mathematical framework and thus, as mentioned in the introduction, it is highly dependent on \textit{ad hoc} optimizations and empirical euristics (ADDREF). Consequently, adding new tools, composing existing ones, and parallelizing computations is not a straight forward process and often lead to unexpected results (ADDREF).
+
+Hence, it would be auspicable to develop a mathematically structure compositional framework for gradient-based learning able to act as a bridge between low-level automatic differentiation and high level architectural specifications (ADDREF). Among the various attempts (ADDREF, ADDREF, ADDREF), a promising combination of differential categories, parametrization and optics has been recently proposed by \cite{cockett2019reverse}, \cite{cruttwell2022categorical}, \cite{gavranovic2024fundamental} and more as full-featured gradient-based framework able to challenge established tools. In this chapter, we illustrate such framwork  and part of its mathematical foundations. 
 
 
-Note that this chapter is devoted to illustrating our categorical toolkit itself, not its applications. Hence, we will focus on the mathematical and categorical aspects of the presented frameworks, and we will postpone applications to the following chapters.
 
+\section{Categorical toolkit}
 
-\section{Parametric and differential categories}
+Learning neural networks have two main properties: they depend on parameters and information flows through them bidirectionally (forward propagation and back propagation): any aspiring categorical model of gradient-based learning must take these two aspects into consideration. A number of authors (see e.g. \cite{gavranovic2024fundamental}, and \cite{cruttwell2022categorical}) have proposed the $\mathbf{Para}$ construction as a categorical model of parameter dependence and various categories of optics as the right categorical abstraction for bidirectionality.
 
-Neural networks have two main properties: they depend on parameters and information flows through them bidirectionally (forward propagation and back propagation). Any aspiring categorical model of neural networks must take these two aspects into consideration: the framework of parametric weighted optics (see \cite{gavranovic2024fundamental} for a thorough and mostly novel treatment of the subject and see \cite{cruttwell2022categorical} for experimental results) does just that, as it offers bidirectionality using weighted optics and parametrization using the $\mathbf{Para}$ construction.
-In this section, we will sketch out the construction of this framework loosely following \cite{gavranovic2024fundamental}.
+\subsection{Actegories}
 
-\subsection{Parametric categories}
-
-In this section, we will focus on parametric and coparametric categories. While the use case for parameters is obvious to any machine learning practitioner, one might ask why coparameters are even useful. As we will see, coparameters will come very handy in building parametric weighted optics.
-
-
-\subsubsection{Actegories}
-
-Before we can deal with (co)parametric maps, we need to find a way to glue input/output spaces to parameter spaces, so that such maps have well-defined (co)domains. One common strategy is to provide the category at hand with a monoidal structure. However, monoidal products can only combine elements within the same underlying category. Since (co)parameters are often taken from spaces that are different in nature from the input and output spaces, a more general mathematical tool is needed: namely, actegories (see the survey \cite{capucci2022actegories} for a thorough treatment of the subject). 
-
-
-Actegories are actions of symmetric monoidal categories on other categories. For brevity's sake, we will only give an incomplete definition (see \cite{capucci2022actegories} or \cite{gavranovic2024fundamental} for complete definitions).
+Before we can deal with parametric maps, we need to find a way to glue input/output spaces to parameter spaces, so that such maps have well-defined domains. One common strategy is to provide the category at hand with a monoidal structure. However, monoidal products can only combine elements within the same underlying category. Since (co)parameters are often taken from spaces that are different in nature from the input and output spaces, a more general mathematical tool is needed: namely, actegories (see the survey \cite{capucci2022actegories} for a thorough treatment of the subject).  Actegories are actions of symmetric monoidal categories on other categories. For brevity's sake, we will only give an incomplete definition (see \cite{capucci2022actegories} or \cite{gavranovic2024fundamental} for further information).
 
 \begin{definition}[Actegory]
-  Let $(\mathcal{M},I,\otimes)$ be a monoidal category. A (right) $\mathcal{M}$-actegory is a tuple $(\mathcal{C}, \bullet, \eta, \mu)$, where:
-  \begin{enumerate}
-    \item $\mathcal{C}$ is a category;
-    \item $\bullet: \mathcal{C} \times \mathcal{M} \to \mathcal{C}$ is a functor;
-    \item $\eta$ and $\mu$ are natural isomorphisms satisfying the diagrams in ADDIM.
-  \end{enumerate}
-  The natural isomorphisms $\eta$ and $\mu$ must also satisfy coherence conditions. If $\eta$ and $\mu$ are identical transformations, we say that the actegory is strict.
+  Let $(\mathcal{M},I,\otimes)$ be a strict symmetric monoidal category. A $\mathcal{M}$-actegory is a tuple $(\mathcal{C}, \bullet, \eta, \mu)$, where $\mathcal{C}$ is a category, $\bullet: \mathcal{M} \times \mathcal{C} \to \mathcal{C}$ is a functor, and $\eta$ and $\mu$ are natural isomorphisms enforcing $I \bullet C \stackrel{\eta_C}{\cong}$ and $(M \bullet (N \bullet C)) \stackrel{\mu_{M,N,C}}{\cong} (M \otimes N) \bullet C$.
+  The isomorphisms $\eta$ and $\mu$ must also satisfy coherence conditions. If $\eta$ and $\mu$ are identical transformations, we say that the actegory is strict.
 \end{definition}
 
-Thus, if we want a map $A \to B$ with parameters in $P$, we will find an appropriate actegory and an appropriate map $A \bullet P \to B$.
-
 \begin{remark}
-  The definition of actegory given above technically pertains right actegories: left actegories are defined analogously.
+  Although the requirement for strictness is somewhat restrictive, we will proceed under the assumption that the actegories we encounter are strict to streamline notation.
 \end{remark}
 
 We will also be interested in actegories that interact with the monoidal structure of the underlying category.
 
 \begin{definition}[Monoidal actegory]
-  Let $(\mathcal{M},I,\otimes)$ be a braided monoidal category and let $(\mathcal{C}, \bullet, \eta, \mu)$ be an actegory. Suppose $\mathcal{C}$ has a monoidal structure $(J,\boxtimes)$. Then we say that $(\mathcal{C}, \bullet)$ is monoidal if the underlying function $\bullet$ is strong monoidal and the transformation $\eta$ and $\mu$ are also monoidal.
+  Let $(\mathcal{M},I,\otimes)$ be a strict symmetric monoidal category and let $(\mathcal{C}, \bullet, \eta, \mu)$ be a strict actegory. Suppose $\mathcal{C}$ has a monoidal structure $(J,\boxtimes)$. Then we say that $(\mathcal{C}, \bullet)$ is monoidal if the underlying functor $\bullet$ is monoidal.
 \end{definition}
 
 
@@ -315,37 +296,33 @@ We may also be interested in studying the interaction between actegorical struct
 
 
 
-\subsubsection{The $\mathbf{Para}$ construction}
+\subsection{The $\mathbf{Para}$ construction}
 
 
-Suppose we have an $\mathcal{M}$-actegory $(\mathcal{C}, \bullet)$. We wish to study maps in $\mathcal{C}$ which are parametrized using objects of $\mathcal{M}$. We are not just interested in the maps by themselves, but also in their compositional structure. Thus, we abstract away the details by defining a new category $\mathbf{Para}_{\bullet}(\mathcal{C})$ (first defined in \cite{fong2019backprop}). Since we also want to formalize the role of reparametrization, we actually construct $\mathbf{Para}_{\bullet}(\mathcal{C})$ as a bicategory, so that its $0$-cells can serve as input/output spaces, and its $1$-cells can serve as parametric maps, and, finally, its $2$-cells can serve as parameter changes.
+Suppose we have an $\mathcal{M}$-actegory $(\mathcal{C}, \bullet)$. We wish to study maps in $\mathcal{C}$ which are parametrized using objects of $\mathcal{M}$, i.e., maps in the form $P \bullet A \to B$. We are not just interested in the maps by themselves, but also in their compositional structure. Thus, we abstract away the details by defining a new category $\mathbf{Para}_{\bullet}(\mathcal{C})$ (first introduced in simplified form in \cite{fong2019backprop}). Since we also want to formalize the role of reparametrization, we actually construct $\mathbf{Para}_{\bullet}(\mathcal{C})$ as a bicategory, so that its $0$-cells $A$ can serve as input/output spaces, its $1$-cells $(P,f)$ can serve as parametric maps, and, finally, its $2$-cells $r$ can serve as reparametrizations.
 
 \begin{definition}[$\mathbf{Para}_{\bullet}(\mathcal{C})$]
-  Let $(\mathcal{C}, \bullet)$ be a right $\mathcal{M}$-actegory. Then, we define $\mathbf{Para}_{\bullet}(\mathcal{C})$ as the bicategory whose components are as follows.
+  Let $(\mathcal{C}, \bullet)$ be an $\mathcal{M}$-actegory. Then, we define $\mathbf{Para}_{\bullet}(\mathcal{C})$ as the bicategory whose components are as follows.
   \begin{itemize}
     \item The $0$-cells are the objects of $\mathcal{C}$.
-    \item The $1$-cells are pairs $(P,f): A \to B$, where $P : \mathcal{C}$ and $f: A \bullet P \to B$.
+    \item The $1$-cells are pairs $(P,f): A \to B$, where $P : \mathcal{C}$ and $f: P \bullet A \to B$.
     \item The $2$-cells come in the form $r: (P,f) \Rightarrow (Q,g)$, where $r: P \to Q$ is a morphism in $\mathcal{C}$. $r$ must also satisfy a naturality condition.
     \item The $1$-cell composition law is
-    \[(P,f) \fatsemi (Q,g) = (P \otimes Q, f \bullet Q \fatsemi g).\]
-    \item The horizontal and vertical $2$-cell composition laws are respectively given by parallel and sequential products in $\mathcal{M}$. 
+    \[(P,f) \fatsemi (Q,g) = (Q \otimes P, (Q \bullet f)  \fatsemi g).\]
+    \item The horizontal and vertical $2$-cell composition laws are respectively given by parallel and sequential composition in $\mathcal{M}$. 
   \end{itemize}
-  It is quite handy to represent such cells using the string diagram notation illustrated in figure ADDIM.
+  It is quite handy to represent such cells using the string diagram notation illustrated in figure ADDIM. The $\mathbf{Para}$ construction has a dual $\mathbf{coPara}$ construction whose $1$-cells $f:\mathbf{coPara}_{\bullet}(\mathcal{C})(A,B)$ take the form $(P,f)$, where $f: A \to P \bullet B$. Cells in $\mathbf{coPara}_{\bullet}(\mathcal{C})$ can also be represented with appropriate string diagrams (see ADDIM). The reader can find a complete definition in \cite{gavranovic2024fundamental}.
 \end{definition}
 
 
-It is shown in \cite{gavranovic2024fundamental} that $\mathbf{Para}_{\bullet}(\mathcal{C})$ is actually a $2$-category if the underlying actegory is strict. Assuming this is the case, we can use a functor $F: \mathbf{Cat} \to \mathbf{Set}$ to quotient out the $2$-categorical structure and turn $\mathbf{Para}_{\bullet}(\mathcal{C})$ into a $1$-category $F_{*}(\mathbf{Para}_{\bullet}(\mathcal{C}))$. Here, $F_{*}: \mathbf{2Cat} \to \mathbf{Set}$ is the change of enrichment basis functor induced by $F$. We will see the significance of this construction later.
-
-
-The $\mathbf{Para}$ construction has a dual $\mathbf{coPara}$ construction which is designed to represent coparametric morphisms. The main differences between the two constructions are that $(\mathcal{C}, \bullet)$ is required to be a left actegory this time, and that $1$-cells $A \to B$ in $\mathbf{coPara}_{\bullet}(\mathcal{C})$ take the form $(P,f)$, where $f: A \to P \bullet B$.
-Cells in $\mathbf{coPara}_{\bullet}(\mathcal{C})$ can also be represented with appropriate string diagrams (see ADDIM). The reader can find a complete definition in \cite{gavranovic2024fundamental}.
+It is shown in \cite{gavranovic2024fundamental} that $\mathbf{Para}_{\bullet}(\mathcal{C})$ is actually a $2$-category if the underlying actegory is strict. Assuming this is the case (as we do in this thesis), we can use a functor $F: \mathbf{Cat} \to \mathbf{Set}$ to quotient out the $2$-categorical structure and turn $\mathbf{Para}_{\bullet}(\mathcal{C})$ into a $1$-category $F_{*}(\mathbf{Para}_{\bullet}(\mathcal{C}))$. Here, $F_{*}: \mathbf{2Cat} \to \mathbf{Set}$ is the change of enrichment basis functor induced by $F$. This meaningfully recovers the $1$-categorical perspective of \cite{fong2019backprop}.
 
 
 Both $\mathbf{Para}_{\bullet}(\mathcal{C})$ and $\mathbf{coPara}_{\bullet}(\mathcal{C})$ can be given a monoidal structure if $(\mathcal{C}, \bullet)$ is a monoidal actegory. This is extremely important because it allows us to compose (co)parametric morphisms both in sequence and in parallel. Once again, more detail can be found in \cite{gavranovic2024fundamental}.
 
 
 \begin{remark}
-  Another way to parametrize morphisms is the coKleinsli construction. As noted by \cite{gavranovic2024fundamental}, the main difference between $\mathbf{coKl}$ and $\mathbf{Para}$ is that the parametrization offered by $\mathbf{coKl}$ is global, while the parametrization offered by $\mathbf{Para}$ is local: all morphisms in $\mathbf{coKl}(X \times -)$ must take a parameter in $X$, while the parameter space of different morphisms of $\mathbf{Para}(\mathcal{C})$ admit different parameter spaces. Nevertheless, the two constructions are relate, and the former can be embedded into the latter.
+  Another way to parametrize morphisms is the coKleinsli construction. As noted by \cite{gavranovic2024fundamental}, the main difference between $\mathbf{coKl}$ and $\mathbf{Para}$ is that the parametrization offered by $\mathbf{coKl}$ is global, while the parametrization offered by $\mathbf{Para}$ is local: all morphisms in $\mathbf{coKl}(X \times -)$ must take a parameter in $X$, while the parameter space of different morphisms of $\mathbf{Para}(\mathcal{C})$ admit different parameter spaces. Nevertheless, the two constructions are related, and the former can be embedded into the latter.
 \end{remark}
 
 
@@ -364,8 +341,6 @@ If we take a parametrized category $\mathbf{Para}_\bullet(\mathcal{C})$ and we r
 Modelling bidirectional flows of information is not only useful in machine learning, but also in game theory, database theory, and more. As such, categorical tools for bidirectionality have been sought after for a long time: in particular, the greatest deal of efforts has been devoted to developing lens theory. Lenses have then been generalized into optics (see e.g. \cite{riley2018categories}) to subsume other tools such as prisms and traversals into the same framework. Finally, there have also been various attempts at generalizing optics (see e.g. \cite{clarke2024profunctor} for a definition of mixed optics). We will introduce lenses and optics, and focus on the generalization of optics that appears (to us) to be the most versatile: weighted optics (first introduced in \cite{gavranovic2024fundamental}). 
 
 
-\subsubsection{Lenses}
-
 As stated in \cite{gavranovic2024fundamental}, there is no standard definition of lens, and different authors opt for different \textit{ad hoc} definitions that best suit their purposes. We will borrow the perspective of \cite{cruttwell2022categorical} and give the following definition.
 
 
@@ -382,22 +357,15 @@ As stated in \cite{gavranovic2024fundamental}, there is no standard definition o
     \item the composition of $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right): \left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)$ and $\left(\begin{smallmatrix} g \\ g' \end{smallmatrix}\right): \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} C \\ C' \end{smallmatrix}\right)$ is
     \[\left(\begin{smallmatrix} f \fatsemi g \\ \langle \pi_0, \langle \pi_0 \fatsemi f, \pi_1 \rangle \fatsemi g' \rangle \fatsemi f' \end{smallmatrix}\right).\]
   \end{itemize}
+  Lenses are best thought of in the helpful language of the string diagrams illustrated in ADDIM.
 \end{definition}
-
-
-Lenses are best thought of in the helpful language of the string diagrams illustrated in ADDIM. For instance, the composition formula in the definition above looks very complicated, but its graphical counterpart shown in ADDIM is extremely intuitive.
-
-
-As we will soon see, in machine learning, the forward pass of a lens is used to model forward propagation, whereas the associated backward pass is tasked with modelling backpropagation. In other contexts, such as functional programming, lenses are used as data accessors for objects: the forward pass serves as a getter, while the backward pass serves as a setter (see e.g. \cite{steckermeier2015lenses}).
-
-
-\subsubsection{Optics}
 
 Lenses are a powerful tool, but they cannot be used to model all situations: for instance, lenses cannot be used if we wish to be able to choose not to interact with the environment depending on the input, or if we wish like to reuse values computed in the forward pass for further computation in the backward pass.
 
 
-Optics generalize lenses by weakening the link between \textsc{get} maps and \textsc{put} maps and by replacing the Cartesian structure of the underlying category with a simpler symmetric monoidal structure. In an optic over $\mathcal{C}$, an object $M : \mathcal{C}$ acts as an inaccessible residual space transferring information between the upper components and the lower component.
-We will provide the definition given by \cite{riley2018categories}, but we will use the string diagram notation presented by \cite{gavranovic2024fundamental} for the sake of consistency.
+Optics generalize lenses by weakening the link between forward and bavkward passes, and by replacing the Cartesian structure of the underlying category with a simpler symmetric monoidal structure. In an optic over $\mathcal{C}$, an object $M : \mathcal{C}$ acts as an inaccessible residual space transferring information between the upper components and the lower component.
+We will provide the definition given by \cite{riley2018categories}\footnote{\cite{riley2018categories}also provides a more versatile (but more sophisticated) definition of optics that relies on coends. Under the coend formalism,
+\[\mathbf{Optic}(\mathcal{C})\left(\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right),\left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)\right) = \int^{M : \mathcal{C}}\mathcal{C}(A,M \times B) \times \mathcal{C}(M \otimes B',A').\]}, but we will use the string diagram notation presented by \cite{gavranovic2024fundamental} for the sake of consistency.
 
 \begin{definition}[Optics]
   Let $(\mathcal{C}, I, \otimes, \lambda, \rho, \alpha)$ be a symmetric monoidal category (we make the unitors and associators explicit for later use). Then, $\mathbf{Optic}(\mathcal{C})$ is the category defined by the following data:
@@ -406,21 +374,14 @@ We will provide the definition given by \cite{riley2018categories}, but we will 
     \item a $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)$ morphism (or optic) is a pair $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right)$ of morphisms of $\mathcal{C}$ such that $f: A \to M \otimes B$ and $f': M \otimes B' \to A'$, where $M : \mathcal{C}$ is known as residual space; such pairs $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right)$ are also quotiented by an equivalence relation that allows for reparametrization of the residual space and effectively makes it inaccessible;
     \item the identity on $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right)$ is the optic represented by $(\lambda_A^{-1}, \lambda_A)$.
   \end{itemize}
+  We will only show how optics compose using the string diagrams in ADDIM (see \cite{riley2018categories} for the composition formula).
 \end{definition}
-
-We will only show how optics compose using the string diagrams in ADDIM (see \cite{riley2018categories} for the composition formula).
-
-\begin{remark}
-  A more versatile but also more mathematically sophisticated definition of optics relies on coends. Under the coend formalism,
-  \[\mathbf{Optic}(\mathcal{C})\left(\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right),\left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)\right) = \int^{M : \mathcal{C}}\mathcal{C}(A,M \times B) \times \mathcal{C}(M \otimes B',A').\] 
-  See \cite{riley2018categories} for more information about this topic.
-\end{remark}
 
 Lenses come up as a special case of optics (\cite{riley2018categories}), and optics do solve some of the issues we have with lenses. However, optics are not perfect either: for instance, \cite{gavranovic2024fundamental} points out that optics cannot be used in cases where we ask that the forward pass and backward pass are different kind of maps, as they are both forced to live in the same category. Thus, we need a further layer of generalization: namely, weighted optics.
 
 
 
-\subsubsection{Category of elements of a functor}
+\subsection{Weighted optics}
 
 Before we define weighted optics, we need to introduce a new tool to our toolbox: the category of elements of a functor.
 
@@ -430,19 +391,13 @@ Before we define weighted optics, we need to introduce a new tool to our toolbox
 
 \cite{gavranovic2024fundamental} studies $\mathcal{B}$-actegories $(\mathcal{C}, \bullet)$, which are then reparametrized so that the acting category becomes $\mathcal{E} = \mathbf{El}(W)$ for some weight functor $W: \mathcal{B}^{\mathrm{op}} \to \mathbf{Set}$ (which is to be specified). The reparametrization takes place thanks to the opposite of the forgetful functor $\pi_W: \mathcal{E} \to \mathcal{B}^{\mathrm{op}}$, which maps $(B,x) \mapsto B$. Hence, we consider the action
 \[\bullet^{\pi_W^{\mathrm{op}}} = \mathbf{El}(W)^{\mathrm{op}} \times \mathcal{C} \stackrel{\pi_W^{\mathrm{op}} \times \mathcal{C}}{\longrightarrow} \mathcal{B} \times \mathcal{C} \stackrel{\bullet}{\longrightarrow} \mathcal{C}.\]
-\cite{gavranovic2024fundamental} also gives the following definition, which is later instrumental in defining weighted lenses.
+We are finally ready to define weighted optics\footnote{Weighted optics also admit a coend definition. Refer to \cite{gavranovic2024fundamental} for more information.}.
 
 \begin{definition}[Weighted $\mathbf{coPara}$]
   If $W$ is a weight functor as above and $(\mathcal{C}, \bullet)$ is a $\mathcal{B}$-actegory, we define
   \[\mathbf{coPara}^W_{\bullet}(\mathcal{C}) = \pi_{0*}(\mathbf{coPara}_{\bullet^{\pi_W^{\mathrm{op}}}}(\mathcal{C})),\]
   where $\pi_{0*}$ is the enrichment base change functor generated by the connected component functor $\pi_{0}: \mathbf{Cat} \to \mathbf{Set}$. More explicitly, $\pi_{0*}$ quotients the connections provided by reparametrizations.
 \end{definition}
-
-
-
-\subsubsection{Weighted optics}
-
-We are finally ready to define weighted optics.
 
 \begin{definition}[Weighted optics]
   Suppose $(\mathcal{C}, \bullet)$ is an $\mathcal{M}$-actegory, suppose $(\mathcal{D}, \sqbullet)$ is an $\mathcal{M}'$-actegory, and suppose $W: \mathcal{M}^{\mathrm{op}} \times \mathcal{M}' \to \mathbf{Set}$ is a lax monoidal functor.
@@ -451,40 +406,14 @@ We are finally ready to define weighted optics.
 \end{definition}
 
 The definition is very dense and deserves some explanation. Fist of all, we assume that $W$ maps $(M,M')$ to a set of maps $s: M \to M'$. If that's the case, a $\left(\begin{smallmatrix}X\\X'\end{smallmatrix}\right) \to \left(\begin{smallmatrix}Y\\Y'\end{smallmatrix}\right)$ map is a triplet $\left(\left(\begin{smallmatrix}\\M'\end{smallmatrix}\right),s,\left(\begin{smallmatrix}f\\f'\end{smallmatrix}\right)\right)$, where $M$ is the forward residual, $M'$ is the backward residual, $s: M \to M'$ links the two residuals, $f: X \to M \bullet Y$ is the forward pass, and $f': M' \bullet Y' \to X'$ is the backward pass.
-The triplets are also quotiented with respect to reparametrization, which makes the residual spaces effectively inaccessible (as it happens in the case of ordinary optics).
-
-
-A weighted optic is a rather sophisticated piece of categorical machinery, but we can get a clear "functional" understanding of how it works looking at an associated string diagram: data from $X$ flows through the forward map, which computes an output in $Y$ and a forward residual in $M$. Such forward residual is the converted into a backward residual in $M'$ by the map $s$, which is provided by the weight functor. Then, the backward residual is used to compute, together with input from $Y'$ a value in $X'$. The last step happens thanks to the backward map $f'$. The composition law is just as complicated as the optics, but it is not difficult to understand if considered from the point of view of string diagrams: see, for instance, ADDIM. More information can be found on \cite{gavranovic2024fundamental}.
-
-
-\begin{remark}
-  Weighted optics can also be defined using coend calculus: it is shown in \cite{gavranovic2024fundamental} that:
-  \[\mathbf{Optic}^W_{\left(\begin{smallmatrix}\bullet\\\sqbullet\end{smallmatrix}\right)}\left(\begin{matrix} A \\ A'\end{matrix},\begin{matrix} B \\ B'\end{matrix}\right) \cong \int^{(M,M') : \mathcal{M} \times \mathcal{M}'}\mathcal{C}(A, M \bullet B) \times W(M,M') \times \mathcal{D}(M' \sqbullet B', A').\]
-\end{remark}
-
-
-The advantages of weighted optics over ordinary optics are clear: when dealing with weighted optics, we are no longer forced to take reverse maps from the same category as the forward maps. The action on the category of forward spaces is now separated from the action on the category of backward spaces, and the link between the two actions is provided by an external functor. Such modular approach provides a great deal of conceptual clarity and flexibility, more than regular optics or lenses can provide on their own.
-
-
+The triplets are also quotiented with respect to reparametrization, which makes the residual spaces effectively inaccessible (as it happens in the case of ordinary optics). We can get a clear "operational" understanding of how a weighted optic works looking at an associated string diagram: data from $X$ flows through the forward map, which computes an output in $Y$ and a forward residual in $M$. Such forward residual is then converted into a backward residual in $M'$ by the map $s$, which is provided by the weight functor. Finally, the backward residual is used to compute, together with input from $Y'$ a value in $X'$. The last step happens thanks to the backward map $f'$. A full account of the composition law for weighted optics can be found on \cite{gavranovic2024fundamental}.
 As stated in \cite{gavranovic2024fundamental}, since $\mathbf{coPara}$ can be given a monoidal structure, we can also give $\mathbf{Optic}^W_{\left(\begin{smallmatrix}\bullet\\\sqbullet\end{smallmatrix}\right)}$ one such structure as long as the underlying actegories are monoidal and the weight functor $W$ is braided monoidal.
 
 
-It is also shown in \cite{gavranovic2024fundamental} that weighted optics are indeed a generalization of optics. In particular, it is shown that the lenses in \textit{Def. \ref{def: lenses}} are the specialized weighted optics obtained when $\mathcal{C} = \mathcal{D}$ is Cartesian and the actegories are given by the Cartesian product. More generally, the thesis claims that - to the best of the author's knowledge - all definitions of lenses currently used in the literature are subsumed by the definition of weighted optics.
+The advantages of weighted optics over ordinary optics are clear: when dealing with weighted optics, we are no longer forced to take reverse maps from the same category as the forward maps. The action on the category of forward spaces is now separated from the action on the category of backward spaces, and the link between the two actions is provided by an external functor. Such modular approach provides a great deal of conceptual clarity and flexibility, more than regular optics or lenses can provide on their own. It is also shown in \cite{gavranovic2024fundamental} that weighted optics are indeed a generalization of optics. In particular, it is shown that the lenses in \textit{Def. \ref{def: lenses}} are the specialized weighted optics obtained when $\mathcal{C} = \mathcal{D}$ is Cartesian and the actegories are given by the Cartesian product. More generally, \cite{gavranovic2024fundamental} claims that - to the best of the author's knowledge - all definitions of lenses currently used in the literature are subsumed by the definition of weighted optics.
 
 
-
-\subsubsection{Parametric weighted optics}
-
-Although weighted optics model bidirectionality very well, they cannot be used to model neural networks just yet, as they are not parametric objects. The $\mathbf{Para}$ construction can only be applied to weighted optics if we find an appropriate action on $\mathbf{Optic}^W_{\left(\begin{smallmatrix}\bullet\\\sqbullet\end{smallmatrix}\right)}$. As shown in \cite{gavranovic2024fundamental}, this can be done under the assumption that $\mathcal{M}$ and $\mathcal{M}'$ are braided: if that's the case, we can just weighted optic category $ \mathcal{V} = \mathbf{Optic}^W_{\left(\begin{smallmatrix}\otimes\\\otimes'\end{smallmatrix}\right)}$ generated by the self-actions of the two categories, and we can define a $\mathcal{V}$-action $\Asterisk$ on $\mathbf{Optic}^W_{\left(\begin{smallmatrix}\bullet\\\sqbullet\end{smallmatrix}\right)}$ so that 
-\[\left(\begin{matrix}M\\M'\end{matrix}\right) \Asterisk \left(\begin{matrix}X\\X'\end{matrix}\right) = \left(\begin{matrix}M \bullet X\\ M' \sqbullet X'\end{matrix}\right).\]
-We can then write the following definition:
-
-\begin{definition}[Parametric weighted optics]
-  Let $(\mathcal{M}, I, \otimes)$ and let $(\mathcal{M}', I', \otimes')$ be braided monoidal categories. Let $(\mathcal{C}, \bullet)$ and $(\mathcal{D}, \sqbullet)$ be an $\mathcal{M}$-actegory and an $\mathcal{M}'$-actegory, respectively. Finally, let $F: \mathcal{M} \to \mathcal{M}'$ be a lax monoidal functor. Then, if $\Asterisk$ is the action mentioned above, we define the category of parametric weighted optics as 
-  \[\mathbf{Para}_{\Asterisk}\left(\mathbf{Optic}^W_{\left(\begin{smallmatrix}\bullet\\\sqbullet\end{smallmatrix}\right)}\right).\]
-\end{definition}
-
-Parametric weighted optics are an even more sophisticated piece of categorical machinery than non-parametric ones, and thus the consistent use of string diagrams is extremely helpful. Refer to ADDIM to see examples of such diagrams.
+\cite{gavranovic2024fundamental} goes on to apply the $\mathbf{Para}$ construction onto weighted optics, obtaining parametric weighted optics, which are proposed as a full-featured model for deep learning. The author conjectures that "weighted optics provide a good denotational and operational semantics for differentiation". In its full, generality, this is still an unproven conjecture. However, restricting our attention to a special class $\mathbf{Lens}_A$ of lenses with an additive backward passes yields a fully formal theory of structural backpropagation, which will be illustrated in the rest of the capter, after a short digression on differential categories.
 
 
 
@@ -494,14 +423,10 @@ Parametric weighted optics are an even more sophisticated piece of categorical m
 \label{subsec: diffcats}
 
 
-Modelling gradient-based learning obviously requires a setting where differentiation can take place. Although it is tempting to directly employ Euclidean space, recent research has shown that there are tangible advantages in working with generalized differential combinators that extend the notion of derivative to polynomial circuits (\cite{wilson2022categories}, \cite{wilson2021reverse}), manifolds (ADDREF), complex spaces (ADDREF), and so on. 
-Thus, it makes sense to work with an abstract notion of derivative which can then be implemented as a known differential combinator through the choice of an appropriate differential category.
+Modelling gradient-based learning obviously requires a setting where differentiation can take place. Although it is tempting to directly employ smooth functions over Euclidean spaces, recent research has shown that there are tangible advantages in working with generalized differential combinators that extend the notion of derivative to polynomial circuits (\cite{wilson2022categories}, \cite{wilson2021reverse}), manifolds (ADDREF), complex spaces (ADDREF), and so on.  Thus, it makes sense to work with an abstract notion of derivative which can then be appropriately implemented depending on the requirements at hand.
 
 
-\subsubsection{The standard approach to differential categories}
-
-
-The first two abstract settings for differentiation that we consider are Cartesian differential categories (first introduced in \cite{blute2006differential}) and Cartesian reverse differential categories (first introduced by \cite{cockett2019reverse}). The former allow for forward differentiation, while the latter allow for reverse differentiation. We will omit the defining axioms for the sake of brevity, but the reader can find complete definitions in \cite{cockett2019reverse}.
+The standard approach to this problem (developed in the last twenty years) involves the explicit definition of two kidns of differential categories: Cartesian differential categories (first introduced in \cite{blute2006differential}) and Cartesian reverse differential categories (first introduced by \cite{cockett2019reverse}). The former allow for forward differentiation, while the latter allow for reverse differentiation. We will omit the defining axioms for the sake of brevity, but the reader can find complete definitions in \cite{cockett2019reverse}.
 
 \begin{definition}[Cartesian differential category]
   A Cartesian differential category (CDR) $\mathcal{C}$ is a Cartesian left-additive category where a differential combinator $\mathrm{D}$ is defined. Such differential combinator must take a morphism $f: A \to B$ and return a morphism $\mathrm{D}[f]: A \times A \to B$, which is known as the derivative of $f$. The combinator $\mathrm{D}$ must satisfy a number of axioms. 
@@ -510,10 +435,6 @@ The first two abstract settings for differentiation that we consider are Cartesi
 \begin{definition}[Cartesian reverse differential category]
   A Cartesian reverse differential category (CRDC) $\mathcal{C}$ is a Cartesian left-additive category where a reverse differential combinator $\mathrm{R}$ is defined. Such reverse differential combinator must take a morphism $f: A \to B$ and return a morphism $\mathrm{R}[f]: A \times B \to A$, which is known as the reverse derivative of $f$. The combinator $\mathrm{R}$ must satisfy a number of axioms. 
 \end{definition}
-
-
-The aforementioned axioms make sure that $\mathrm{D}$ and $\mathrm{R}$ satisfy the properties expected from derivative and reverse derivative. In particular, a differential combinator satisfies a chain rule (see figure ADDIM), whereas a reverse differential combinator satisfies a reverse chain rule (see figure ADDIM).
-
 
 \begin{example}
   $\mathbf{Smooth}$ is a both a CDC and a CRDC. In fact, if $\mathcal{J}_f$ is the Jacobian matrix of a smooth morphism $f$,
@@ -524,33 +445,36 @@ The aforementioned axioms make sure that $\mathrm{D}$ and $\mathrm{R}$ satisfy t
 \end{example}
 
 
-As it turns out, forward differentiation tends to be less efficient when dealing with neural networks that come up in practice, so CDCs are not extremely useful when studying deep learning. CRDCs, on the other hand, have been applied to great success (see e.g. \cite{cruttwell2022categorical}). Moreover, CRDCs have been recently generalized by \cite{gavranovic2024fundamental} to coalgebras associated with copointed endofunctors. We will examine the generalized definition later on.
+As it turns out, forward differentiation tends to be less efficient when dealing with neural networks that come up in practice (ADDREF), so CDCs are not extremely useful when studying deep learning. CRDCs, on the other hand, have been applied to great success (see e.g. \cite{cruttwell2022categorical}). As shown in \cite{wilson2022categories}, a large supply of CRDCs can be obtained by providing the generators of a finitely presented Cartesian left-additive category with associated reverse derivatives (as long as the choices of reverse derivative are consistent).
+Moreover, CRDCs have been recently generalized by \cite{gavranovic2024fundamental} to coalgebras associated with copointed endofunctors, which could also increase the number of known CRDCs in the future. Let us examine such definition.
 
 
-\subsubsection{Providing categories with a differential structure}
 
 
-Before we move on to other topics, let us discuss how a Cartesian left-additive category can be endowed with a reverse differential structure. The most straight forward approach uses the following theorem, which we take from \cite{wilson2022categories}.
-
-\begin{proposition}
-  \label{prop: crdcfromgen}
-  Suppose $\mathcal{C}$ be the Cartesian left-additive category generated by $(\mathrm{Obj}, \mathrm{Mor})$ and a set $E$ of equations. Suppose each $s \in \mathrm{Mor}$ is endowed with a reverse derivative $\mathrm{R}[s]$ and suppose such derivative well-defined with respect to the equivalence classes induced by $E$. Suppose such reverse derivatives also satisfy the first four axioms of CRDCs. Then, $\mathrm{R}$ defines a Cartesian reverse differential structure on $\mathcal{C}$.
-\end{proposition}
-
-\textit{Prop. \ref{prop: crdcfromgen}} allows us to give differential structures to a large family of categories. For instance, \cite{wilson2022categories} uses the proposition to turn Cartesian distributive categories\footnote{Cartesian distributive categories are Cartesian categories whose hom-sets have both a left-additive and a left-multiplicative structure. The second is required to distribute over the first.} into CRDCs, which allows the authors to give a differential structure to the category of polynomial circuits.
 
 
-\begin{definition}[Polynomial circuits]
-  \label{def: polycirc}
-  Let $S$ be a commutative semiring. Then, $\mathbf{PolyCirc}_S$ is the Cartesian distributive category generated by an object $1$, a generating morphism $s: 0 \to 1$ for each $s \in S$ and the equations in ADDIM.
-\end{definition}
-
-\begin{proposition}
-  If we define $\mathrm{R}[s]$ as the discard map for each $s \in S$, $\mathbf{PolyCirc}_S$ is a CRDC.
-\end{proposition}
 
 
-\subsubsection{The $\mathbf{Lens}_A$ construction}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 It is shown in \cite{gavranovic2024fundamental} that there is a particular class of weighted optics which is useful for reverse differentiation, being able to represent both maps (through forward passes) and the associated reverse derivatives (through backward passes). Moreover, such weighted optics can be represented as lenses in the sense of \textit{Def \ref{def: lenses}}, which means that their inner workings can be pictured in a simple, intuitive way.
@@ -588,8 +512,6 @@ As argued in \cite{gavranovic2024fundamental}, the symbol $\mathbf{Lens}_A$ is j
 
 Since the conjecture hasn't been formally proved yet, the author abandons the weighted optics perspective in favor of the lens perspective, and so do we. As it has already been shown in \cite{cruttwell2022categorical}, lenses are expressive enough to satisfyingly model gradient based learning, and thus, while weighted optics seem to offer great future potential, lens-theoretic approaches are far from being disadvantageous.
 
-
-\subsubsection{Generalized reverse differential categories}
 
 \cite{gavranovic2024fundamental} proposes the $\mathbf{Lens}_A$ construct as foundation for generalizing reverse differential categories. This is possible because $\mathbf{Lens}_A$ is an endofunctors, as shown by the following definitions and propositions.
 
@@ -681,87 +603,6 @@ The following proposition (proved in \cite{gavranovicposition} where it is state
 \end{proof}
 
 
-
-
-
-
-
-\section{Compositional models}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\chapter{Optic-Based Learning}
-
-\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
-
-
-
-
-
-
-
-Gradient-based learning has enjoyed unparalleled success in the last few years, being applied to an ever-increasing number of fields both in the sciences and in engineering. Such revolution was made possible by a number of theoretical and practical achievements that took place in the last century. Among these we must note the development of linear algebra packages in the second half of the last century, the invention of the backpropagation algorithm (ADDREF) and other automatic differentiation (AD) algorithms, and the development of large multipurpose machine learning libraries like PyTorch or TensorFlow.
-
-
-However, as stated in the introduction, the development of such tools has not been informed by a general mathematical theory of gradient-based learning (ADDREF). On the contrary, such developments have taken place mainly guided by empirical results and euristics: even the most significant achievement in the filed often rely on \textit{ad hoc} choices which have no clear theoretical justifications. In the absence of mathematical structure, most modern frameworks implement AD using computational graphs and relying on side effects, inviting preventable bugs and making it very difficult to use parallel computing at its fullest potential (ADDREF).
-
-
-A number of authors (ADDREF) have proposed category theory as a general theoretical framework for gradient-based learning. In this chapter, we will illustrate three of these approaches: optic-based learning (ADDREF), categorical deep learning (ADDREF), and functor learning (ADDREF). Let's provide a short description of each.
-\begin{enumerate}
-  \item \textit{Optic-based learning} aims to construct a general, compositional, architecture-agnostic gradient-based learning framework for deep neural networks. In such frameworks, models and loss functions are represented as parametric optics -  most commonly lenses - whereas optimizers are reparametrizations. Forward passes are used to compute losses, while backward passes are used to compute gradient. Finally, optimizers use the gradient and the old parameters to compute new parameters.
-  \item While optic-based learning is general and versatile, it does not impose any architectural constraints on the modelled networks. On the other hand, \textit{categorical deep learning} does not deal with optimization, but we have chosen to include it in this chapter because we see it as complementary to optic-based learning, in that it uses (co)algebras over functors and monads to model architectures which can then be implemented using optics. Particular attention is devoted to implementing invariance and equivariance constraints: categorical deep learning is proposed as a successor to geometric deep learning in this regard.
-  \item In optic-based learning, as in most categorical machine learning frameworks, machine learning models are represented as morphisms in an appropriate category. On the other hand, in \textit{functor learning}, the models are incarnated by functors, which are learned using gradient-based methods. The main advantage offered by functor learning is that functoriality between appropriate categories allows for increased expressiveness and makes it easier to impose constraints (among which invariance and equivariance). 
-\end{enumerate}
 
 \section{Optic-based learning}
 \label{sec: opticbasedlearning}
@@ -922,7 +763,7 @@ For instance, is argued in \cite{wilson2022categories} that polynomial circuits 
 
 
 
-\chapter{From Algorithms to Neural Networks}
+\chapter{From Classical Computer Science to Neural Networks}
 
 
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
@@ -1052,7 +893,7 @@ The following proposition and the associated example show how exactly CDL subsum
 
 \subsection{(Co)inductive definitions for RNNs}
 
-As seen in \textit{Ex. \ref{ex: translationaction}}, the formalism of CDL subsumes the formalism of GDL, but the the difference between the two is not a simple matter of notation. CDL is much more general. The most significant piece of novel contribution delineated in \cite{gavranovicposition} is the use of (co)algebras and (co)algebra homomorphisms over parametric categories to define (co)inductively recurrent and recursive neural networks. (Co)algebras are used to define cells, whereas the associated homomorphisms provide the weight-sharing mechanics used to unroll them. Let us build on \textit{Ex. \ref{ex: lists}} and \textit{Ex. \ref{ex: listfold}}, as is done in \cite{gavranovicposition}.
+As seen in \textit{Ex. \ref{ex: translationaction}}, the formalism of CDL subsumes the formalism of GDL, but the the difference between the two is not a simple matter of notation: CDL is much more general. The most significant piece of novel contribution delineated in \cite{gavranovicposition} is the use of (co)algebras and (co)algebra homomorphisms over parametric categories to define (co)inductively recurrent and recursive neural networks. (Co)algebras are used to define cells, whereas the associated homomorphisms provide the weight-sharing mechanics used to unroll them. Let us build on \textit{Ex. \ref{ex: lists}} and \textit{Ex. \ref{ex: listfold}}, as is done in \cite{gavranovicposition}.
 
 \begin{example}[Folding recurrent neural network cell]
   \label{ex: frnncell}
