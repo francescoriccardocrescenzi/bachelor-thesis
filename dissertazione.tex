@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,openright,twoside]{report}
+\documentclass[11pt,a4paper,openright,twoside]{report}
 
 \usepackage[british]{babel}
 \usepackage[utf8]{inputenc}
@@ -19,10 +19,9 @@
 \usepackage{amsthm}
 \usepackage{mathabx}
 
-\usepackage[left=1 in,right=1.4in]{geometry}
+\usepackage[left=2cm,right=2cm]{geometry}
 
-\oddsidemargin=25pt 
-\evensidemargin=15pt
+
 \hyphenation{pa-ra-me-tric}
 \pagestyle{fancy}\addtolength{\headwidth}{20pt}
 \renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
@@ -48,6 +47,7 @@
 
 \begin{document}
 \setlist[itemize]{noitemsep}
+\setlist[enumerate]{noitemsep}
 
 \begin{titlepage}
 \thispagestyle{empty}                   
@@ -446,39 +446,10 @@ The standard approach to this problem (developed in the last twenty years) invol
 
 
 As it turns out, forward differentiation tends to be less efficient when dealing with neural networks that come up in practice (ADDREF), so CDCs are not extremely useful when studying deep learning. CRDCs, on the other hand, have been applied to great success (see e.g. \cite{cruttwell2022categorical}). As shown in \cite{wilson2022categories}, a large supply of CRDCs can be obtained by providing the generators of a finitely presented Cartesian left-additive category with associated reverse derivatives (as long as the choices of reverse derivative are consistent).
-Moreover, CRDCs have been recently generalized by \cite{gavranovic2024fundamental} to coalgebras associated with copointed endofunctors, which could also increase the number of known CRDCs in the future. Let us examine such definition.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Moreover, CRDCs have been recently generalized by \cite{gavranovic2024fundamental} to coalgebras associated with copointed endofunctors, which could also increase the number of known CRDCs in the future. The rest if this section is devoted to this generalization.
 
 
 It is shown in \cite{gavranovic2024fundamental} that there is a particular class of weighted optics which is useful for reverse differentiation, being able to represent both maps (through forward passes) and the associated reverse derivatives (through backward passes). Moreover, such weighted optics can be represented as lenses in the sense of \textit{Def \ref{def: lenses}}, which means that their inner workings can be pictured in a simple, intuitive way.
-Let us start by defining a new kind of Cartesian left-additive category.
 
 
 \begin{definition}[Additively closed Cartesian left-additive category]
@@ -497,23 +468,10 @@ Then, we can define the category of lenses with backward passes additive in the 
   \[\mathbf{Lens}_A(\mathcal{C}) = \mathbf{Optic}_{\left(\begin{smallmatrix}\times \\ \otimes\end{smallmatrix}\right)}^{\mathcal{C}(-,\iota(-))}.\]
 \end{definition}
 
-As argued in \cite{gavranovic2024fundamental}, the symbol $\mathbf{Lens}_A$ is justified because one such optic of type $\left(\begin{smallmatrix}X \\ X'\end{smallmatrix}\right) \to \left(\begin{smallmatrix}Y \\ Y'\end{smallmatrix}\right)$ can be concretely represented as a lens with forward pass $f : \mathcal{C}(X,Y)$ and backward pass $f' : \mathcal{C}(X \times Y',X')$. We do not have the space to report the details of this argument, but we report the following remark.
-
-\begin{remark}
-  Some potential expressiveness is lost when passing from weighted optic composition to concrete lens composition. In particular, if we operated with optics, we would be able to implement backpropagation without resorting to gradient checkpointing, which is not possible if we use lenses. 
-\end{remark}
+As argued in \cite{gavranovic2024fundamental}, the symbol $\mathbf{Lens}_A$ is justified because one such optic of type $\left(\begin{smallmatrix}X \\ X'\end{smallmatrix}\right) \to \left(\begin{smallmatrix}Y \\ Y'\end{smallmatrix}\right)$ can be concretely represented as a lens with forward pass $f : \mathcal{C}(X,Y)$ and backward pass $f' : \mathcal{C}(X \times Y',X')$, which is the approach we illustrate in this thesis.  Nevertheless, some potential expressiveness is lost when passing from weighted optic composition to concrete lens composition. In particular, if we operated with optics, we would be able to implement backpropagation without resorting to gradient checkpointing, which is not possible if we use lenses (\cite{gavranovic2024fundamental}). 
 
 
-\cite{gavranovic2024fundamental} proposes the following conjecture.
-
-\begin{conjecture}
-  Weighted optics provide good denotational and operational semantics for differentiation.
-\end{conjecture}
-
-Since the conjecture hasn't been formally proved yet, the author abandons the weighted optics perspective in favor of the lens perspective, and so do we. As it has already been shown in \cite{cruttwell2022categorical}, lenses are expressive enough to satisfyingly model gradient based learning, and thus, while weighted optics seem to offer great future potential, lens-theoretic approaches are far from being disadvantageous.
-
-
-\cite{gavranovic2024fundamental} proposes the $\mathbf{Lens}_A$ construct as foundation for generalizing reverse differential categories. This is possible because $\mathbf{Lens}_A$ is an endofunctors, as shown by the following definitions and propositions.
+The generalization mentioned above is possible because $\mathbf{Lens}_A$ is an endofunctor.
 
 \begin{definition}
   We defined $\mathbf{CLACat}$ as the category whose objects are Cartesian left-additive categories and whose morphisms are Cartesian left-additive functors (see e.g.\cite{blute2006differential}).
@@ -534,43 +492,24 @@ Since the conjecture hasn't been formally proved yet, the author abandons the we
 \end{proof}
 
 \begin{proposition}
-  $\mathbf{Lens}_A$ has a copointed structure (\textit{Def. \ref{def: copointend}}).
+  $\mathbf{Lens}_A$ has a copointed structure\footnote{An endofunctor $F: \mathcal{C} \to \mathcal{C}$ is copointed if it is endowed with a natural transformation $\epsilon: F(\mathcal{C}) \Rightarrow \mathrm{id}_{\mathcal{C}}$.}.
 \end{proposition}
 \begin{proof}
   It suffices to endow $\mathbf{Lens}_A$ with the natural transformation $\epsilon$ whose components are the forgetful functors $\epsilon_{\mathcal{C}}: \mathbf{Lens}_A(\mathcal{C}) \to \mathcal{C}$ which strip away the backward passes.
 \end{proof}
 
-Finally, \cite{gavranovic2024fundamental} provides generalizes CRDCs as follows.
+Hence, \cite{gavranovic2024fundamental} defines generalized CRDCs as follows.
 
 \begin{definition}[Generalized Cartesian reverse differential category]
-  A generalized Cartesian reverse differential category is a coalgebra (\textit{Def. \ref{def: copendcoalg}}) for the pointed endofunctor $\mathbf{Lens}_A$. 
+  A generalized Cartesian reverse differential category is a coalgebra for the pointed endofunctor $\mathbf{Lens}_A$. 
 \end{definition}
 
-Explicitly, a generalized CRDC is a pair $(\mathcal{C}, \mathbf{R}_{\mathcal{C}})$ such that $\mathcal{C}: \mathbf{CLACat}$ and $\mathbf{R}_{\mathcal{C}}: \mathcal{C} \to \mathbf{Lens}_A(\mathcal{C})$ satisfies $\mathbf{R}_{\mathcal{C}} \fatsemi \epsilon_{\mathcal{C}} = \mathbf{id}_{\mathcal{C}}$. The intuition behind such definition is that $\mathbf{R}_{\mathcal{C}}$ should map $f \mapsto \left(\begin{smallmatrix} f \\ R[f] \end{smallmatrix}\right)$, where $R[f]$ is a generalized reverse derivative combinator. \cite{gavranovic2024fundamental} shows that such a definition of $\mathbf{R}_{\mathcal{C}}$ does indeed prove that ordinary CRDC fall into the definition of generalized CRDC. 
-
-\begin{remark}
-  \label{rem: Rcisuseful}
-  The $\mathbf{R}_{\mathcal{C}}$ functor associated with a generalized CRDC $\mathcal{C}$ is extremely useful because it allows is to design architectures as compositions $f_1 \fatsemi \cdots \fatsemi f_n$ in $\mathcal{C}$ and then carry them over to $\mathbf{Lens}_A(\mathcal{C})$ as $\mathbf{R}_{\mathcal{C}}(f_1 \fatsemi \cdots \fatsemi f_n) = \mathbf{R}_{\mathcal{C}}(f_1) \fatsemi \cdots \fatsemi \mathbf{R}_{\mathcal{C}}(f_n)$.  The reverse derivative of the composition is automatically \lq assembled \rq from the reverse derivatives of the building blocks. If we want such reverse derivative explicitly, it suffices to extract the backward pass of the lens above, which is possible thanks to the Cartesian structure of $\mathcal{C}$.
+Explicitly, a colagebra for $\mathbf{Lens}_A$ is a pair $(\mathcal{C}, \mathbf{R}_{\mathcal{C}})$ such that $\mathcal{C}: \mathbf{CLACat}$ and $\mathbf{R}_{\mathcal{C}}: \mathcal{C} \to \mathbf{Lens}_A(\mathcal{C})$ satisfies $\mathbf{R}_{\mathcal{C}} \fatsemi \epsilon_{\mathcal{C}} = \mathrm{id}_{\mathcal{C}}$. The intuition behind such definition is that $\mathbf{R}_{\mathcal{C}}$ should map $f \mapsto \left(\begin{smallmatrix} f \\ R[f] \end{smallmatrix}\right)$, where $R[f]$ is a generalized reverse derivative combinator. \cite{gavranovic2024fundamental} shows that such a definition of $\mathbf{R}_{\mathcal{C}}$ does indeed prove that ordinary CRDC fall into the definition of generalized CRDC. 
 
 
-  Thus, $\mathbf{R}_{\mathcal{C}}$ makes it possible for us to focus on architecture by automatically handling differentiation in a compositional and functional fashion. We shall see how important this point is in the next chapter.
-\end{remark}
+\subsection{Parametric lenses}
 
-\subsubsection{Functional reverse-mode automatic differentiation}
-
-We wish to highlight the similarities between the formal theory of differential categories illustrated here and the work in \cite{elliott2018simple}. The paper describes the Haskell implementation of a purely functional automatic differentiation library, which is able to handle both forward mode and backward mode AD without resorting to the mutable computational graphs used by most current day libraries. 
-
-Among the main insights of \cite{elliott2018simple}, it is stated that derivatives should not be treated as simple vectors, but as linear maps, or multilinear maps in the case of uncurried higher-order derivatives. Moreover, the author shows that differentiation can be made compositional by working on pairs $(f, Df)$, which behaved very similarly to lenses. As noted by \cite{shiebler2021category}, however, \cite{cruttwell2022categorical} and other lens-theoretical perspectives do not subsume the work in \cite{elliott2018simple} because of the latter's programming focus. See \cite{shiebler2021category} for more information regarding this comparison.
-
-
-\subsection{Applying $\mathbf{Para}$ over functors}
-
-We conclude this section discussing the relation between $\mathcal{C} \to \mathcal{D}$ functors and $\mathbf{Para}_{\bullet}(\mathcal{C}) \to \mathbf{Para}_{\bullet}(\mathcal{D})$. We do not have the space necessary to provide a full account of what is known on the subject, but we will discuss two specific cases which are relevant to this thesis. More information can be found in \cite{gavranovic2024fundamental} and \cite{gavranovicposition}.
-
-
-\subsubsection{Applying $\mathbf{Para}$ over $\mathbf{Lens}_A$}
-
-\cite{gavranovic2024fundamental} shows that, under an appropriate definition, \lq morphisms of actegories induce morphisms of parametric bicategories\rq. As a consequence, it can be shown that, if  $(\mathcal{C}, \mathbf{R}_{\mathcal{C}})$ is a generalized CRDC,  $\mathbf{R}_{\mathcal{C}}$ induces a functor $\mathbf{Para}(\mathbf{R}_{\mathcal{C}}): \mathbf{Para}_{\times}(\mathcal{C}) \to \mathbf{Para}_{\bullet}(\mathbf{Lens}_A(\mathcal{C}))$, which takes a parametric map $f: P \times A \to B$ and augments is with its reverse derivative $\mathrm{R}[f]$, forming a parametric lens. Parametric lenses behave very similarly to lenses, but we provide a separate stand-alone definition (which we take from ADDREF\footnote{The contents of ADDREF where anticipated in a number of papers, among which ADDREF.}) for the reader's convenience.
+We conclude this section discussing the relation between the $\mathbf{Para}$ construction and the $\mathbf{Lens}_A$ endofunctions. \cite{gavranovic2024fundamental} shows that, under an appropriate definition, \lq morphisms of actegories induce morphisms of parametric bicategories\rq. As a consequence, it can be shown that, if  $(\mathcal{C}, \mathbf{R}_{\mathcal{C}})$ is a generalized CRDC,  $\mathbf{R}_{\mathcal{C}}$ induces a functor $\mathbf{Para}(\mathbf{R}_{\mathcal{C}}): \mathbf{Para}_{\times}(\mathcal{C}) \to \mathbf{Para}_{\bullet}(\mathbf{Lens}_A(\mathcal{C}))$, which takes a parametric map $f: P \times A \to B$ and augments is with its reverse derivative $\mathrm{R}[f]$, forming a parametric lens. Parametric lenses behave very similarly to lenses, but we provide a separate stand-alone definition (which we take from \cite{cruttwell2022categorical}) for the reader's convenience.
 
 \begin{definition}[Parametric lenses]
   The category of parametric lenses over a Cartesian category $(\mathcal{C},1,\times)$ is $\mathbf{Para}_{\bullet}(\mathbf{Lens}(\mathcal{C}))$, where $\bullet$ is the action on the lenses generated by the Cartesian structure of $\mathcal{C}$:
@@ -581,94 +520,67 @@ We conclude this section discussing the relation between $\mathcal{C} \to \mathc
   \end{pmatrix} = \begin{pmatrix}
     P \times A \\ P' \times A'
   \end{pmatrix}.\]
+  Refer to \textit{Fig. ADDIM} to see a string diagram that shows the inner workings of a parametric lens.
 \end{definition}
 
-Refer to \textit{Fig. ADDIM} to see a string diagram that shows the inner workings of a parametric lens.
-
-\subsubsection{Algebras over parametric endofunctors}
-
-The following proposition (proved in \cite{gavranovicposition} where it is stated as an example) shows that actegorical strong endofunctors induce $2$-endofunctors over parametric categories.
-
-\begin{proposition}
-  \label{prop: paraend}
-  Suppose $(\mathcal{C}, \bullet)$ is an $\mathcal{M}$-actegory and $F: \mathcal{C} \to \mathcal{C}$ is an actegorical endofunctor with strength $\sigma$. Then, $F$ induces a  $2$-functor $\mathbf{Para}(F): \mathbf{Para}_{\bullet}(\mathcal{C}) \to \mathbf{Para}_{\bullet}(\mathcal{C})$.
-\end{proposition}
-\begin{proof}
-  Define $\mathbf{Para}(F)$ so that: 
-  \begin{enumerate}
-    \item $\mathbf{Para}(F)$ acts like $F$ on objects $A: \mathcal{C}$;
-    \item $\mathbf{Para}(F)(f) = P \bullet F(A) \stackrel{\sigma_{P,A}}{\longrightarrow} F(P \bullet A) \stackrel{F(f)}{\longrightarrow} F(B)$ for all $(P,f):\mathbf{Para}_{\bullet}(\mathcal{C})(A,B)$;
-    \item $\mathbf{Para}(F)$ leaves reparametrizations unchanged.
-  \end{enumerate}
-\end{proof}
 
 
-
-\section{Optic-based learning}
+\section{Supervised learning with parametric lenses}
 \label{sec: opticbasedlearning}
 
-Although the framework of parametric weighted lenses presented in \textit{Chap. 1} is very general and offers exciting possibilities, no one (to the best of our knowledge) has applied it in its fullest potential to machine learning yet. Therefore, following \cite{gavranovic2024fundamental} and \cite{cruttwell2022categorical}, we present the framework from the more specialized point of view of parametric lenses, which are nonetheless sufficient to model gradient-based compositionally.
+In this section, we show how parametric lenses can be used to model supervised gradient-based learning (\cite{cruttwell2022categorical}, \cite{gavranovic2024fundamental}, \cite{shiebler2021category}). While lenses are not as general as weighted optics, it is shown in \cite{cruttwell2022categorical} that they are powerful enough for most purposes and that there is some empirical evidence of their performance and applicability. The paper also discusses the use of parametric lenses in modeling unsupervised deep learning and deep dreaming, but we do not have the space to discuss them here.
+
+\subsection{Model, loss, optimizer, learning rate}
+
+Supervised gradient-based learning can be modeled using parametric lenses as follows:
+\begin{enumerate}
+  \item  we can design an architecture $(P,\mathsf{Model})$ as a parametric morphism in $\mathbf{Para}_{\bullet}(\mathcal{C})$ for some generalized CRDC $(\mathcal{C},\mathbf{R}_{\mathcal{C}})$;
+  \item we can use the functor $\mathbf{R}_{\mathcal{C}}$ to endow $(P,\mathsf{Model})$ with its reverse derivative $\mathrm{R}[(P,\mathsf{Model})]$, yielding a lens in $\mathbf{Para}_{\bullet}(\mathbf{Lens}_A(\mathcal{C}))$;
+  \item we can use $2$-categorical machinery of $\mathbf{Para}_{\bullet}(\mathbf{Lens}_A(\mathcal{C}))$ to provide a loss function, a learning rate, and optimizer, which can be assembled onto $\mathbf{R}_{\mathcal{C}}(P,\mathsf{Model})$ to yield a parameter update;
+  \item we can use copy maps from the Cartesian structure of $\mathcal{C}$ to create a learning iteration.
+\end{enumerate}
 
 
-\subsection{Learning with parametric lenses}
-
-\subsubsection{Parametric lenses as modules}
-
-Gradient based learning requires forward and backward propagation: the former is used to compute the objective function, while the latter calculates its gradient and uses it to update the parameters.
-The position held by \cite{cruttwell2022categorical} is that the most natural way to relate the opposite flows of information is to represent the components of the network as parametric lenses, where the forward pass handles forward propagation while the backward pass handles backward propagation.
+The theory of parametric optics and differential categories does not offer explicit insight with respect to architecture design, so we will assume a good architecture as already been designed (at least for now). Given an architecture $(P,\mathsf{Model})$, it can be embedded into $\mathbf{Para}_{\bullet}(\mathbf{Lens}_A(\mathcal{C}))$ as a lens $\left(\begin{smallmatrix} P \times A \\ P \times A \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B \end{smallmatrix}\right)$ by breaking it up into its basic components (such as linear layers, convolutional layers, etc.), augmenting such components with their reverse derivatives, and the composing the resulting lenses. The backward pass of the composition is the reverse derivative of its forward pass because $\mathbf{R}_{\mathcal{C}}$ is a functor\footnote{As highlighted by \cite{shiebler2021category}, the diagram for the backward pass of the composition of two lenses looks exactly like the diagram describing the chain rule for reverse derivatives, which is what makes $\mathbf{R}_{\mathcal{C}}$ a well-defined functor.}. Many examples can be found in \cite{cruttwell2022categorical}.
 
 
-If we operate in Cartesian reverse differential category $(\mathcal{C}, \mathbf{R}_{\mathcal{C}})$ (see \textit{Subsec. \cite{subsec: diffcats}}), we can use $\mathbf{Para}(\mathbf{R}_{\mathcal{C}})$ to carry a parametric map $(P,f)$ onto the parametric lens
-\begin{equation}
-  \label{eq: exparametriclens}
-  \left(\begin{pmatrix} P \\ P \end{pmatrix},\begin{pmatrix} f \\ \mathrm{R}[f] \end{pmatrix}\right) 
-  : \mathbf{Para}(\mathbf{Lens}(\mathcal{C}))
-  \left(\begin{pmatrix} A \\ A \end{pmatrix},\begin{pmatrix} B \\ B \end{pmatrix}\right).
-\end{equation}
-If $(P,f)$ represents an untrained module of neural network, the lens above can be used to encapsulate both forward propagation along the module and the associated backward propagation.  A whole neural network can be assembled by composing such lenses, and the functoriality of $\mathbf{Para}(\mathbf{R}_{\mathcal{C}})$ guarantees that there is no difference between composing lenses and generating a single lens from a composition of parametric maps.
+Updating the parameters based on data requires a loss function, an optimizer and a learning rate. Loss functions can be implemented as parametric lenses which take in predictions as input and labels as parameters. The output they produce can be considered the actual loss that needs to be differentiatied. Given a model parametric lens $\left(\begin{smallmatrix} \mathsf{Model} \\ \mathrm{R}[\mathsf{Model}] \end{smallmatrix}\right):\left(\begin{smallmatrix} P \times A \\ P \times A \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B \end{smallmatrix}\right)$ and a loss parametric lens $\left(\begin{smallmatrix} \mathsf{Loss} \\ \mathrm{R}[\mathsf{Loss}] \end{smallmatrix}\right):\left(\begin{smallmatrix} B \times B\\ B \times B \end{smallmatrix}\right) \to \left(\begin{smallmatrix} L \\ L \end{smallmatrix}\right)$, the composition $m \fatsemi l$ takes in features as input and takes model parameters and labels as parameters. Then, $\left(\begin{smallmatrix} \mathsf{Model} \\ \mathrm{R}[\mathsf{Model}] \end{smallmatrix}\right) \fatsemi \left(\begin{smallmatrix} \mathsf{Loss} \\ \mathrm{R}[\mathsf{Loss}] \end{smallmatrix}\right)$ computes the loss associated with the model predictions. See ADDIM for the associated string diagram.
+
+It can be helpful to think about dangling wires in the diagrams as open slots where other components can be plugged. For instance, the diagram of ADDIM has dangling wires labeled with $L$ on its right. We can use a learning rate lens $\alpha$ to link these wires and allow forward-propagating information to "change direction" and go backwards. $\alpha$ must have domain equal to $\left( \begin{smallmatrix} L \\ L \end{smallmatrix} \right)$ and codomain equal to $\left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right)$, where $1$ is the terminal object of $\mathcal{C}$. For instance, if $\mathcal{C} = \mathbf{Smooth}$, $\alpha$ might just multiply the loss by some $\epsilon$, which is what machine learning practitioners would ordinarily call learning rate. Fig. ADDIM shows how a learning rate can be linked to the loss function and the model using post-composition.
 
 
-Hence, if $\left(\left(\begin{smallmatrix} P \\ P \end{smallmatrix}\right),\left(\begin{smallmatrix} f \\ \mathrm{R}[f] \end{smallmatrix}\right)\right)$ represents a linear layer and $\left(\left(\begin{smallmatrix} Q \\ Q \end{smallmatrix}\right),\left(\begin{smallmatrix} g \\ \mathrm{R}[g] \end{smallmatrix}\right)\right)$ represents an activation layer, their composition represents a fully connected layer according to the same convention.
+The final element needed for the model $\mathsf{Model}$ in Fig. ADDIM to learn is an optimizer. It is shown in \cite{cruttwell2022categorical} that optimizers can be represented as reparametrisations in $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$. More specifically, we might see an optimizer as a lens $\left( \begin{smallmatrix} P \\ P \end{smallmatrix} \right) \to \left( \begin{smallmatrix} Q \\ Q \end{smallmatrix} \right)$. In gradient descent, for example, $P = Q$ and the aforementioned lens is $\left( \begin{smallmatrix} 1_P \\ +_P \end{smallmatrix} \right)$. We can plug such reparametrisation on top of the model to obtain the string diagram in Fig. ADDIM. The diagram shows how the machinery hidden by the $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$ can take care of forward propagation, loss computation, backpropagation and parameter updating in a seamless fashion.
+
+The supervised learning lens in ADDIM actually has two more dangling wires we don't have any use for: namely, the second input $A$ of the model and the second parameter $B$ of the loss functions. These are not a problem as we can just plug them with delete maps taken from the Cartesian structure of $\mathcal{C}$. We can also bend the input wires with an appropriate lens to turn them into parameters. We are then left with a $\left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right) \to \left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right)$ parametric lens with parameter space $\left(\begin{smallmatrix} A \\ 1 \end{smallmatrix}\right) \times \left(\begin{smallmatrix} P \\ P \end{smallmatrix}\right) \times \left(\begin{smallmatrix} B \\ 1 \end{smallmatrix}\right)$. This lens is pictured in ADDIM.
 
 
-\begin{remark}
-  \cite{shiebler2021category} notes an important detail: the composition of two lenses in $\mathbf{Lens}_A(\mathcal{C})$ corresponds to an implicit application of the chain rule for reverse derivatives. One can notice this by justapposing ADDIM and ADDIM and observing the similarity between the two composition laws. This key detail is what makes it possible to represent neural network modules as parametric lenses.
-\end{remark}
- 
-
-\subsubsection{Supervised learning with parametric lenses}
 
 
-The authors of \cite{cruttwell2022categorical} and \cite{gavranovic2024fundamental} take this line of reasoning a step further and show that it is also meaningful to represent other components of learning - such as optimizers, loss functions, and learning rates - within the framework of parametric lenses. 
+\subsection{Weight tying, batching, and the learning iteration}
+
+Both \cite{cruttwell2022categorical} and \cite{gavranovic2024fundamental} emphasize the essential role played by weight tying in deep learning. Weight tying can be implemented within the parametric lens framework as a reparametrization that copies a single parameter to many parameter slots (see ADDIM): given $(P \times P, f): \mathbf{Para}(\mathcal{C})(X,Y)$, we can define $(P, f^{\Delta_P}): \mathbf{Para}(\mathcal{C})(X,Y)$ so that
+\[f^{\Delta_P}: P \times X \stackrel{\Delta_P \times X}{\longrightarrow} P \times P \times X \stackrel{f}{\longrightarrow} Y.\]
+Weight tying can also be used for batching: batching is implemented by instantiating $n$ different copies of our supervised learning lens (comprised of model, loss function, and learning rate) and tying the parameters to a unique value. Then, it suffices to feed the $n$ data points to the $n$ lenses, and we can optimize across a single parameter (see ADDIM).
+
+\cite{cruttwell2022categorical} introduces a possible representation for the whole learning iteration of a supervised learning model within the parametric lens framework. The paper suggests extracting the bacward pass of the lens in ADDIM and reframing it as a $P \to P$ parametric map with parameters $A \times B$. Since this is an endomap, it can be composed $n$ times with itself to obtain a $P \to P$ map, which is proposed as a model of the learning iteration. While this approach requires breaking lenses apart, it is markedly simple.
 
 
-For instance, we may represent a loss maps as $(P,\mathrm{loss}) : \mathbf{Para}(\mathcal{C})(B,L)$ for some object $L$. The intuitive meaning of this representation is the following: $\mathrm{loss}$ takes the output of the network of type $B$, compares it with the labels of type $P$ ($P$ and $B$ will often coincide in practical examples), and then returns a loss of type $L$. The parametric lens associated with $\mathrm{loss}$ can thus be post-composed after the parametric lens associated with a neural network to compute the loss generated by such network given some input and the associated labels. This process is illustrated in Fig. ADDIM.
+\subsection{Empirical evidence}
 
-
-This leaves two dangling wires of type $L$. We can use a learning rate lens $\alpha$ to link the wires and allow forward-propagating information to "change direction" and go backwards. $\alpha$ must have domain equal to $\left( \begin{smallmatrix} L \\ L \end{smallmatrix} \right)$ and codomain equal to $\left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right)$, where $1$ is the terminal object of $\mathcal{C}$. For instance, if $\mathcal{C} = \mathbf{Smooth}$, $\alpha$ might just multiply the loss by some $\epsilon$, which is what machine learning practitioners would ordinarily call learning rate. Fig. ADDIM shows how a learning rate can be linked to the loss function and the model using post-composition.
-
-
-The final element needed for the model $f$ in Fig. ADDIM to learn is an optimizer. It is shown in \cite{cruttwell2022categorical} that optimizers can be represented as reparametrisations in $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$. More specifically, we might see an optimizer as a lens $\left( \begin{smallmatrix} P \\ P \end{smallmatrix} \right) \to \left( \begin{smallmatrix} Q \\ Q \end{smallmatrix} \right)$. In gradient descent, for example, $P = Q$ and the aforementioned lens is $\left( \begin{smallmatrix} 1_P \\ +_P \end{smallmatrix} \right)$. We can plug such reparametrisation on top of the model to obtain the string diagram in Fig. ADDIM. The diagram shows how the machinery hidden by the $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$ can take care of forward propagation, loss computation, backpropagation and parameter updating in a seamless fashion. This is the true power of the compositional mindset: abstraction hides away unwanted detail so that one can focus on high-level features of the model. 
-
-
-\subsubsection{Weight tying}
-
-Both \cite{cruttwell2022categorical} and \cite{gavranovic2024fundamental} emphasize the essential role played by weight sharing in deep learning. Weight tying can be implemented within the parametric lens framework as a reparametrization that copies a single parameter to many parameter slots: given $(P \times P, f): \mathbf{Para}(\mathcal{C})(X,Y)$, we can define $(P, f^{\Delta_P}): \mathbf{Para}(\mathcal{C})(X,Y)$ so that
-\[f^{\Delta_P}: X \times P \stackrel{X \times \Delta_P}{\longrightarrow} X \times P \times P \stackrel{f}{\longrightarrow}.\]
-Weight tying can also be used for batching. For instance, we can create $n$ different copies of our supervised learning lens (comprised of model, loss function, and learning rate) and tie the parameters to values unique across the copies. Then, it suffices to feed the $n$ data points to the $n$ lenses, and we can optimize across a single parameter. A string diagram representation of weight tying can be found in ADDIM. Other information regarding the learning iteration in the framework of parametric lenses can be found in \cite{cruttwell2022categorical}.
-
-
-\subsubsection{Empirical evidence}
-
-Empirical evidence for the effectiveness of parametric lenses can be found in \cite{cruttwell2022categorical}, where the authors go on to develop a Python libraries for parametric lenses. They use the library to develop a MNIST classifier, obtaining comparable accuracy to models developed using traditional means. 
+Empirical evidence for the effectiveness of the parametric lens framwork discussed in this section can be found in \cite{cruttwell2022categorical}, where the authors go on to implement a Python libraries for gradient-based learning based on these ideas. They use the library to develop a MNIST classifier, obtaining comparable accuracy to models developed using traditional tools.
 
 
 Since parametric lenses can easily be implemented functionally and without side effects, success stories as the one mentioned above foreshadow a future where popular machine learning libraries also follow elegant functional paradigms informed by category theory. Quoting  \cite{cruttwell2022categorical} directly, \lq[the] proposed algebraic structures naturally guide programming practice\rq.
 
 
-\subsection{Comparisons and generalizations}
+\section{Future directions and related work}
 
-\subsubsection{Learners}
+The parametric optic framework discussed in this chapter is very promising, but there is still a lot of work that needs to be done so that it can reach its full potential. For instance, \cite{gavranovic2024fundamental} conjectures that weighted optics can be used in its full generality to model differentiation in cases which are not covered by lenses. For instance, lenses cannot model AD algorithms that do not use gradient checkpointing, while weighted optics are conjectured to be able to do so. \cite{gavranovic2024fundamental} also suggests investigating locally graded categories as potential replacements for actegories, and also investigating the applications of parametric optics to meta-learning, i.e. deep learning where the optimizers themselves are learned. Moreover, \cite{cruttwell2022categorical} conjectures that some of the axioms of CRDC may be used to model higher order optimization algorithms. Finally, as suggested by \cite{cruttwell2022categorical}, hopefully future work will allow the parametric optic framework to encompass non-gradient based optimizers such as the ones used in probabilistic learning. See \cite{shiebler2021category} for more on this topic.
+
+We conclude this chapter by discussing three other directions of machine learning reasearch that are closely related to the framework of parametric optics.
+  
+
+\subsection{Learners}
 
 
 One of the first compositional approaches to training neural networks in the literature can be found in the seminal paper \cite{fong2019backprop}, which spurred much research in the field, including what is presented in \cite{gavranovic2024fundamental} and \cite{cruttwell2022categorical}. The authors introduce a category of learners, objects which are meant to represent components of a neural network and behave similarly to parametric lenses. 
@@ -692,13 +604,20 @@ We do not have the space to talk about learners at length, but we wish to draw a
 Despite the similarities, there is one fundamental difference between the lens-based approach and the learner-based approach: each learner carries its own optimizer, whereas optimization of lenses is usually carried out separately. Moreover, if we compare parametric weighted optics with learners, the latter clearly win in versatility, generality, and (at least from our point of view) conceptual clarity. It is argued in \cite{shiebler2021category} and \cite{cruttwell2022categorical} that the parametric lens framework largely subsumes the learner approach. More information regarding the comparison can also be found in \cite{gavranovic2024fundamental}.
 
 
-\subsubsection{Exotic differential categories}
+\subsection{Exotic differential categories}
 
 We have presented the parametric weighted optic approach of \cite{gavranovic2024fundamental} and \cite{cruttwell2022categorical} within the context of neural networks for the sake of simplicity, but the framework has been developed with generality in mind and applies to a much wider range of situations. For instance, we can easily replace $\mathbf{Smooth}$ with any other CRDC $\mathcal{C}$, yielding a full-feature compositional framework for gradient-based learning over $\mathcal{C}$.
 
 
 Switching to a different CRDC is useful because different differential categories can lead to very different learning outcomes, both in terms of accuracy of the model and in terms of training computational costs (ADDREF).
-For instance, is argued in \cite{wilson2022categories} that polynomial circuits (see \textit{Def. \ref{def: polycirc}}) can be used to define and train intrinsecally discrete machine learning models. Even \lq radical \rq environments such as Boolean circuits - where scalars reside in $\mathbb{Z}_2$ - seem to be conductive to machine learning under the right choice of architecture and optimizer (\cite{wilson2021reverse}).
+For instance, is argued in \cite{wilson2022categories} that polynomial circuits can be used to define and train intrinsecally discrete machine learning models. Even \lq radical \rq environments such as Boolean circuits - where scalars reside in $\mathbb{Z}_2$ - seem to be conductive to machine learning under the right choice of architecture and optimizer (\cite{wilson2021reverse}). Using such exotic differential categories may be of great advantage because they might be able to better reflect the intrinsic computational limits of computer arithmetics, leading to more efficient learning (\cite{wilson2022categories}). 
+
+
+\subsection{Functional reverse-mode automatic differentiation}
+
+Finally, we wish to highlight the similarities between the formal theory of differential categories illustrated here and the work in \cite{elliott2018simple}. The paper describes the Haskell implementation of a purely functional automatic differentiation library, which is able to handle both forward mode and backward mode AD without resorting to the mutable computational graphs used by most current day libraries. 
+
+Among the main insights of \cite{elliott2018simple}, it is stated that derivatives should not be treated as simple vectors, but as linear maps, or multilinear maps in the case of uncurried higher-order derivatives. Moreover, the author shows that differentiation can be made compositional by working on pairs $(f, Df)$, which behaved very similarly to lenses. As noted by \cite{shiebler2021category}, however, \cite{cruttwell2022categorical} and other lens-theoretical perspectives do not subsume the work in \cite{elliott2018simple} because of the latter's programming focus. See \cite{shiebler2021category} for more information regarding this comparison.
 
 
 
@@ -771,13 +690,13 @@ For instance, is argued in \cite{wilson2022categories} that polynomial circuits 
 
 
 
-Classical computer science focuses on discovering algorithms, i.e. ordered sequences of steps which operate in precisely set idealized conditions and have strong guarantees of correctness due to their exact mathematical formulations. Neural networks, on the other hand, are able to work in messy real-world conditions, but offer very so few guarantees of correctness that their performance is often described as unreasonably good. Moreover, whereas algorithsms generalize very well (most software engineers will only need a few dozen algorithms in their entire career), neural networks are often completely helpless when pitted against out of distribution inputs. Hence, algorithms and neural networks can be seen as complementary opposites (ADDREF).
+Classical computer science focuses on discovering algorithms, i.e. ordered sequences of steps which operate in precisely set, idealized conditions and have strong guarantees of correctness due to their exact mathematical formulations. Neural networks, on the other hand, are able to work in messy, real-world conditions, but offer very so few guarantees of correctness that their performance is often described as \textit{unreasonably} good. Moreover, whereas algorithms generalize very well (most software engineers will only need a few dozen algorithms in their entire career), neural networks are often completely helpless when pitted against out of distribution inputs. Hence, algorithms and neural networks can be seen as complementary opposites (\cite{velivckovic2021neural}, \cite{velivckovic2022clrs}).
 
 
-Recent attempts group under then label of neural algorithmic reasoning (see ADDREF for a very short introduction to the subject) have tried to get the best of both worlds by training neural networks to apply algorithms (see e.g ADDREF). The CLRS benchmark (ADDREF) uses graphs to represent the computations associated with a few classical algorithms from the famous CLRS introductory textbook so that graph neural networks (GNNs) can be trained to learn these algorithms. The benchmark has spurred a large amount of research in this direction, with very promising results (see e.g. ADDREF).
+Recent attempts group under then label of \textit{neural algorithmic reasoning} (see \cite{velivckovic2021neural} for a very short introduction to the subject) have tried to get the best of both worlds by training neural networks to apply algorithms (see e.g \cite{ibarz2022generalist}). The CLRS benchmark (introduced by \cite{velivckovic2022clrs}) uses graphs to represent the computations associated with a few classical algorithms from the famous CLRS introductory textbook so that graph neural networks (GNNs) can be trained to learn these algorithms. The benchmark has spurred a large amount of research in this direction, with very promising results.
 
 
-More generally, linking machine learning to classical informatics may hold the key for interesting advances. For example, recovering neural networks as parametric versions of known algorithms may help embew the ever chaotic field of machine learning with new-found conceptual clarity. Moreover, such a link could even help develop new neural network architectures by taking inspiration from well-researched classical notions. In this chapter we will illustrate two lines of inquiry which use category theory to build such a bridge: \textit{categorical deep learning} and \textit{categorical graph neural networks}\footnote{While the label \textit{categorical deep learning} has been chosen by main proponents of the approach, the label \textit{categorical graph neural networks} is our own and, at least to our knowledge, no other label has been proposed at this point.}. Before proceeding with such topics, we will go on a short tangent categorical tangent regarding (co)algebras and the integral transform.
+More generally, linking machine learning to classical informatics may hold the key for interesting advances. For example, recovering neural networks as parametric versions of known algorithms may help imbue the ever chaotic field of machine learning with new-found conceptual clarity. Moreover, such a link could even help develop new neural network architectures by taking inspiration from well-researched classical notions. In this chapter we will illustrate two lines of inquiry which use category theory to build such a bridge: \textit{categorical deep learning} and an interesting categorical approach to GNNs. Before proceeding with such topics, we will go on a short tangent categorical tangent regarding (co)algebras and the integral transform.
 
 
 
@@ -838,9 +757,50 @@ The link between (co)algebras and (co)induction does not stop at the definition 
 The notion of (co)algebra over a functor can be generalized to the sphere $2$-categories, defining the notion of (co)algebra over a $2$-endofunctor. The basic concepts stay the same but the commutativity of the diagrams definining (co)algebra homomorphisms is relaxed into lax-commutativity. A square diagram of $1$-cells is lax-commutative if there exists a $2$-cell that carries the composition of the top and the right edge onto the composition of the left and bottom edge, as in ADDIM. Once again we refer to \cite{gavranovicposition} for further information.
 
 
+We conclude the section with the following proposition (\cite{gavranovicposition}), which shows that actegorical strong endofunctors induce $2$-endofunctors over parametric categories. We will use the theorem to study parametric versions of the endofunctors in \textit{Ex. \ref{ex: lists}} and \textit{Ex. \ref{ex: mealy}}.
+
+\begin{proposition}
+  \label{prop: paraend}
+  Suppose $(\mathcal{C}, \bullet)$ is an $\mathcal{M}$-actegory and $F: \mathcal{C} \to \mathcal{C}$ is an actegorical endofunctor with strength $\sigma$. Then, $F$ induces a  $2$-functor $\mathbf{Para}(F): \mathbf{Para}_{\bullet}(\mathcal{C}) \to \mathbf{Para}_{\bullet}(\mathcal{C})$.
+\end{proposition}
+\begin{proof}
+  Define $\mathbf{Para}(F)$ so that: 
+  \begin{enumerate}
+    \item $\mathbf{Para}(F)$ acts like $F$ on objects $A: \mathcal{C}$;
+    \item $\mathbf{Para}(F)(f) = P \bullet F(A) \stackrel{\sigma_{P,A}}{\longrightarrow} F(P \bullet A) \stackrel{F(f)}{\longrightarrow} F(B)$ for all $(P,f):\mathbf{Para}_{\bullet}(\mathcal{C})(A,B)$;
+    \item $\mathbf{Para}(F)$ leaves reparametrizations unchanged.
+  \end{enumerate}
+\end{proof}
+
+
 \subsection{Integral transform}
 
-TODO
+\begin{remark}
+  In accordance with the notation of \cite{dudzik2022graph}, we use $[A,B]$ to represent the set of $A \to B$ functions, where $A$ and $B$ are sets.
+\end{remark}
+
+Suppose $(R, \oplus, \otimes)$ is a commutative semiring. An integral transform is a transformation that carries a function in $[W,R]$ to a function in $[Z,R]$ following a precise chain of steps. Integral transforms\footnote{The label integral transform refers to the fact that similar ideas can be used to write a categorical definition for familiar analytical integral transforms (\cite{golem_ph_utexas_edu}). A similar construct is also used in physics (\cite{eastwood1980cohomology}).} have been introduced by \cite{dudzik2022graph} to provide a single formalism able to describe both dynamic programming and GNNs. Integral transforms can be encoded as polynomial spans.
+
+\begin{definition}[Polynomial span]
+  A polynomial span is a triplet $(i: X \to W,p: X \to Y,o: Y \to Z)$ of morphisms in $\mathbf{FinSet}$\footnote{$\mathbf{FinSet}$ is the category of finite sets and functions.}. $i$ is known as input, $p$ as process, $o$ as ouput. $W$ is known as input set, $X$ as argument set, $Y$ as message set, $Z$ as ouput set. We also ask that the fibers of $p$ have total orderings\footnote{Neither we nor \cite{dudzik2022graph} use this requirement but, as stated in the original paper, the requirement is useful to support functions with non-commuting arguments.}. The polynomial span $(i,p,o)$ can be graphically represented as a diagrams such as the one of ADDIM.
+\end{definition}
+
+\begin{definition}[Integral transform]
+  Let $(R, \oplus, \otimes)$ be a commutative semiring. Let $(i: X \to W,p: X \to Y,o: Y \to Z)$ be a polynomial span. The associated integral transform is the triplet $(i^*: [W,R] \to [X,R], p_{\otimes}: [X,R] \to [Y,R], o_{\oplus}: [Y,R] \to [Z,R])$, where:
+  \begin{enumerate}
+    \item $i^*$ is the pullback mapping $f \mapsto i \fatsemi f$;
+    \item $p_{\otimes}$ is the argument pushforward mapping 
+    \[p_{\otimes}(a)(u) = \bigotimes_{e \in p^{-1}(u)}a(e);\]
+    \item $o_{\otimes}$ is the message pushforward mapping 
+    \[o_{\oplus}(m)(v) = \bigoplus_{e \in o^{-1}(v)}m(e).\]
+  \end{enumerate}
+  The integral transform $(i^*, p_{\otimes}, o_{\oplus})$ can be represented by the diagram in ADDIM.
+\end{definition}
+
+\begin{remark}
+  While defining $i^*$ is quite straight-forward, defining $p_{\otimes}$ and $o_{\otimes}$ is more difficult because the different direction of the arrows implies that the underlying functions $p$ and $o$ must be inverted before considering the associated pullbacks. However, inverting non-invertible functions yields functions into the powersets of the original domains. Moreover, if we want to preserve the original multiplicity of arguments and messages, we have to construct inverses that go into the sets of multisets over the original domains. Hence why we need $\otimes$ and $\oplus$ to aggregate results over such multisets.
+  The significance these steps will be clarified later on in this chapter.
+\end{remark}
 
 
 
@@ -914,11 +874,35 @@ The construction in  \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: fr
 \end{remark}
 
 
-\section{Categorical graph neural networks}
+\section{A categorical approach to GNNs}
 
-\subsection{Graph neural networks are dynamic programmers}\footnote{The title of this subsection is lifted from the title of ADDREF.}
 
-\subsection{Asynchronous algorithmic alignement with cocycles}\footnote{The title of this subsection is lifted from the title of ADDREF.}
+One of them main tenets of neural algorithmic reasoning is \textit{algorithmic alignment} (\cite{xu2019can}), i.e. i.e. the presence of structural similarities between the subroutines of a particular algorithm and the architecture of the neural network selected to learn such algorithm.
+Since \cite{xu2019can} has shown that dynamic programming algorithms align very well with GNNs, and since dynamic programming encompasses a wide variety of techniques algorithms to many different domains, this puts GNNs at the forefront of neural algorithmic reasoning research (\cite{dudzik2022graph}). However, the exact link between GNNs and dynamic programming has yet to be fully formalized. In this section we present an attempt at such formalization described in \cite{dudzik2022graph}. Fainlly, we also describe the work in \cite{dudzik2024asynchronous}, which uses the formalism of cocycles to derive better implementations of GNNs that are invariant under various form of asynchrony.
+
+
+\subsection{GNNs and dynamic programming}
+
+The main link between dynamic programming and GNNs is that dynamic programming itself induces a graph structure: given a problem $x$, we can break it up into subproblems $y$ of $x$. Then, we can break up the $y$'s and so on, until we get to base cases. We can thus consider the graph with nodes corresponding to subproblems and edges $(y,x)$ corresponding to the relationships \lq $y$ is a subproblem of $x$ \rq. Finally, we can solve the problem by message passing: the simpler cases are solved first and their solutions are passed as messages along the edges so that they can be used to solve more complex cases. The architecture of a graph neural network usually implements such a message passing dynamic. However, rigorously formulating an isomorphism between the architecture of GNN and the structure an associated dynamic programming algorithm is not easy, the main obstacle being the difference in data type handled by the two mathematical processes: dynamic programming usually deals with tropical objects such as the semiring $(\mathbb{N} \cup \{\infty\}, \min, +)$, while GNNs usually deal with linear algebra over $\mathbb{R}$ (\cite{dudzik2022graph}).
+
+\cite{dudzik2022graph} proposes the formalism of integral transforms as the common structure behind both GNNs and dynamic programming. While a full formal proof is not given, the idea is illustrated by showing that both the Bellman-Ford algorithm and the message passing neural network (MPNN) architecture can be expressed with the help of integral transforms. In the formalism of \cite{dudzik2022graph}, the difference in data type is overcome by using the weakest common hypothesis: that the data and associated operations form a semiring.
+
+
+\subsubsection{Bellman-Ford algorithm}
+
+The Bellman-Ford (BF) algorithm is one of the most popular dynamic programming algorithms and is used to find the shortest paths between a single starting node and every other node in a weighted graph $G = (V, E)$. We can see every node of the graph as a subproblem and we can see the associated edges as subproblem relationships. Hence, the BF algorithm perfectly falls into place as a candidate for a GNN implementation. The algorithm operates within the tropical min-plus semiring $(R = \mathbb{N} \cup \{\infty\}, \oplus = \min, \otimes = +)$, and the data can be provided as a tuple $(d, b, w)$ of three functions into $R$. Here, $d: V \to R$ stores the current best distances of the nodes, $b: V \to R$ stores the weights of the nodes, and $w: E \to R$ stores the weights of the edges. $d$ is initalized as the function that maps the initial node to $0$ and every other node to $\infty$. The values of the functions are updated at each step of the algorithm according to the following formula, where $\mathcal{N}_u = \{v \text{ s. t. } (v,u) \in E\}$ represent the one-hop neighborhood of a node $u$:
+\[d_u \longleftarrow  \min\left(d_u, \min_{v \in \mathcal{N}_u}(d_v) + w_{v,u}\right).\]
+
+
+\cite{dudzik2022graph} propose the integral transform encoded by the polynomial span in ADDIM as the supporting structure of the algorithm. The functions $i$, $p$, and $o$ are defined as follows:
+\begin{enumerate}
+  \item $i: (V + E) + (V + E) \to V + (V + E)$ acts as the identity on the first $V$ and on the second $V + E$ pair, whereas maps the edges of the first $E$ to their sources;
+  \item $p: (V + E) + (V + E) \to V + E$ just collapses the two copies of $V + E$;
+  \item $o$ acts as the target function on the $E$ and as the identity on $V$.
+\end{enumerate}
+It is argued in the paper that the whole integral transform acts as step of the algorithm, carrying the data in $(d, b, w)$ to the update function $d$. Let's examine each step: the input pullback extracts the distances the sources of every edge; the argument pushforward computes the weights of the paths from each node to the neighboring nodes (the weight of each node is treated as the weight of a self-edge in this case); finally, the message pushforward selects the shortest paths among the ones studied by the argument pushforward. 
+Hence, the simple polynomial span in ADDIM successfully encode the whole BP algorithm without any information loss or ad hoc choice. 
+
 
 
 
@@ -1299,7 +1283,8 @@ The ADNI classifier model also shows very promising results which are on par wit
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAPHY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{alpha}
-{\footnotesize \bibliography{references}}
+%{\footnotesize \bibliography{references}}
+{\bibliography{references}}
 \rhead[\fancyplain{}{\bfseries \:Bibliography}]{\fancyplain{}{\bfseries\thepage}} 
 \addcontentsline{toc}{chapter}{Bibliography}
 
