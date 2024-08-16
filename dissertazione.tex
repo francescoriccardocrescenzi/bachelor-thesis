@@ -874,14 +874,14 @@ The construction in  \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: fr
 \end{remark}
 
 
-\section{A categorical approach to GNNs}
+\section{Algorithmic alignment: GNNs and dynamic programming}
 
 
 One of them main tenets of neural algorithmic reasoning is \textit{algorithmic alignment} (\cite{xu2019can}), i.e. i.e. the presence of structural similarities between the subroutines of a particular algorithm and the architecture of the neural network selected to learn such algorithm.
-Since \cite{xu2019can} has shown that dynamic programming algorithms align very well with GNNs, and since dynamic programming encompasses a wide variety of techniques algorithms to many different domains, this puts GNNs at the forefront of neural algorithmic reasoning research (\cite{dudzik2022graph}). However, the exact link between GNNs and dynamic programming has yet to be fully formalized. In this section we present an attempt at such formalization described in \cite{dudzik2022graph}. Fainlly, we also describe the work in \cite{dudzik2024asynchronous}, which uses the formalism of cocycles to derive better implementations of GNNs that are invariant under various form of asynchrony.
+Since \cite{xu2019can} has shown that dynamic programming algorithms align very well with GNNs, and since dynamic programming encompasses a wide variety of techniques algorithms to many different domains, this puts GNNs at the forefront of neural algorithmic reasoning research (\cite{dudzik2022graph}). However, the exact link between GNNs and dynamic programming has yet to be fully formalized. In this section we present an attempt at such formalization described in \cite{dudzik2022graph}. Fainlly, we also describe the work in \cite{dudzik2024asynchronous}, which uses the formalism of cocycles to derive better implementations of GNNs that are invariant under various form of asynchrony\footnote{While much of the work described in \cite{dudzik2024asynchronous} does not fall under the unbrella of applied category theory, we still mention it because on its close link with the work of \cite{dudzik2022graph} and the ideas of algorithmic alignment. Hopefully, future work will explore the intersection between this work and category theory.}.
 
 
-\subsection{GNNs and dynamic programming}
+\subsection{Integral transforms for GNNs and dynamic programming}
 
 The main link between dynamic programming and GNNs is that dynamic programming itself induces a graph structure: given a problem $x$, we can break it up into subproblems $y$ of $x$. Then, we can break up the $y$'s and so on, until we get to base cases. We can thus consider the graph with nodes corresponding to subproblems and edges $(y,x)$ corresponding to the relationships \lq $y$ is a subproblem of $x$ \rq. Finally, we can solve the problem by message passing: the simpler cases are solved first and their solutions are passed as messages along the edges so that they can be used to solve more complex cases. The architecture of a graph neural network usually implements such a message passing dynamic. However, rigorously formulating an isomorphism between the architecture of GNN and the structure an associated dynamic programming algorithm is not easy, the main obstacle being the difference in data type handled by the two mathematical processes: dynamic programming usually deals with tropical objects such as the semiring $(\mathbb{N} \cup \{\infty\}, \min, +)$, while GNNs usually deal with linear algebra over $\mathbb{R}$ (\cite{dudzik2022graph}).
 
@@ -894,7 +894,7 @@ The Bellman-Ford (BF) algorithm is one of the most popular dynamic programming a
 \[d_u \longleftarrow  \min\left(d_u, \min_{v \in \mathcal{N}_u}(d_v) + w_{v,u}\right).\]
 
 
-\cite{dudzik2022graph} propose the integral transform encoded by the polynomial span in ADDIM as the supporting structure of the algorithm. The functions $i$, $p$, and $o$ are defined as follows:
+\cite{dudzik2022graph} propose the integral transform encoded by the polynomial span in ADDIM as the supporting structure of the BF algorithm. The functions $i$, $p$, and $o$ are defined as follows:
 \begin{enumerate}
   \item $i: (V + E) + (V + E) \to V + (V + E)$ acts as the identity on the first $V$ and on the second $V + E$ pair, whereas maps the edges of the first $E$ to their sources;
   \item $p: (V + E) + (V + E) \to V + E$ just collapses the two copies of $V + E$;
@@ -902,6 +902,142 @@ The Bellman-Ford (BF) algorithm is one of the most popular dynamic programming a
 \end{enumerate}
 It is argued in the paper that the whole integral transform acts as step of the algorithm, carrying the data in $(d, b, w)$ to the update function $d$. Let's examine each step: the input pullback extracts the distances the sources of every edge; the argument pushforward computes the weights of the paths from each node to the neighboring nodes (the weight of each node is treated as the weight of a self-edge in this case); finally, the message pushforward selects the shortest paths among the ones studied by the argument pushforward. 
 Hence, the simple polynomial span in ADDIM successfully encode the whole BP algorithm without any information loss or ad hoc choice. 
+
+\subsubsection{Message passing neural network}
+
+A message passing neural network (MPNN) is a graph neural network described by the following equations (\cite{pmlr-v70-gilmer17a}):
+\begin{align*}
+  m_v^{t+1} &= \sum_{w \in \mathcal{N}_v}M_t(h_v^t,h_w^t,e_{v,w}),\\
+  h_v^{t+1} &= U_t(h_v^t,m_v^{t+1}),\\
+\end{align*}
+where $t$ represents the time step, and $M_t$ and $U_t$ are learned differentiable functions.
+
+
+\cite{dudzik2022graph} argues that an MPNN can be implemented as the integral transform associated with the polynomial span of ADDIM, with an extra MLP, as show in ADDIM. Here,
+\begin{enumerate}
+  \item $i$ sends the first $E$ to $1$, it acts as source and target on the second $E$ and third $E$ respectively, and it acts as the identity on the fourth $E$;
+  \item $p$ collapses four $E$'s into one;
+  \item $o$ acts as the target function.
+\end{enumerate}
+In the associated integral transform, $i^*$ gathers graph, features, node features and edge features, $p_{\otimes}$ "projects" the such features on the edges, the MLP combines them, and, finally, $o_{\oplus}$ sends them to the right target.
+
+
+Although not a perfect representation of the target architecture (remember the extra MLP), the polynomial span in ADDIM can be used to inform the design of new architectures which are obtained by simple manipulations of the arrows or objects in the diagram. For instance, \cite{dudzik2022graph} uses the integral transform formalism they introduce to investigate possible performance improvements on CLRS benchmark tasks (\cite{velivckovic2022clrs}) brought by considering messages that reduce over intermediate nodes. It is shown that this architecture leads to better average performance on these tasks, which is a result of better algorithmic alignment.
+
+
+\subsection{Asynchronous algorithmic alignment}
+
+\cite{dudzik2024asynchronous} derives conditions under which both algorithms and synchronous GNNs are invariant under asynchronous execution. This is relevant because, as stated in the paper, in many dynamic programming tasks modeled by graphs, only small parts of the aforementioned graphs are changed at each step. A synchronously executed GNN that is trained on these tasks must learn the identity function many times over, which leads to brittleness and wasted computational resources. However, many algorithms are invariant under asynchronous execution of some of its steps. Implementing these algorithms as synchronous GNNs that are invariant under various forms of asynchronous execution leads to better algorithmic alignment and thus more efficient learning.
+
+The authors of \cite{dudzik2024asynchronous} revise the model explored in \cite{dudzik2022graph} to include a message function $\psi$ that generates messages based on gathered arguments: see ADDIM for the update diagram. Moreover, the authors argue that it is best to consider GNNs where every graph component that has a persistent state is elevated to the status of node, while transient computations should be carried out along edges. The resulting GNN can be described by the diagram in ADDIM, where $\phi$ is the update function that updates the persistent state of each node, while $\delta$ is the function that computes the arguments of the message function.
+
+It is argued in \cite{dudzik2024asynchronous} that invariance under asynchrony can be modeled by giving both arguments and messages monoidal structures. For instance, let $(M, 1, \cdot)$ be the message monoid and let $(A, 0, +)$ be the argument monoid. Then, if $S$ is the set of persistent states, we can model state update and argument generation as a function $M \times S \to S \times A$ which maps $(m,s) \mapsto (m \bullet s, \delta_m(s))$. One way toget invariance under asynchorny in message aggregation is to define $\bullet$ as a monoidal action of $M$ on $S$. However, we must make sure that argument generation is compatible with the unitality and associativity equations of the action. This can only happen if $\delta: m \mapsto \delta_m$ is a $1$-cocycle.
+
+\begin{definition}[$1$-cocycle]
+  \label{def: cocycle}
+  A map $\delta: M \to [S,A]$ is a $1$-cocycle if and only if the following are satisfied:
+  \begin{enumerate}
+    \item $\delta_1(s) = 0$ for all $s \in S$;
+    \item $\delta_{n \cdot m}(s) = \delta_{n}(m \cdot s) + \delta_m(s)$ for all $s \in S$.
+  \end{enumerate} 
+\end{definition}
+
+\begin{proposition}
+  The state update function $\delta$ described above is asynchronous with respect to message passing if and only if it is a $1$-cocycle.
+\end{proposition}
+
+\cite{dudzik2024asynchronous} also proves the following.
+
+\begin{proposition}
+  Under the hypotheses described above, a single-input message function $\psi$ supports asynchronous invocation if and only if $\psi$ is a homomorphism of monoids.
+\end{proposition}
+
+We will not describe the whole formalism of \cite{dudzik2024asynchronous}, but we will show (without proof) its implications on GNN archietcture design. 
+
+\begin{example}
+  Consider the GNN architecture:
+  \[x_u' = \phi\left(x_u, \bigoplus_{v \in \mathcal{N}_u}\psi(x_{u},x_{v})\right),\]
+  where $\oplus$ is a message aggregator function. The authors of \cite{dudzik2024asynchronous} derive conditions under which this architecture is invariant under asynchronies in message aggregation, node update, and argument generation.
+
+
+  The GNN is trivially invariant under asynchronous message aggregation if messages $(M,0,\oplus)$ are given a commutative monoidal structure. Invariance under asynchronies in node updates is obtained by selecting an update function $\phi$ which sastifies the associative law $\phi(s,m \oplus n) = \phi(\phi(s,m),n)$ for all $m,n \in M$ and for all $s \in S$. Finally, invariance under argument generation is obtained if $\phi$ satisfies the $1$-cocycle equations (\textit{Def. \ref{{def: cocycle}}}). \cite{dudzik2024asynchronous} gives sufficient conditions that ensure that the $1$-cocycle equations as well as the associative law are true: it suffices that $M=A=S$ and that $\phi=\oplus$ is idempotent.
+\end{example}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
