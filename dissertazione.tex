@@ -19,7 +19,7 @@
 \usepackage{amsthm}
 \usepackage{mathabx}
 
-\usepackage[left=2cm,right=2cm]{geometry}
+\usepackage[left=2cm,right=2cm,bottom=3cm]{geometry}
 
 
 \hyphenation{pa-ra-me-tric}
@@ -46,8 +46,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% DEDICATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\setlist[itemize]{noitemsep}
-\setlist[enumerate]{noitemsep}
+\setlist[itemize]{nosep}
+\setlist[enumerate]{nosep}
 
 \begin{titlepage}
 \thispagestyle{empty}                   
@@ -338,7 +338,7 @@ If we take a parametrized category $\mathbf{Para}_\bullet(\mathcal{C})$ and we r
 
 \subsection{Optics}
 
-Modelling bidirectional flows of information is not only useful in machine learning, but also in game theory, database theory, and more. As such, categorical tools for bidirectionality have been sought after for a long time: in particular, the greatest deal of efforts has been devoted to developing lens theory. Lenses have then been generalized into optics (see e.g. \cite{riley2018categories}) to subsume other tools such as prisms and traversals into the same framework. Finally, there have also been various attempts at generalizing optics (see e.g. \cite{clarke2024profunctor} for a definition of mixed optics). We will introduce lenses and optics, and focus on the generalization of optics that appears (to us) to be the most versatile: weighted optics (first introduced in \cite{gavranovic2024fundamental}). 
+Modelling bidirectional flows of information is not only useful in machine learning, but also in game theory, database theory, and more. As such, categorical tools for bidirectionality have been sought after for a long time: in particular, the greatest deal of efforts has been devoted to developing lens theory. Lenses have then been generalized into optics (see e.g. \cite{riley2018categories}) to subsume other tools such as prisms and traversals into the same framework. Finally, there have also been various attempts to generalize optics (see e.g. \cite{clarke2024profunctor} for a definition of mixed optics). We will introduce lenses and optics, and focus on the generalization of optics that appears (to us) to be the most versatile: weighted optics (first introduced in \cite{gavranovic2024fundamental}). 
 
 
 As stated in \cite{gavranovic2024fundamental}, there is no standard definition of lens, and different authors opt for different \textit{ad hoc} definitions that best suit their purposes. We will borrow the perspective of \cite{cruttwell2022categorical} and give the following definition.
@@ -429,7 +429,8 @@ Modelling gradient-based learning obviously requires a setting where differentia
 The standard approach to this problem (developed in the last twenty years) involves the explicit definition of two kidns of differential categories: Cartesian differential categories (first introduced in \cite{blute2006differential}) and Cartesian reverse differential categories (first introduced by \cite{cockett2019reverse}). The former allow for forward differentiation, while the latter allow for reverse differentiation. We will omit the defining axioms for the sake of brevity, but the reader can find complete definitions in \cite{cockett2019reverse}.
 
 \begin{definition}[Cartesian differential category]
-  A Cartesian differential category (CDR) $\mathcal{C}$ is a Cartesian left-additive category where a differential combinator $\mathrm{D}$ is defined. Such differential combinator must take a morphism $f: A \to B$ and return a morphism $\mathrm{D}[f]: A \times A \to B$, which is known as the derivative of $f$. The combinator $\mathrm{D}$ must satisfy a number of axioms. 
+  \label{def: cdc}
+  A Cartesian differential category (CDC) $\mathcal{C}$ is a Cartesian left-additive category where a differential combinator $\mathrm{D}$ is defined. Such differential combinator must take a morphism $f: A \to B$ and return a morphism $\mathrm{D}[f]: A \times A \to B$, which is known as the derivative of $f$. The combinator $\mathrm{D}$ must satisfy a number of axioms. 
 \end{definition}
 
 \begin{definition}[Cartesian reverse differential category]
@@ -577,7 +578,7 @@ Since parametric lenses can easily be implemented functionally and without side 
 
 The parametric optic framework discussed in this chapter is very promising, but there is still a lot of work that needs to be done so that it can reach its full potential. For instance, \cite{gavranovic2024fundamental} conjectures that weighted optics can be used in its full generality to model differentiation in cases which are not covered by lenses. For instance, lenses cannot model AD algorithms that do not use gradient checkpointing, while weighted optics are conjectured to be able to do so. \cite{gavranovic2024fundamental} also suggests investigating locally graded categories as potential replacements for actegories, and also investigating the applications of parametric optics to meta-learning, i.e. deep learning where the optimizers themselves are learned. Moreover, \cite{cruttwell2022categorical} conjectures that some of the axioms of CRDC may be used to model higher order optimization algorithms. Finally, as suggested by \cite{cruttwell2022categorical}, hopefully future work will allow the parametric optic framework to encompass non-gradient based optimizers such as the ones used in probabilistic learning. See \cite{shiebler2021category} for more on this topic.
 
-We conclude this chapter by discussing three other directions of machine learning reasearch that are closely related to the framework of parametric optics.
+We conclude this chapter by discussing three other directions of machine learning research that are closely related to the framework of parametric optics.
   
 
 \subsection{Learners}
@@ -693,10 +694,10 @@ Among the main insights of \cite{elliott2018simple}, it is stated that derivativ
 Classical computer science focuses on discovering algorithms, i.e. ordered sequences of steps which operate in precisely set, idealized conditions and have strong guarantees of correctness due to their exact mathematical formulations. Neural networks, on the other hand, are able to work in messy, real-world conditions, but offer very so few guarantees of correctness that their performance is often described as \textit{unreasonably} good. Moreover, whereas algorithms generalize very well (most software engineers will only need a few dozen algorithms in their entire career), neural networks are often completely helpless when pitted against out of distribution inputs. Hence, algorithms and neural networks can be seen as complementary opposites (\cite{velivckovic2021neural}, \cite{velivckovic2022clrs}).
 
 
-Recent attempts group under then label of \textit{neural algorithmic reasoning} (see \cite{velivckovic2021neural} for a very short introduction to the subject) have tried to get the best of both worlds by training neural networks to apply algorithms (see e.g \cite{ibarz2022generalist}). The CLRS benchmark (introduced by \cite{velivckovic2022clrs}) uses graphs to represent the computations associated with a few classical algorithms from the famous CLRS introductory textbook so that graph neural networks (GNNs) can be trained to learn these algorithms. The benchmark has spurred a large amount of research in this direction, with very promising results.
+Recent attempts going under the label of \textit{neural algorithmic reasoning} (see \cite{velivckovic2021neural} for a very short introduction to the subject) have tried to get the best of both worlds by training neural networks to execute algorithms (see e.g \cite{ibarz2022generalist}). The CLRS benchmark (introduced by \cite{velivckovic2022clrs}) uses graphs to represent the computations associated with a few classical algorithms from the famous CLRS introductory textbook (\cite{cormen2022introduction}) so that graph neural networks (GNNs) can be trained to learn these algorithms. The benchmark has spurred a large amount of research in this direction, with very promising results.
 
 
-More generally, linking machine learning to classical informatics may hold the key for interesting advances. For example, recovering neural networks as parametric versions of known algorithms may help imbue the ever chaotic field of machine learning with new-found conceptual clarity. Moreover, such a link could even help develop new neural network architectures by taking inspiration from well-researched classical notions. In this chapter we will illustrate two lines of inquiry which use category theory to build such a bridge: \textit{categorical deep learning} and an interesting categorical approach to GNNs. Before proceeding with such topics, we will go on a short tangent categorical tangent regarding (co)algebras and the integral transform.
+More generally, linking machine learning to classical computer science may unlock interesting advances. For example, recovering neural networks as parametric versions of known algorithms may classify existing architectures in a conceptually clear manner and may even help develop new neural network architectures by taking inspiration from well-researched classical notions. In this chapter, we illustrate two lines of inquiry which use category theory to build such a bridge: \textit{categorical deep learning} and an interesting categorical approach to \textit{algorithmic alignment}. Before treating such topics, we will go on a short tangent categorical tangent regarding (co)algebras and the integral transform.
 
 
 
@@ -706,17 +707,14 @@ More generally, linking machine learning to classical informatics may hold the k
 \subsection{(Co)algebras}
 \label{subsec: algebras}
 
-Algebras and coalgebras are a categorical formalization of the principles of induction and coinduction. Induction and coinduction are fundamental to computer science because the allow us to give precise definitions for a very large number of data structures, and because they allow us to formalize the algorithms that operate on these structure within the schemas of recursion and corecursion. We will touch on (co)algebras very briefly and we encurage the interested reader to refer to \cite{jacobs1997tutorial} and \cite{wisbauer2008algebras} for further detail.
+Algebras and coalgebras are a categorical formalization of the principles of induction and coinduction. Induction and coinduction are fundamental to computer science because they allow us to give precise definitions for many data structures and to formalize recursive and corecursive algorithms on such structures. We will touch on (co)algebras very briefly but we refer interested readers to \cite{jacobs1997tutorial} and \cite{wisbauer2008algebras} for further detail.
 
 \begin{definition}[(Co)algebra over an endofunctor]
   \label{def: endalg}
   Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(F(A),A)$. A coalgebra is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(A,F(A))$. In both cases $A$ is known as carrier set and $a$ as structure map.
 \end{definition}
 
-(Co)algebras can also be defined on monads: the only difference (co)algebras over an endofunctor and (co)algebras over a monad is that the latter also need to be compatbile with the monad structure, i.e. satisfy commutative diagrams that represent coherence conditions (see \cite{gavranovicposition}).
-
-
-(Co)algebras over the same functor can be given a categorical structure by using the following notion of homomorphism.
+(Co)algebras can also be defined on monads: the only difference between (co)algebras over an endofunctor and (co)algebras over a monad is that the latter also need to be compatible with the monad structure, i.e. satisfy commutative diagrams that represent coherence conditions (see \cite{gavranovicposition}). (Co)algebras over the same functor can be given a categorical structure by using the following notion of homomorphism.
 
 \begin{definition}[Homomorphisms of (co)algebras over an endofunctor]
   Let $(A,a)$ and $(B,b)$ be algebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. An algebra homomorphism $(A,a)\to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
@@ -725,21 +723,25 @@ Algebras and coalgebras are a categorical formalization of the principles of ind
   Now suppose $(A,a)$ and $(B,b)$ are coalgebras. A homomorphism between them is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
 \end{definition}
 
-The main intutition behind algebras and coalgebras is the following: the underlying functor defines a signature for the (co)algebraic structure; the structure of an algebra is a constructor that takes data from $F(A)$ and uses it to build data from $A$, whereas the structure of a coalgebra observes data from $A$ and produces an observation in the form of data from $F(A)$; (co)algebra homomorphism are arrows that preserve the underlying structure. Consider the following clarifying examples from \cite{gavranovicposition}\footnote{In the examples below we use polynomial and exponential expressions to define endofunctors over $\mathbf{Set}$. In this context, $X$ is the argument of the functor, $\times$ is the Cartesian product, $+$ is the disjoint union, $\langle f,g \rangle$ is the pairing induced by $\times$, $[f,g]$ is the pairing induced by $+$, and $B^A$ is the set of functions $A \to B$.}.
+The main intuition behind the notions of algebra and coalgebra is the following: the underlying functor defines a signature for the (co)algebraic structure; the structure of an algebra is a constructor that takes data from $F(A)$ and uses it to build data from $A$, whereas the structure of a coalgebra observes data from $A$ and produces an observation in the form of data from $F(A)$; (co)algebra homomorphism are arrows that preserve the underlying structure. Consider the following clarifying examples from \cite{gavranovicposition}.
+
+\begin{remark}
+  In the examples below we use polynomial and exponential expressions to define endofunctors over $\mathbf{Set}$. In this context, $X$ is the argument of the functor, $\times$ is the Cartesian product, $+$ is the disjoint union, $\langle f,g \rangle$ is the pairing induced by $\times$, $[f,g]$ is the pairing induced by $+$, and $B^A$ is the set of functions $A \to B$. The $\times$ operator is assumed to take precedence over the $+$ operator. Similarly, the exponential operator is assumed to take precedence over the $\times$ operator. 
+\end{remark}
 
 
 \begin{example}[Lists]
   \label{ex: lists}
-  Let $A$ be a set. Consider the polynomial endofunctor $1 + A \times X: \mathbf{Set} \to \mathbf{Set}$. If $\mathsf{List}(A)$ is the set of $A$-labeled lists, $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ is an algebra over $1 + A \times X$. Here, $\mathsf{Nil}: 1 \to {List}(A)$ is the map which takes the unique object of $1$ and returns the empty list, while $\mathsf{Cons}: A \times \mathsf{List}(A) \to \mathsf{List}(A)$ is the map which takes an element $a \in A$ and a list $l$ of elements of $A$ and returns the concatenated list $l \cup \{a\}$. This described lists in $\mathsf{List}(A)$ inductively as object formed by concatenating elements of $A$ to other such lists. The base case is the empty list.
+  Let $A$ be a set. Consider the endofunctor $1 + A \times X: \mathbf{Set} \to \mathbf{Set}$. If $\mathsf{List}(A)$ is the set of $A$-labeled lists, $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ is an algebra over $1 + A \times X$. Here, $\mathsf{Nil}: 1 \to {List}(A)$ is the map which takes the unique object of $1$ and returns the empty list, while $\mathsf{Cons}: A \times \mathsf{List}(A) \to \mathsf{List}(A)$ is the map which takes an element $a \in A$ and a list $l$ of elements of $A$ and returns the concatenated list $l \cup \{a\}$. The algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ describes lists in $\mathsf{List}(A)$ inductively as object formed by concatenating elements of $A$ to other lists in $\mathsf{List}(A)$. The base case is the empty list.
 \end{example}
 
 \begin{example}[Mealy machines]
   \label{ex: mealy}
-  Now consider two sets $I$ and $O$ of possible inputs and outputs, respectively. Consider the endofunctor $(O \times X)^I: \mathbf{Set} \to \mathbf{Set}$.  Define $\mathsf{Mealy}_{I,O}$ as the set of Mealy machines with inputs and outputs in $I$ and $O$, respectively. Now we can consider the coalgebra $(\mathsf{Mealy}_{I,O}, \mathsf{Next})$, where $\mathsf{Next}$ is the map that takes a Mealy machine $m \in \mathsf{Mealy}_{I,O}$ and yields a function which in turn, given $i \in I$, returns the output of $m$ at $i$ and a new machine. This is a coinductive description of Mealy machines.
+  Now consider two sets $I$ and $O$ of possible inputs and outputs, respectively. Consider the endofunctor $(O \times X)^I: \mathbf{Set} \to \mathbf{Set}$.  Define $\mathsf{Mealy}_{I,O}$ as the set of Mealy machines with inputs and outputs in $I$ and $O$, respectively. Now we can consider the coalgebra $(\mathsf{Mealy}_{I,O}, \mathsf{Next})$, where $\mathsf{Next}$ is the map that takes a Mealy machine $m \in \mathsf{Mealy}_{I,O}$ and yields a function which in turn, given $i \in I$, returns the output of $m$ at $i$ and a new machine $m'$. This is a coinductive description of Mealy machines.
 \end{example}
 
 \begin{remark}
-  Notice how the description we have given of Mealy machines does not mention the internal states of these objects. This is a recurring aspect of coinductive descriptions: as argued in \cite{jacobs1997tutorial}, coinduction is best interpreted as a process where an observer track the behavior of an object from the outside, with no access to its internal state. This is very useful in machine learning because the internal state of a learning model is often unknown or uninterpretable.
+  Notice how the description we have given of Mealy machines does not mention the internal states of these objects. This is a recurring aspect of coinductive descriptions: as argued in \cite{jacobs1997tutorial}, coinduction is best interpreted as a process where an observer tracks the behavior of an object from the outside, with no access to its internal state. This is very useful in machine learning because the internal state of a learning model is often unknown or uninterpretable.
 \end{remark}
 
 The link between (co)algebras and (co)induction does not stop at the definition level. The example below shows that an algebra homomorphism can model a recursive fold procedure. A similar corecursive unfold procedure can be defined by using a coalgebra homomorphism (see \cite{gavranovicposition} for further detail).
@@ -757,11 +759,11 @@ The link between (co)algebras and (co)induction does not stop at the definition 
 The notion of (co)algebra over a functor can be generalized to the sphere $2$-categories, defining the notion of (co)algebra over a $2$-endofunctor. The basic concepts stay the same but the commutativity of the diagrams definining (co)algebra homomorphisms is relaxed into lax-commutativity. A square diagram of $1$-cells is lax-commutative if there exists a $2$-cell that carries the composition of the top and the right edge onto the composition of the left and bottom edge, as in ADDIM. Once again we refer to \cite{gavranovicposition} for further information.
 
 
-We conclude the section with the following proposition (\cite{gavranovicposition}), which shows that actegorical strong endofunctors induce $2$-endofunctors over parametric categories. We will use the theorem to study parametric versions of the endofunctors in \textit{Ex. \ref{ex: lists}} and \textit{Ex. \ref{ex: mealy}}.
+We conclude the section with the following proposition (\cite{gavranovicposition}), which shows that actegorical strong endofunctors induce $2$-endofunctors over parametric categories. We will use the proposition to study parametric versions of the endofunctors of \textit{Ex. \ref{ex: lists}} and \textit{Ex. \ref{ex: mealy}}.
 
 \begin{proposition}
   \label{prop: paraend}
-  Suppose $(\mathcal{C}, \bullet)$ is an $\mathcal{M}$-actegory and $F: \mathcal{C} \to \mathcal{C}$ is an actegorical endofunctor with strength $\sigma$. Then, $F$ induces a  $2$-functor $\mathbf{Para}(F): \mathbf{Para}_{\bullet}(\mathcal{C}) \to \mathbf{Para}_{\bullet}(\mathcal{C})$.
+  Suppose $(\mathcal{C}, \bullet)$ is an $\mathcal{M}$-actegory and $F: \mathcal{C} \to \mathcal{C}$ is an actegorical endofunctor with strength $\sigma$. Then, $F$ induces a  $2$-endofunctor $\mathbf{Para}(F): \mathbf{Para}_{\bullet}(\mathcal{C}) \to \mathbf{Para}_{\bullet}(\mathcal{C})$.
 \end{proposition}
 \begin{proof}
   Define $\mathbf{Para}(F)$ so that: 
@@ -776,13 +778,13 @@ We conclude the section with the following proposition (\cite{gavranovicposition
 \subsection{Integral transform}
 
 \begin{remark}
-  In accordance with the notation of \cite{dudzik2022graph}, we use $[A,B]$ to represent the set of $A \to B$ functions, where $A$ and $B$ are sets.
+  In accordance with the notation of \cite{dudzik2022graph} and \cite{dudzik2024asynchronous}, we use $[A,B]$ to represent the set of $A \to B$ functions, where $A$ and $B$ are sets.
 \end{remark}
 
-Suppose $(R, \oplus, \otimes)$ is a commutative semiring. An integral transform is a transformation that carries a function in $[W,R]$ to a function in $[Z,R]$ following a precise chain of steps. Integral transforms\footnote{The label integral transform refers to the fact that similar ideas can be used to write a categorical definition for familiar analytical integral transforms (\cite{golem_ph_utexas_edu}). A similar construct is also used in physics (\cite{eastwood1980cohomology}).} have been introduced by \cite{dudzik2022graph} to provide a single formalism able to describe both dynamic programming and GNNs. Integral transforms can be encoded as polynomial spans.
+Suppose $(R, \oplus, \otimes)$ is a commutative semiring. An integral transform is a transformation that carries a function in $[W,R]$ to a function in $[Z,R]$ following a precise chain of steps. Integral transforms\footnote{The label integral transform refers to the fact that similar ideas can be used to write categorical definitions for familiar analytical integral transforms (\cite{golem_ph_utexas_edu}). A similar construct is also used in physics (\cite{eastwood1980cohomology}).} have been introduced by \cite{dudzik2022graph} to provide a single formalism able to describe both dynamic programming and GNNs. Integral transforms can be encoded as polynomial spans.
 
 \begin{definition}[Polynomial span]
-  A polynomial span is a triplet $(i: X \to W,p: X \to Y,o: Y \to Z)$ of morphisms in $\mathbf{FinSet}$\footnote{$\mathbf{FinSet}$ is the category of finite sets and functions.}. $i$ is known as input, $p$ as process, $o$ as ouput. $W$ is known as input set, $X$ as argument set, $Y$ as message set, $Z$ as ouput set. We also ask that the fibers of $p$ have total orderings\footnote{Neither we nor \cite{dudzik2022graph} use this requirement but, as stated in the original paper, the requirement is useful to support functions with non-commuting arguments.}. The polynomial span $(i,p,o)$ can be graphically represented as a diagrams such as the one of ADDIM.
+  A polynomial span is a triplet $(i: X \to W,p: X \to Y,o: Y \to Z)$ of morphisms in $\mathbf{FinSet}$, the category of finite sets and functions. $i$ is known as input, $p$ as process, $o$ as ouput. $W$ is known as input set, $X$ as argument set, $Y$ as message set, $Z$ as ouput set. We also ask that the fibers of $p$ have total orderings\footnote{Neither we nor \cite{dudzik2022graph} use this requirement but, as stated in the original paper, the requirement is useful to support functions with non-commuting arguments.}. The polynomial span $(i,p,o)$ can be graphically represented as the string diagram in ADDIM.
 \end{definition}
 
 \begin{definition}[Integral transform]
@@ -798,7 +800,7 @@ Suppose $(R, \oplus, \otimes)$ is a commutative semiring. An integral transform 
 \end{definition}
 
 \begin{remark}
-  While defining $i^*$ is quite straight-forward, defining $p_{\otimes}$ and $o_{\otimes}$ is more difficult because the different direction of the arrows implies that the underlying functions $p$ and $o$ must be inverted before considering the associated pullbacks. However, inverting non-invertible functions yields functions into the powersets of the original domains. Moreover, if we want to preserve the original multiplicity of arguments and messages, we have to construct inverses that go into the sets of multisets over the original domains. Hence why we need $\otimes$ and $\oplus$ to aggregate results over such multisets.
+  Whereas defining $i^*$ is quite straight-forward, defining $p_{\otimes}$ and $o_{\otimes}$ is more difficult because the arrows $p$ and $o$ point in the wrong direction, which implies that the underlying functions must be inverted before considering the associated pullbacks. However, inverting non-invertible functions yields functions into the powersets of the original domains. Moreover, if we want to preserve the multiplicity of arguments and messages, we have to construct inverses that go into the sets of multisets over the original domains. Hence why we need $\otimes$ and $\oplus$ to aggregate results over such multisets.
   The significance these steps will be clarified later on in this chapter.
 \end{remark}
 
@@ -806,12 +808,12 @@ Suppose $(R, \oplus, \otimes)$ is a commutative semiring. An integral transform 
 
 \section{Categorical deep learning}
 
-The optic-based framework we presented in the last chapter provides a structured general-purpose compositional framework for gradient-based learning. However, such great versatility has a price: optics are unable to guide the architectural design of our models. It has been shown times and times again that a better architecture makes as much of a difference in machine learning as an algorithm with better asymptotic cost does in classical computer science. 
+The optic-based framework we presented in the last chapter provides a structured general-purpose compositional framework for gradient-based learning, but its great versatility has a price: optics are unable to guide the architectural design of our models. It has been shown times and times again that a better architecture makes as much of a difference in machine learning as an algorithm with a better asymptotic cost does in classical computer science. 
 Therefore, finding a principled mathematical framework able to guide such architectural choices is of paramount importance. 
 
 
 Designing an architecture is almost synonymous to imposing a set of constraints: for instance, convolutional layers are notoriously equivalent to translationally equivariant linear layers (ADDREF).
-Hence, it makes sense to inform the choice of architecture by informing the choice of constraint. Among the various attempts at developing a principled theory of machine learning constraints, geometric deep learning (see e.g. \cite{bronstein2021geometric}), or GDL is particularly relevant. Categorical deep learning, or CDL, which is the protagonist of this section, evolved as categorical generalization of GDL.
+Hence, it makes sense to inform the choice of architecture by informing the choice of constraint. Among the various attempts to develop a principled theory of machine learning constraints, \textit{geometric deep learning} (see e.g. \cite{bronstein2021geometric}), or GDL is particularly relevant. Categorical deep learning, or CDL, evolved as categorical generalization of GDL (\cite{gavranovicposition}).
 
 
 \subsection{From GDL to CDL}
@@ -825,19 +827,19 @@ Geometric deep learning focuses on equivariance constraints defined with respect
 The GDL approach prescribes that a desired constraint should be expressed in terms of equivariance with respect to group action so that associated equations can be derived. Solving such equations usually implies tying weights, which reduces the net number of parameters in the models and provides the various advantages (ADDREF, ADDREF, ADDREF) afforded by equivariance.
 
 
-GLD and has seen a lot of success in contexts where data transformations can be expressed in group-theoretical terms. Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (\cite{gavranovicposition}). Moreover, as highlighted in \cite{gavranovicposition}, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented since solving the equations associated with a constraint might be extremely challenging.  
+GLD has been successfully applied in contexts where data transformations can be expressed in group-theoretical terms (ADDREF). Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (\cite{gavranovicposition}). Moreover, as highlighted in \cite{gavranovicposition}, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented since solving the equations associated with a constraint might be extremely challenging.  
 Categorical deep learning, introduced by \cite{gavranovicposition}, attempts to solve the aforementioned problems using category theory\footnote{As stated in \cite{bronstein2021geometric}, GDL is inspired by the \textit{Erlangen Programme}, which unified geometry around the notion of invariant at the end of the nineteenth century. Since category theory can be seen as an extension of the \textit{Programme} (as we already remarked in the introduction to this thesis), it is only natural to attempt to generalize GDL by categorical means.} to generalize the notion of equivariance and to tie specific constraints to specific architectures.
 
 \begin{remark}
   At the moment, to the best of our knowledge,  \cite{gavranovicposition} is the only publicly available paper that discusses the ideas of CDL. 
 \end{remark}
 
-The main insight of categorical deep learning is that group actions can be represented as algebras over the group action monads, and that maps that are equivariant with respect to these actions are homomorphisms between these algebras. Hence, GDL can be generalized by taking into consideration (co)algebras over other monads and also generic endofcuntors. Hence, CDL generalizes GDL into a theory of (co)algebras over endofunctors and monads, yielding, in the words of the authors of \cite{gavranovicposition}, as a "theory of all architectures". The last statement might be a bit too optimistic, since the only architecture examined at the moment are recurrent and recursive neural networks, but the results shown in \cite{gavranovicposition} are very promising and, hopefully, future work will widen the scope of CDL to include derivations for other architectures.
+The main insight of CDL is that group actions can be represented as algebras over the group action monads, and that maps that are equivariant with respect to these actions are homomorphisms between these algebras. Hence, GDL can be generalized by taking into consideration (co)algebras over other monads and endofcuntors. CDL generalizes GDL into a theory of (co)algebras over endofunctors and monads, yielding a "theory of all architectures" (\cite{gavranovicposition}). This profecy has not yet been fulfilled, since only a few architectures have been studied within the framework of CDL at the moment of writing this thesis. However, the results shown in \cite{gavranovicposition} are very promising and, hopefully, future work will widen the scope of CDL to include derivations for more architectures.
 
-The following proposition and the associated example show how exactly CDL subsumes GDL.
+The following proposition and the subsequent example show how exactly CDL subsumes GDL.
 
 \begin{proposition}
-  Let $(G,e,\cdot)$ be a group. Consider the endomorphism $G \times -: \mathbf{Set} \to \mathbf{Set}$ which maps $S \mapsto G \times X$ and $f \mapsto G \times f$. $G$ can be given a monad structure using the natural transformations $\eta$, with components $\eta_S: s \mapsto (e,s)$, and $\mu$, with components $(g,h,s) \mapsto (g \times h, s)$. 
+  Let $(G,e,\cdot)$ be a group. The endofunctor $G \times X: \mathbf{Set} \to \mathbf{Set}$ can be given a monad structure using the natural transformations $\eta$, with components $\eta_S: s \mapsto (e,s)$, and $\mu$, with components $(g,h,s) \mapsto (g \times h, s)$. 
   The monad $(G \times -, \eta, \mu)$ can serve as a signature for $G$-actions. The actions themselves can be recovered by considering algebras $(S,\ast)$ for the monad, and, given two actions $(S,\ast)$ and $(T,\star)$, an associated equivariant map $f: S \to T$ is a $(S,\ast) \to (T,\star)$ monad algebra homomorphism.
 \end{proposition}
 \begin{proof}
@@ -847,60 +849,60 @@ The following proposition and the associated example show how exactly CDL subsum
 \begin{example}[Linear equivariant layer]
   \label{ex: translationaction}
   Consider a carrier set $S = \mathbb{R}^{\mathbb{Z}_2}$, which can be seen as a pair of pixels. Consider the translation action $(i \ast s)(j) = s(i-j)$ of $G = \mathbb{Z}_2$ on $S$, which can be seen as swapping the pixels.
-  We want to find a linear map $f: S \to S$ which is equivariant with respect to the action. Imposing the equivariance constraints as equations on the entries of the matricial representation $W_f \in \mathbb{R}^{2 \times 2}$ of the map, we can prove that $f$ is equivariant if and only if $W_f$ is symmetric.
+  We want to find a linear map $f: S \to S$ which is equivariant with respect to the action. Imposing the equivariance constraints as equations on the entries of the matricial representation $W_f \in \mathbb{R}^{2 \times 2}$ of the map, we can prove that $f$ is equivariant if and only if $W_f$ is symmetric (\cite{gavranovicposition}).
 \end{example}
 
 
 \subsection{(Co)inductive definitions for RNNs}
 
-As seen in \textit{Ex. \ref{ex: translationaction}}, the formalism of CDL subsumes the formalism of GDL, but the the difference between the two is not a simple matter of notation: CDL is much more general. The most significant piece of novel contribution delineated in \cite{gavranovicposition} is the use of (co)algebras and (co)algebra homomorphisms over parametric categories to define (co)inductively recurrent and recursive neural networks. (Co)algebras are used to define cells, whereas the associated homomorphisms provide the weight-sharing mechanics used to unroll them. Let us build on \textit{Ex. \ref{ex: lists}} and \textit{Ex. \ref{ex: listfold}}, as is done in \cite{gavranovicposition}.
+As seen in \textit{Ex. \ref{ex: translationaction}}, the formalism of CDL subsumes the formalism of GDL, but the difference between the two is not a simple matter of notation: CDL is much more general. The most significant piece of novel contribution delineated in \cite{gavranovicposition} is the use of (co)algebras and (co)algebra homomorphisms over parametric categories to (co)inductively define recurrent neural networks (GNNs) and recursive neural networks. (Co)algebras are used to define cells, whereas the associated homomorphisms provide the weight-sharing mechanics used to unroll them. Let us build on \textit{Ex. \ref{ex: lists}} and \textit{Ex. \ref{ex: listfold}}, as is done in \cite{gavranovicposition}.
 
 \begin{example}[Folding recurrent neural network cell]
   \label{ex: frnncell}
-  Consider the endofunctor $1 + A \times X: \mathbf{Set} \to \mathbf{Set}$ from \textit{Ex. \ref{ex: lists}}. Consider the Cartesian action of $\mathbf{Set}$ on itself and associate the following actegorical strength to the functor: $\sigma_{P,X}(p,\mathrm{inl}) = \mathrm{inl}$ and  $\sigma_{P,A}(p,\mathrm{inr}(x,x')) = \mathrm{inr}((p,x), (p,x'))$. Now that the functor is actegorical strong, we can use \textit{Prop. \ref{prop: paraend}} to construct an endofunctor $\mathbf{Para}(1 + A \times X): \mathbf{Para}_{\bullet}(\mathbf{Set}) \to \mathbf{Para}_{\bullet}(\mathbf{Set})$. Consider an algebra $(S,(P,\mathsf{Cell}))$ for this functor. Via the isomorphism $P \times (1 + A \times X) \cong P + P \times A \times X$, we deduce that $\mathsf{Cell} = [\mathsf{Cell}_0, \mathsf{Cell}_1]$, where $\mathsf{Cell}_0: P \to S$ and  $\mathsf{Cell}_0: P \to S$. We can interpret $\mathsf{Cell}_0$ and $\mathsf{Cell}_1$ as folding recurrent neural network cells: $\mathsf{Cell}_0$ provides the initial state based on its parameter and $\mathsf{Cell}_1$ takes in the old state, a parameter, and an input, which are then used to return a new state (ADDIM).
+  Consider the endofunctor $1 + A \times X: \mathbf{Set} \to \mathbf{Set}$ from \textit{Ex. \ref{ex: lists}}. Consider the Cartesian action of $\mathbf{Set}$ on itself and associate the following actegorical strength to the functor: $\sigma_{P,X}(p,\mathrm{inl}) = \mathrm{inl}$ and  $\sigma_{P,A}(p,\mathrm{inr}(x,x')) = \mathrm{inr}((p,x), (p,x'))$. Now that the functor is actegorical strong, we can use \textit{Prop. \ref{prop: paraend}} to construct an endofunctor $\mathbf{Para}(1 + A \times X): \mathbf{Para}_{\bullet}(\mathbf{Set}) \to \mathbf{Para}_{\bullet}(\mathbf{Set})$. Consider an algebra $(S,(P,\mathsf{Cell}))$ for this functor. Via the isomorphism $P \times (1 + A \times X) \cong P + P \times A \times X$, we deduce that $\mathsf{Cell} = [\mathsf{Cell}_0, \mathsf{Cell}_1]$, where $\mathsf{Cell}_0: P \to S$ and  $\mathsf{Cell}_1: P \times A \times S \to S$. We can interpret $\mathsf{Cell}_0$ and $\mathsf{Cell}_1$ as folding recurrent neural network cells: $\mathsf{Cell}_0$ provides the initial state based on its parameter and $\mathsf{Cell}_1$ takes in the old state, a parameter, and an input, which are then used to return a new state (ADDIM).
 \end{example}
 
 \begin{example}[Unrolling of a folding recurrent neural network]
   \label{ex: frnnunroll}
-  Use \textit{Prop. \ref{prop: embeddingth}} to embed the list algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ from \textit{Ex. \ref{ex: lists}} as an algebra over the endofunctor $\mathbf{Para}(1 + A \times X)$ from the previous example. Now consider an algebra homomorphism $(P,f): (\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}]) \to (S,(P,\mathsf{Cell}))$. Since we are working with algebras over a $2$-endofunctor, we also need to specify a $2$-cell that makes the diagram in ADDIM lax-commutative. Using the weight-tying reparameterization $\Delta_P$, yields the lax commutative diagram in ADDIM, which uniquely identifies $f$ as the fold function which takes a list of inputs in $A$ and unrolls a folding recurrent neural network that reads such inputs. The weight-tying reparametrization makes sure that each cell of the unrolled network uses the same parameters (see ADDIM for a graphical representation). 
+  Use \textit{Prop. \ref{prop: embeddingth}} to embed the list algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ from \textit{Ex. \ref{ex: lists}} as an algebra over the endofunctor $\mathbf{Para}(1 + A \times X)$ define in \textit{Def. \ref{ex: frnncell}}. Now consider an algebra homomorphism $(P,f): (\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}]) \to (S,(P,\mathsf{Cell}))$. Since we are working with algebras over a $2$-endofunctor, we also need to specify a $2$-cell that makes the diagram in ADDIM lax-commutative. Using the weight-tying reparameterization $\Delta_P$ yields the lax commutative diagram in ADDIM, which uniquely identifies $f$ as the fold function which takes a list of inputs in $A$ and unrolls a folding recurrent neural network that reads such inputs. The weight-tying reparametrization makes sure that each cell of the unrolled network uses the same parameters (see ADDIM for a graphical representation). 
 \end{example}
 
 
-The construction in  \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: frnnunroll}} constitutes a precise mathematical link between the classical data structure of lists and the machine learning construct of folding RNN. Similarly, \cite{gavranovicposition} constructs recursive neural networks building upon classical binary trees and, even more interestingly, complete RNNs are build upon the coalgebra of \textit{Ex. \ref{ex: mealy}}, which reveals an unexpected link between RNNs and Mealy machines. This begs the question: if Mealy machines generalize to recurrent neural networks, what do Moore machines generalize to? It is argued in the paper that they generalize to a variant of RNN where different cells (which share the same weight) are used for state update and output production. ADDIM shows how different classical concepts generalize to difference NN cells. Hopefully, more work in this direction will lead to new NN arhictecutres inspired from other classical concepts.
+The construction in  \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: frnnunroll}} constitutes a precise mathematical link between the classical data structure of lists and the machine learning construct of folding RNNs. Similarly, \cite{gavranovicposition} recovers recursive neural networks by building upon classical binary trees and, even more interestingly, complete RNNs are recovered from the coalgebra of \textit{Ex. \ref{ex: mealy}}, which reveals an interesting link between RNNs and Mealy machines. This begs the question: if Mealy machines generalize to recurrent neural networks, what do Moore machines generalize to? It is argued in the paper that they generalize to a variant of RNN where different cells (which share the same weights) are used for state update and output production. ADDIM shows how different classical concepts generalize to different NN cells. Hopefully, more work in this direction will lead to new NN architectures inspired from other classical concepts.
 
 \begin{remark}[CDL and optic-based learning]
-  In all the cases discussed above, the (co)algebra homomorphism map returns parametric maps $(P,\mathsf{model})$, which we can interpreted as untrained NN models. We can feed these maps into the $\mathbf{R}_{\mathcal{C}}$ functor associated with a generalized Cartesian reverse differential category\footnote{The examples illustrated in this section have been developed in $\mathbf{Set}$, but we see no reason why they couldn't be specialized to an appropriate CRDC.} to augment them with their reverse derivative. The framework of parametric lenses described in 
-  \textit{Sec. \ref{sec: opticbasedlearning}} can then be used to train these networks. CDL and optic-based learning are thus perfectly compatible, and even complement each other.
+  In all the examples discussed above, the (co)algebra homomorphisms in question return parametric maps $(P,\mathsf{model})$, which we can interpret as untrained NN models. We can feed these maps into the $\mathbf{R}_{\mathcal{C}}$ functor associated with a generalized Cartesian reverse differential category\footnote{The examples illustrated in this section have been developed in $\mathbf{Set}$, but we see no reason why they couldn't be specialized to an appropriate CRDC.} to augment them with their reverse derivative. The framework of parametric lenses described in 
+  \textit{Sec. \ref{sec: opticbasedlearning}} can then be used to train these networks. CDL and optic-based learning are thus compatible and even complementary.
 \end{remark}
 
 
 \section{Algorithmic alignment: GNNs and dynamic programming}
 
 
-One of them main tenets of neural algorithmic reasoning is \textit{algorithmic alignment} (\cite{xu2019can}), i.e. i.e. the presence of structural similarities between the subroutines of a particular algorithm and the architecture of the neural network selected to learn such algorithm.
-Since \cite{xu2019can} has shown that dynamic programming algorithms align very well with GNNs, and since dynamic programming encompasses a wide variety of techniques algorithms to many different domains, this puts GNNs at the forefront of neural algorithmic reasoning research (\cite{dudzik2022graph}). However, the exact link between GNNs and dynamic programming has yet to be fully formalized. In this section we present an attempt at such formalization described in \cite{dudzik2022graph}. Fainlly, we also describe the work in \cite{dudzik2024asynchronous}, which uses the formalism of cocycles to derive better implementations of GNNs that are invariant under various form of asynchrony\footnote{While much of the work described in \cite{dudzik2024asynchronous} does not fall under the unbrella of applied category theory, we still mention it because on its close link with the work of \cite{dudzik2022graph} and the ideas of algorithmic alignment. Hopefully, future work will explore the intersection between this work and category theory.}.
+One of them main tenets of neural algorithmic reasoning is \textit{algorithmic alignment} (\cite{xu2019can}), i.e., the presence of structural similarities between the subroutines of a particular algorithm and the architecture of the neural network selected to learn such algorithm.
+Since \cite{xu2019can} has shown that dynamic programming algorithms align very well with GNNs, and since dynamic programming encompasses a wide variety of techniques algorithms to many different domains, GNNs  are at the forefront of neural algorithmic reasoning research (\cite{dudzik2022graph}). However, the exact link between GNNs and dynamic programming has yet to be fully formalized. In this section we present the work of \cite{dudzik2022graph}, which attempts to derive such a formalization, and the work in \cite{dudzik2024asynchronous}, which studies conditions under which GNNs are invariant with respect to various form of asynchrony\footnote{While much of the work described in \cite{dudzik2024asynchronous} does not fall under the umbrella of applied category theory, we still mention it because on its close link with the work of \cite{dudzik2022graph} and with the idea of algorithmic alignment. Hopefully, future work will explore the intersection between this work and category theory.}, which is argued to improve algorithmic alignment in some cases.
 
 
 \subsection{Integral transforms for GNNs and dynamic programming}
 
-The main link between dynamic programming and GNNs is that dynamic programming itself induces a graph structure: given a problem $x$, we can break it up into subproblems $y$ of $x$. Then, we can break up the $y$'s and so on, until we get to base cases. We can thus consider the graph with nodes corresponding to subproblems and edges $(y,x)$ corresponding to the relationships \lq $y$ is a subproblem of $x$ \rq. Finally, we can solve the problem by message passing: the simpler cases are solved first and their solutions are passed as messages along the edges so that they can be used to solve more complex cases. The architecture of a graph neural network usually implements such a message passing dynamic. However, rigorously formulating an isomorphism between the architecture of GNN and the structure an associated dynamic programming algorithm is not easy, the main obstacle being the difference in data type handled by the two mathematical processes: dynamic programming usually deals with tropical objects such as the semiring $(\mathbb{N} \cup \{\infty\}, \min, +)$, while GNNs usually deal with linear algebra over $\mathbb{R}$ (\cite{dudzik2022graph}).
+The main link between dynamic programming and GNNs is that dynamic programming itself can be interpreted from a graph-theoretical point of view. Dynamic programming breaks up problems into subproblems recursively until trivial base cases are reached. We can thus consider the graph with nodes corresponding to subproblems and edges $(y,x)$ corresponding to the relationships \lq $y$ is a subproblem of $x$ \rq. Then, the solutions of the subproblems are recusrively recombined to solve the original problem. This dynamic is very similar to message passing: the simpler cases are solved first, and their solutions are passed as messages along the edges so that they can be used to solve more complex cases. The architecture of a graph neural network usually implements such a message passing dynamic. However, rigorously formulating the link between the architecture of GNN and the structure an associated dynamic programming algorithm is not easy, the main obstacle being the difference in data type handled by the two mathematical processes: dynamic programming usually deals with tropical objects such as the semiring $(\mathbb{N} \cup \{\infty\}, \min, +)$, while GNNs usually deal with linear algebra over $\mathbb{R}$ (\cite{dudzik2022graph}).
 
-\cite{dudzik2022graph} proposes the formalism of integral transforms as the common structure behind both GNNs and dynamic programming. While a full formal proof is not given, the idea is illustrated by showing that both the Bellman-Ford algorithm and the message passing neural network (MPNN) architecture can be expressed with the help of integral transforms. In the formalism of \cite{dudzik2022graph}, the difference in data type is overcome by using the weakest common hypothesis: that the data and associated operations form a semiring.
+\cite{dudzik2022graph} proposes the formalism of integral transforms as the common structure behind both GNNs and dynamic programming. While a full formal proof is not given, the idea is illustrated by showing that both the Bellman-Ford algorithm and the message passing neural network (MPNN) architecture can be expressed with the help of integral transforms. The difference in data type is overcome by using the weakest common hypothesis: that the data and associated operations form a semiring.
 
 
 \subsubsection{Bellman-Ford algorithm}
 
-The Bellman-Ford (BF) algorithm is one of the most popular dynamic programming algorithms and is used to find the shortest paths between a single starting node and every other node in a weighted graph $G = (V, E)$. We can see every node of the graph as a subproblem and we can see the associated edges as subproblem relationships. Hence, the BF algorithm perfectly falls into place as a candidate for a GNN implementation. The algorithm operates within the tropical min-plus semiring $(R = \mathbb{N} \cup \{\infty\}, \oplus = \min, \otimes = +)$, and the data can be provided as a tuple $(d, b, w)$ of three functions into $R$. Here, $d: V \to R$ stores the current best distances of the nodes, $b: V \to R$ stores the weights of the nodes, and $w: E \to R$ stores the weights of the edges. $d$ is initalized as the function that maps the initial node to $0$ and every other node to $\infty$. The values of the functions are updated at each step of the algorithm according to the following formula, where $\mathcal{N}_u = \{v \text{ s. t. } (v,u) \in E\}$ represent the one-hop neighborhood of a node $u$:
+The Bellman-Ford (BF) algorithm is one of the most popular dynamic programming algorithms and is used to find the shortest paths between a single starting node and every other node in a weighted graph $G = (V, E)$. Since we can see every node of the graph as a subproblem, and since we can see the associated edges as subproblem relationships, the BF algorithm is a very good candidate for a GNN implementation. The algorithm operates within the tropical min-plus semiring $(R = \mathbb{N} \cup \{\infty\}, \oplus = \min, \otimes = +)$, and the data can be provided as a tuple $(d, b, w)$ of three functions into $R$. Here, $d: V \to R$ stores the current best distances of the nodes, $b: V \to R$ stores the weights of the nodes, and $w: E \to R$ stores the weights of the edges. $d$ is initialized as the function that maps the initial node to $0$ and every other node to $\infty$. The values of $d$ are updated at each step of the algorithm according to the following formula, where $\mathcal{N}_u = \{v \text{ s. t. } (v,u) \in E\}$ represent the one-hop neighborhood of a node $u$:
 \[d_u \longleftarrow  \min\left(d_u, \min_{v \in \mathcal{N}_u}(d_v) + w_{v,u}\right).\]
 
 
 \cite{dudzik2022graph} propose the integral transform encoded by the polynomial span in ADDIM as the supporting structure of the BF algorithm. The functions $i$, $p$, and $o$ are defined as follows:
 \begin{enumerate}
-  \item $i: (V + E) + (V + E) \to V + (V + E)$ acts as the identity on the first $V$ and on the second $V + E$ pair, whereas maps the edges of the first $E$ to their sources;
+  \item $i: (V + E) + (V + E) \to V + (V + E)$ acts as the identity on the first $V$, it maps the edges of the first $E$ to their sources, and it acts as the identity on the second $V + E$ pair;
   \item $p: (V + E) + (V + E) \to V + E$ just collapses the two copies of $V + E$;
   \item $o$ acts as the target function on the $E$ and as the identity on $V$.
 \end{enumerate}
-It is argued in the paper that the whole integral transform acts as step of the algorithm, carrying the data in $(d, b, w)$ to the update function $d$. Let's examine each step: the input pullback extracts the distances the sources of every edge; the argument pushforward computes the weights of the paths from each node to the neighboring nodes (the weight of each node is treated as the weight of a self-edge in this case); finally, the message pushforward selects the shortest paths among the ones studied by the argument pushforward. 
+It is argued in the paper that the whole integral transform acts as step of the algorithm, carrying the data in $(d, b, w)$ to the updated function $d$. Let's examine each step: the input pullback extracts the distances the sources of every edge; the argument pushforward computes the lengths of the one-hop extensions of the known shortest paths (the weight of each node is treated as the weight of a self-edge in this case); finally, the message pushforward selects the shortest paths to each node among the ones studied by the argument pushforward. 
 Hence, the simple polynomial span in ADDIM successfully encode the whole BP algorithm without any information loss or ad hoc choice. 
 
 \subsubsection{Message passing neural network}
@@ -913,7 +915,7 @@ A message passing neural network (MPNN) is a graph neural network described by t
 where $t$ represents the time step, and $M_t$ and $U_t$ are learned differentiable functions.
 
 
-\cite{dudzik2022graph} argues that an MPNN can be implemented as the integral transform associated with the polynomial span of ADDIM, with an extra MLP, as show in ADDIM. Here,
+\cite{dudzik2022graph} argues that an MPNN layer can be implemented as the integral transform associated with the polynomial span of ADDIM, with an extra MLP, as show in ADDIM. Here,
 \begin{enumerate}
   \item $i$ sends the first $E$ to $1$, it acts as source and target on the second $E$ and third $E$ respectively, and it acts as the identity on the fourth $E$;
   \item $p$ collapses four $E$'s into one;
@@ -922,24 +924,24 @@ where $t$ represents the time step, and $M_t$ and $U_t$ are learned differentiab
 In the associated integral transform, $i^*$ gathers graph, features, node features and edge features, $p_{\otimes}$ "projects" the such features on the edges, the MLP combines them, and, finally, $o_{\oplus}$ sends them to the right target.
 
 
-Although not a perfect representation of the target architecture (remember the extra MLP), the polynomial span in ADDIM can be used to inform the design of new architectures which are obtained by simple manipulations of the arrows or objects in the diagram. For instance, \cite{dudzik2022graph} uses the integral transform formalism they introduce to investigate possible performance improvements on CLRS benchmark tasks (\cite{velivckovic2022clrs}) brought by considering messages that reduce over intermediate nodes. It is shown that this architecture leads to better average performance on these tasks, which is a result of better algorithmic alignment.
+Although not a perfect representation of the target architecture (due to the extra MLP), the polynomial span in ADDIM can be used to inform the design of new architectures which are obtained by simple manipulations of the arrows or objects in the diagram. For instance, \cite{dudzik2022graph} uses the integral transform formalism to investigate possible performance improvements on CLRS benchmark tasks (\cite{velivckovic2022clrs}). They consider messages that reduce over intermediate nodes they show these architectures lead to better average performance on these tasks, likely a result of better algorithmic alignment.
 
 
 \subsection{Asynchronous algorithmic alignment}
 
-\cite{dudzik2024asynchronous} derives conditions under which both algorithms and synchronous GNNs are invariant under asynchronous execution. This is relevant because, as stated in the paper, in many dynamic programming tasks modeled by graphs, only small parts of the aforementioned graphs are changed at each step. A synchronously executed GNN that is trained on these tasks must learn the identity function many times over, which leads to brittleness and wasted computational resources. However, many algorithms are invariant under asynchronous execution of some of its steps. Implementing these algorithms as synchronous GNNs that are invariant under various forms of asynchronous execution leads to better algorithmic alignment and thus more efficient learning.
+\cite{dudzik2024asynchronous} derives conditions under which synchronous GNNs are invariant under asynchronous execution. This is relevant because, as stated in the paper, in many dynamic programming tasks modeled by graphs, only small parts of the aforementioned graphs are changed at each step. A synchronously executed GNN that is trained on these tasks must learn the identity function many times over, which leads to brittleness and wasted computational resources. However, implementing many algorithms that are invariant under asynchronous execution as synchronous GNNs that are also invariant under asynchronous execution leads to better algorithmic alignment and thus more robust and efficient learning.
 
-The authors of \cite{dudzik2024asynchronous} revise the model explored in \cite{dudzik2022graph} to include a message function $\psi$ that generates messages based on gathered arguments: see ADDIM for the update diagram. Moreover, the authors argue that it is best to consider GNNs where every graph component that has a persistent state is elevated to the status of node, while transient computations should be carried out along edges. The resulting GNN can be described by the diagram in ADDIM, where $\phi$ is the update function that updates the persistent state of each node, while $\delta$ is the function that computes the arguments of the message function.
+The authors of \cite{dudzik2024asynchronous} revise the model explored in \cite{dudzik2022graph} so that it includes a message function $\psi$ that generates messages based on gathered arguments (see ADDIM for the update diagram). Moreover, the authors argue that it is best to consider GNNs where every graph component that has a persistent state is elevated to the status of node, whereas transient computations are carried out along edges. The resulting GNN can be described by the diagram in ADDIM, where $\phi$ is the transit function that updates the persistent state of each node, and $\delta$ is the function that computes the arguments needed to generate the next messages.
 
-It is argued in \cite{dudzik2024asynchronous} that invariance under asynchrony can be modeled by giving both arguments and messages monoidal structures. For instance, let $(M, 1, \cdot)$ be the message monoid and let $(A, 0, +)$ be the argument monoid. Then, if $S$ is the set of persistent states, we can model state update and argument generation as a function $M \times S \to S \times A$ which maps $(m,s) \mapsto (m \bullet s, \delta_m(s))$. One way toget invariance under asynchorny in message aggregation is to define $\bullet$ as a monoidal action of $M$ on $S$. However, we must make sure that argument generation is compatible with the unitality and associativity equations of the action. This can only happen if $\delta: m \mapsto \delta_m$ is a $1$-cocycle.
+It is argued in \cite{dudzik2024asynchronous} that invariance under asynchrony can be modeled by giving both arguments and messages monoidal structures. For instance, let $(M, 1, \cdot)$ be the message monoid and let $(A, 0, +)$ be the argument monoid. Then, if $S$ is the set of persistent states, state update and argument generation can be modeled as a function $M \times S \to S \times A$ which maps $(m,s) \mapsto (m \bullet s, \delta_m(s))$. Invariance under asynchronous message aggregation is obtained by defining $\bullet$ as a monoidal action of $M$ on $S$. However, \cite{dudzik2024asynchronous} shows that this is meaningful if and only if the argument generation function $\delta$ is compatible with the unitality and associativity equations of the action. This can only happen if $\delta: m \mapsto \delta_m$ is a $1$-cocycle.
 
 \begin{definition}[$1$-cocycle]
-  \label{def: cocycle}
   A map $\delta: M \to [S,A]$ is a $1$-cocycle if and only if the following are satisfied:
   \begin{enumerate}
     \item $\delta_1(s) = 0$ for all $s \in S$;
     \item $\delta_{n \cdot m}(s) = \delta_{n}(m \cdot s) + \delta_m(s)$ for all $s \in S$.
   \end{enumerate} 
+  \label{def: cocycle}
 \end{definition}
 
 \begin{proposition}
@@ -952,20 +954,104 @@ It is argued in \cite{dudzik2024asynchronous} that invariance under asynchrony c
   Under the hypotheses described above, a single-input message function $\psi$ supports asynchronous invocation if and only if $\psi$ is a homomorphism of monoids.
 \end{proposition}
 
-We will not describe the whole formalism of \cite{dudzik2024asynchronous}, but we will show (without proof) its implications on GNN archietcture design. 
+We will not describe the whole formalism of \cite{dudzik2024asynchronous}, but we will show (without proof) its implications on GNN architecture design. 
 
 \begin{example}
   Consider the GNN architecture:
   \[x_u' = \phi\left(x_u, \bigoplus_{v \in \mathcal{N}_u}\psi(x_{u},x_{v})\right),\]
-  where $\oplus$ is a message aggregator function. The authors of \cite{dudzik2024asynchronous} derive conditions under which this architecture is invariant under asynchronies in message aggregation, node update, and argument generation.
-
-
-  The GNN is trivially invariant under asynchronous message aggregation if messages $(M,0,\oplus)$ are given a commutative monoidal structure. Invariance under asynchronies in node updates is obtained by selecting an update function $\phi$ which sastifies the associative law $\phi(s,m \oplus n) = \phi(\phi(s,m),n)$ for all $m,n \in M$ and for all $s \in S$. Finally, invariance under argument generation is obtained if $\phi$ satisfies the $1$-cocycle equations (\textit{Def. \ref{{def: cocycle}}}). \cite{dudzik2024asynchronous} gives sufficient conditions that ensure that the $1$-cocycle equations as well as the associative law are true: it suffices that $M=A=S$ and that $\phi=\oplus$ is idempotent.
+  where $\oplus$ is a message aggregator function. The authors of \cite{dudzik2024asynchronous} derive conditions under which this architecture is invariant under asynchronies in message aggregation, node update, and argument generation: the GNN is trivially invariant under asynchronous message aggregation if messages $(M,0,\oplus)$ are given a commutative monoidal structure; invariance under asynchronies in node updates is obtained by selecting an update function $\phi$ which sastifies the associative law $\phi(s,m \oplus n) = \phi(\phi(s,m),n)$ for all $m,n \in M$ and for all $s \in S$; finally, invariance under argument generation is obtained if $\phi$ satisfies the $1$-cocycle equations (\textit{Def. \ref{def: cocycle}}). \cite{dudzik2024asynchronous} also gives sufficient conditions that ensure that the $1$-cocycle equations as well as the associative law are true: it suffices that $M=A=S$ and that $\phi=\oplus$ is idempotent.
 \end{example}
 
 
 
 
+\section{Future directions and related work}
+
+In this section we provide a brief introduction to the theory of differentiable causal computations and the theory of sheaf neural networks. These two lines of work are adjacent to the main theme of this chapter - relating classical computer science to modern machine learning - and they highlight possible directions for future research into categorical deep learning and the application of integral transforms to neural networks.
+
+\subsection{Differentiable causal computations}
+
+\cite{sprunger2019differentiable} studies the differential properties of causal computations offering valuable insight into the formal properties of recurrent neural networks (RNNs). The paper focuses on sequences $\{f_k\}_{k=0,1,\dots}$ of functions $f_k: S_k \times X_k \to S_{k+1} \times Y_k$ which represent computations executed in discrete time $k$, where, at each tick $k$ of the clock, $f_k$ takes an input $x_k$ and the previous state $s_k$, and uses this data to compute an output $y_k$ and a new state $s_{k+1}$. In symbols, $f_k(s_k,x_k) = (s_{k+1},y_k)$. Such sequences are given a nice compositional structure using the formalism of double categories.
+
+\begin{definition}[Category of tiles]
+  Let $\mathcal{C}$ be a Cartesian category. Define $\mathbf{Dbl}(\mathcal{C})$ as the double category with the following data:
+  \begin{enumerate}
+    \item there is only on $0$-cell, which we represent with the symbol $\cdot$;
+    \item the horizontal and vertical $1$-cells are the objects of $\mathcal{C}$;
+    \item a $2$-cell (tile) with horizontal source $S$, horizontal target $S'$, vertical source $X$, and vertical target $Y$ is a morphism $f: S \times X \to S' \times Y$ which we represent with the symbol $f:X \overset{S}{\underset{S'}\longrightarrow} Y$.
+  \end{enumerate}
+  It is handy to also represent $2$-cells $f$ as the tile string diagrams in ADDIM. The horizontal and vertical composition laws for $2$-cells are given consistently with the tile diagrams.
+\end{definition}
+
+\begin{definition}[Category of stateful morphism sequences]
+  Let $\mathcal{C}$ be a Cartesian category. Define $\mathbf{St}(\mathcal{C})$ as the category with the following data:
+  \begin{enumerate}
+    \item the objects of $\mathbf{St}(\mathcal{C})$ are sequences $\mathbf{X} = \{X_k\}_{k = 0,1,\dots}$ of objects of $\mathcal{C}$;
+    \item the morphisms $\mathbf{X} \to \mathbf{Y}$ are pairs $(\mathbf{f}, i)$, where $\mathbf{f} = \{f_k\}_{k = 0,1,\dots}$ is a sequence of tiles in $\mathbf{Dbl}(\mathcal{C})$ such that $f_k: X_k \overset{S_k}{\underset{S_{k+1}}\longrightarrow} Y_k$, for some sequence $\mathbf{S}$ of states, and $i: 1 \to S_0$ selects an initial state. 
+  \end{enumerate}
+  The morphisms of $\mathbf{St}(\mathcal{C})$ are known as stateful morphisms sequences and are represented using string diagrams as in ADDIM.
+\end{definition}
+
+Stateful morphisms sequences can be truncated and unrolled as one would expect, and it is proved in \cite{sprunger2019differentiable} that there is a bijection between stateful morphism sequences in $\mathbf{St}(\mathbf{Set})([A],[B])$ and causal functions $A^{\mathbb{N}} \to B^{\mathbb{N}}$ (here $[A]$ is the constant sequence of objects $\{A,A,A,\dots\}$). More generally, given any $\mathbf{St}(\mathcal{C})$, we can restrict our attention to constant sequences $[A]$ and stateful sequences of morphisms in the form $([f],i)$, where $f:X \overset{S}{\underset{S}\longrightarrow} Y$ is a tile in $\mathbf{Dbl}(\mathcal{C})$. This yields a subcategory $\mathbf{St}_0(\mathcal{C})$ whose morphisms can be thought of as Mealy machines that take in an input and produce an output based on an internal state which is updated after every computation. The new state is in a sense fed back to the machine after the computation so that a new computation can take place. This is represented by the diagram in ADDIM.
+
+The authors of \cite{sprunger2019differentiable} go on to define a delayed trace operation which provides a rigorous formalization of feedback loops such as the ones in ADDIM. As stated in the paper, the delayed trace operator is closely related to the more popular trace operator (\cite{joyal1996traced}) and shares many of the same properties. 
+Finally, the authors of \cite{sprunger2019differentiable} show how both $\mathbf{St}(\mathcal{C})$ and $\mathbf{St}_0(\mathcal{C})$ can be given the structure of a CDC (\textit{Def. \ref{def: cdc}}), as long as $\mathcal{C}$ is itself a CDC. This differential structure is conceptually clear, rigorously defined, and compatible with the dealyed trace operator. We don't have space to describe the details of these definitions, but we report the relevant string diagrams in ADDIM.
+
+
+The work in \cite{sprunger2019differentiable} provides a theoretical foundation for the technique of backpropagation through time (BPTT), which consists in computing the gradient of the $k$-th unrolling of a RNN in place of the gradient of the such RNN at discrete time $k$. Despite the alleged ad hoc nature of BPTT, \cite{sprunger2019differentiable} proves that the technique doesn't just \lq involve differentiation \rq but is an actual \lq form of differentiation \rq that can be reasoned about in the formalism of CDCs. Nevertheless, as stated in the paper, the differential operator of $\mathbf{St}(\mathcal{C})$ does not compute explicit gradients, and deriving the latter would from the former would be computationally intractable when there are millions of parameters. 
+
+
+It is interesting to compare the approach of \cite{sprunger2019differentiable} with the framework of categorical deep learning: both CDL and the work in \cite{sprunger2019differentiable} synthetically describe RNN architectures, but, while CDL focuses on weight sharing mechanics and the coinductive nature of the definition, \cite{sprunger2019differentiable} focuses the differential properties of these architectures. However, neither categorical framework deals with the problems that come up when computing gradients of unrolled RNNs, such as vanishing or exploding gradients (ADDREF). 
+
+
+\subsection{Sheaf neural networks}
+
+The theory of sheaf neural networks (\cite{hansen2020sheaf}, \cite{bodnar2022neural}, \cite{zaghen2024nonlinear}), or SNNs, is informed by both topology and category theory and aims to improve the GNN architecture by endowing graphs with cellular sheaf structures. In particular, SNNs are designed to solve two main issues that are encountered when training GNNs: oversmoothing, which is the tendency of deep GNNs to spread information too far in the graph to be able to effectively classify nodes, and poor performance on heterophilic graphs, that is graphs where the nodes features are diverse in structure and attributes.
+
+\begin{definition}[Cellular sheaf]
+  A cellular sheaf $\mathcal{F}$ associated with a graph $G = (E,V)$ consists in the following data:
+  \begin{enumerate}
+    \item a vector space $\mathcal{F}(v)$ for every node $v \in V$;
+    \item a vector space $\mathcal{F}(e)$ for every edge $e \in E$;
+    \item a linear map $\mathcal{F}_{v \trianglelefteq e}: \mathcal{F}(v) \to \mathcal{F}(e)$ for each incident node-edge pair $v \trianglelefteq e$.
+  \end{enumerate}
+  The vector spaces associated to nodes and edges are known as stalks. The linear maps associated to incident node-edge pairs are known as restriction maps. The direct sum $C^0(G, \mathcal{F})$ of all node stalks is known as space of $0$-cochains, and the direct sum $C^1(G, \mathcal{F})$ of all edge stalks is known as space of $1$-cochains.
+\end{definition}
+
+As stated in \cite{zaghen2024nonlinear}, the  node stalks assigned by $\mathcal{F}$ serve as spaces for node features, while the restriction maps allow the data that resides on adjacent nodes to interact on edge stalks. Given a cellular sheaf $\mathcal{F}$, we can define a coboundary map $\delta$ which measures the amount \lq disagreement \rq\footnote{There is a close link between the theory of SNNs and the theory of opinion dynamics. See \cite{zaghen2024nonlinear} for further information.} between nodes. The coboundary map can then be used to define a sheaf Laplacian which can be used to propagate information in the graph.
+
+\begin{definition}[Coboundary map]
+  Let $\mathcal{F}$ be a cellular sheaf on a directed graph $G = (E,V)$. The coboundary map associated with $\mathcal{F}$ is the linear map $\delta: C^0(G, \mathcal{F}) \to C^1(G, \mathcal{F})$ that maps $\delta(\mathbf{x})_{e} = \mathcal{F}_{v \trianglelefteq e}(x_v) - \mathcal{F}_{u \trianglelefteq e}(x_u)$ for each edge $e: u \to v$.
+\end{definition}
+
+\begin{definition}[Sheaf Laplacian]
+  Let $\mathcal{F}$ be a cellular sheaf on a directed graph $G = (E,V)$ and let $\delta$ be the associated coboundary map. The sheaf Laplaciant associated with $\mathcal{F}$ is the linear map $L_{\mathcal{F}} = \delta^T \circ \delta: C^0(G, \mathcal{F}) \to C^0(G, \mathcal{F})$. The normalized sheaf Laplacian associated with the sheaf is the linear map $\Delta_{\mathcal{F}} = D^{-\frac{1}{2}} \circ L_{\mathcal{F}} \circ D^{\frac{1}{2}}$, where $D$ is the diagonal of $L_{\mathcal{F}}$.
+\end{definition}
+
+\begin{remark}
+  The coboundary map and the sheaf Laplacian associated with a cellular sheaf $\mathcal{F}$ are generalizations of the more commonly known incidence matrix and Laplacian associated to a graph (see e.g. \cite{ward2022practical}).
+\end{remark}
+
+There are many kinds of SNN architectures (\cite{hansen2020sheaf}, \cite{bodnar2022neural}, \cite{zaghen2024nonlinear}). Due to space constraints, we only give a short description of the first one to appear in the literature: the Hansen-Gebhart SNN proposed by \cite{hansen2020sheaf}.
+
+\begin{definition}[Sheaf neural network]
+  \label{def: sheafnn}
+  Suppose $G = (E,V)$ is a directed graph and $\mathcal{F}$ is a cellular sheaf on it. Suppose the stalks of $\mathcal{F}$ are all equal to $\mathbb{R}^{f \times d}$, where $f$ is the number of channels and $d$ is the dimension of each feature. Then, $C^0(G, \mathcal{F})$ is isomorphic to $\mathbb{R}^{nd \times f}$, where $n$ is the number of nodes, and its elements can be represented as matrices $\mathbf{X}$. The sheaf neural network proposed by \cite{hansen2020sheaf} uses the following transition function to update this features:
+  \[\mathbf{Y} = \sigma((I_{nd} - \Delta_{\mathcal{F}})(I_{n} \otimes W_1)\mathbf{X}W_2),\]
+  where $\sigma$ is a non-linearity, $\otimes$ is the Kronecker product, $W_1 \in \mathbb{R}^{d \times d}$ and $W_2 \in \mathbb{R}^{f \times f}$ are weight matrices.
+\end{definition}
+
+\begin{remark}
+  The values of $f_1$, $f_2$, $n$, $d$, and the restriction maps are all hyperparameters
+  Choosing $W_2 \in \mathbb{R}^{f_1 \times f_2}$ allows the SNN layer described above to change the number of features from $f_1$ to $f_2$.  
+\end{remark}
+
+As observed by \cite{bodnar2022neural}, the SNN architecture proposed by \cite{hansen2020sheaf} can be seen as a discretization of the differential equation 
+\[\dot{\mathbf{X}}(t) = -\Delta_{\mathcal{F}}\mathbf{X}(t),\]
+which is known as sheaf diffusion equation and is analogous to the heat diffusion equation used in graph convolutional networks (\cite{bodnar2022neural}). Studying the time limit of the sheaf diffusion equation yields important results about the diffusion of information through the graph after repeated application of the transformation in \textit{Def. \ref{def: sheafnn}}. In particular, \cite{bodnar2022neural} argues that, in the time limit, node feature tend to values that \lq agree \rq on the edges. Hence, \lq sheaf diffusion can be seen a synchronization process over the graph \rq. \cite{bodnar2022neural} goes on to study the deiscriminative power of different classes of cellular sheaves and proposes strategies to learn the restriction maps themselves. \cite{zaghen2024nonlinear} extends the work of \cite{bodnar2022neural} by analyzing non-linear sheaf Laplacians and the associated sheaf diffusion process.
+
+It is important to notice that SNNs can be considered a strict generalization of GNNs  since the latter are nothing but instances of the former where the sheaf structure is trivial (\cite{bodnar2022neural}). Thus, although we are not aware of any work applying SNNs to neural algorithmic reasoning, given the success enjoyed by GNNs in this area of research, we can only image that SNNs would be even more effective at executing algorithms. 
+To the best of our knowledge, no one has ever explicitly described SNN architectures using integral transforms either. However, a passing remark in \cite{dudzik2024asynchronous} hints that the message passing dynamic of GNNs is very similar to sheaf diffusion and thus such a generalization should be all but impossible. Hopefully, future research will shed light on these conjectures.
 
 
 
