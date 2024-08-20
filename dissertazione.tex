@@ -1219,7 +1219,7 @@ Given a node $A$ of $G$, we have associated to $A$ a Euclidean space $E(A)$ and 
   Given a schema $\mathbf{Free}(G)/{\sim}$, an embedding $E$ and a dataset $D_E$, a concept associated with this information is a functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$ such that, if $I: |\mathbf{Free}(G)| \to \mathbf{Free}(G)/{\sim}$ is the inclusion functor, $D_E \subseteq I \fatsemi \mathfrak{C} \subseteq E$.
 \end{definition}
 
-As \cite{gavranovic2019compositional} states, $\mathfrak{C}$ is an idealization, but it is a useful idealization as it represent the goal of the optimization process: given a dataset $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$, we wish to learn the concept functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$. More concretely, we want to train a model $\mathsf{Model}_p$ which is as close of an approximation of $\mathfrak{C}$ as possible\footnote{Notice that $\mathsf{Model}_p$ and $\mathfrak{C}$ have different domains and codomains. The difference of codomains is not an issue: we can just forget the differential structure of the codomain of $\mathsf{Model}_p$, which yeilds a functor $H_p$ with image in $\mathbf{Set}$ (see ADDIM). The difference of domains, on the other hand, is by design as $\mathsf{Model}_p$ can only approximate the constraints imposed by $\sim$. This is not an issue in practice as we are only interested in the performance of the image of the trained model $\mathsf{Model}_p$.}. Total achievement of such goal is clearly impossible as, even in the simplest of cases (such as linear regression on synthetic linearly generated data), finite arithmetics and the finite nature of the learning iteration prevent us from obtaining a perfect copy of the generating function.
+As \cite{gavranovic2019compositional} states, $\mathfrak{C}$ is an idealization, but it is a useful idealization as it represent the goal of the optimization process: given a dataset $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$, we wish to learn the concept functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$. More concretely, we want to train a model $\mathsf{Model}_p$ which is as close of an approximation of $\mathfrak{C}$ as possible\footnote{Notice that $\mathsf{Model}_p$ and $\mathfrak{C}$ have different domains and codomains. The difference of codomains is not an issue: we can just forget the differential structure of the codomain of $\mathsf{Model}_p$, which yields a functor $H_p$ with image in $\mathbf{Set}$ (see ADDIM). The difference of domains, on the other hand, is by design as $\mathsf{Model}_p$ can only approximate the constraints imposed by $\sim$. This is not an issue in practice as we are only interested in the performance of the image of the trained model $\mathsf{Model}_p$.}. Total achievement of such goal is clearly impossible as, even in the simplest of cases (such as linear regression on synthetic linearly generated data), finite arithmetics and the finite nature of the learning iteration prevent us from obtaining a perfect copy of the generating function.
 Nevertheless, we will hopefully design an optimization process which makes the learning iteration converge towards the ideal goal.
 
 Now that we know what the optimization goal is, we can define tasks. The task formalism brings together what has been defined in this section in an integrated fashion.
@@ -1239,7 +1239,7 @@ Once we are assigned a machine learning task $(G,{\sim},D_E)$, we have to choose
   Let $(G,{\sim},D_E)$ be a task. Let $\mathsf{Arch}$ be an associated architecture, let $\mathsf{Model}_p$ be an associated model, and let $\mathcal{L}'$ be an architecture specific loss. Suppose $\gamma$ is a non-negative hyperparameter. Then, we define the total loss associated with the task, the architecture, the model, and the hyperparameter as
   \begin{equation}
     \label{eq: sumoflosses}
-    \mathcal{L} = \mathcal{L}' + \sum_{f \sim g}\mathcal{L}_{\sim}^{f,g}
+    \mathcal{L} = \mathcal{L}' + \gamma\sum_{f \sim g}\mathcal{L}_{\sim}^{f,g}
   \end{equation}
 \end{definition}
 
@@ -1247,12 +1247,12 @@ We can now proceed as usual, computing the loss on the dataset for a number of e
 
 It is important to notice that, while the learning iteration employed by \cite{gavranovic2019compositional} is nothing new, the functor approach is actually novel, in that the usual optimization process is used to explore a functor space instead of a simple morphism space. This point of view offers two main advantages: on one hand, it separates different layers of abstraction are separated providing much needed conceptual clarity; on the other hand, it offers an explicit treatment of constraints, which are often only described implicitly and hidden away in the architecture of the model or in the loss function. 
 
-\subsection{Datasets influence the semantics of taks}
+\subsection{Datasets influence the semantics of tasks}
 
 \cite{gavranovic2019compositional} centers its investigation around the powerful cycleGAN architecture (\cite{zhu2017unpaired}), which is described using an appropriate task consisting of the cycleGAN schema (see ADDIM), the cycle consistency equations, and a cycleGAN dataset, i.e., a dataset with two sets $A$ and $B$ containing data which is essentially isomorphic, such as pictures of horses and zebras. This description is particularly insightful because it can be used to prove a very important point: the choice of dataset influences the semantics of the learned task in non-trivial ways. In other words, changing the dataset functor can result in semantically different tasks even if the same schema and equations are retained. 
 
 
-The example shown in the paper is the \cite{gavranovic2019compositional}: combining the cycleGAN schema with the cycleGAN equations and a cycleGAN dataset yields a task whose semantics can be described as \textit{learn maps that turn horses into zebras and vice versa}. Now replace the cycleGAN dataset with a new dataset consisting in two sets $A$ and $B$, where $A$ contains pictures depicting two elements $X$ and $Y$ together, and $B$ contains separate images of $X$ and $Y$. The resulting tasks has very different semantics: \textit{learn how to separate $X$ from $Y$}. For instance, \cite{gavranovic2019compositional} shows how to use the CelebA dataset to train a neural network able to remove glasses from pictures of faces, or even insert them (see image ADDIM).
+The example shown in the paper is the \cite{gavranovic2019compositional}: combining the cycleGAN schema with the cycleGAN equations and a cycleGAN dataset yields a task whose semantics can be described as \textit{learn maps that turn horses into zebras and vice versa}. Now replace the cycleGAN dataset with a new dataset consisting in two sets $A$ and $B$, where $A$ contains pictures depicting two elements $X$ and $Y$ together, and $B$ contains separate images of $X$ and $Y$. The resulting task has very different semantics: \textit{learn how to separate $X$ from $Y$}. For instance, \cite{gavranovic2019compositional} shows how to use the CelebA dataset to train a neural network able to remove glasses from pictures of faces, or even insert them (see image ADDIM).
 
 
 This example is especially relevant to the present discussion because it shows how important the categorical structure of $\mathbf{Set}$ can be to machine learning. We can interpret pairs \textit{(face, glasses)} as elements of the Cartesian product of the set of faces and the set of glasses. On the other hand, the set of pictures of faces with glasses can instead be considered another categorical product of the aforementioned sets. Since categorical products are unique, we know that there must be a unique isomorphism between the two products. Then, one interpretation of the task becomes: \textit{find the canonical isomorphism}. \cite{gavranovic2019compositional} labels this task as the product task and shows empirical evidence of the validity of the approach.
@@ -1273,80 +1273,42 @@ Although datasets and concepts are defined as functors in the framework of \cite
 \subsection{Unsupervised functorial translation}
 
 
-In this subsection we illustrate the approach of \cite{sheshmani2021categorical} following the same example described in the original paper: unsupervised translation of the names of chemical elements from English to Chinese. The authors are tasked with converting between two identical chemical compound datasets, one labeled in English and the other in Chinese. Both datasets can be given a categorical structure by considering elements and functional groups as objects, and chemical bonds as morphisms. Suppose $\mathcal{C}$ and $\mathcal{D}$ are the resulting categories. The authors of \cite{sheshmani2021categorical} leverage these structures by training a model to learn a translation functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$. 
+In this subsection, we illustrate the approach of \cite{sheshmani2021categorical} following the same example described in the original paper: unsupervised translation of the names of chemical elements from English to Chinese. The authors are tasked with converting between two identical chemical compound datasets, one labeled in English and the other in Chinese. Both datasets can be given a categorical structure by considering elements and functional groups as objects, and chemical bonds as morphisms. Suppose $\mathcal{C}$ and $\mathcal{D}$ are the resulting categories. The authors of \cite{sheshmani2021categorical} leverage these structures by training a model to learn a translation functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$. They then functorially embed these categories into the category defined below, so that vectorial representations of their objects and morphisms are learned.
+
+
+\begin{definition}[Vector space category]
+  \label{def: vecspacecat}
+  Let $n \in \mathbb{N}$. Let $\mathcal{R}$ be the category whose objects are the vectors in $\mathbb{R}^n$ and such that, for all $u,v :\mathcal{R}$, 
+  \[\mathcal{R}(u, v) = \{M \in \mathbb{R}^{n \times n} \text{ s.t. } v = Mu\}.\]
+  Composition is ordinary matrix multiplication and the identity on $v$ is $\mathrm{id}_v = \frac{vv^T}{|v|^2}$.
+\end{definition}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Any category $\mathcal{C}$ can be functorially embedded in the Euclidean space $\mathbb{R}^n$ by considering the vector space category $\mathcal{R}$ associated to the aforementioned vector space (\textit{Def. \ref{def: vecspacecat}}). Given a categorical structure to the embedding codomain, it suffices to define a $\mathcal{C} \to \mathcal{R}$ functor which maps $a \mapsto v_a$ and $f \mapsto M_f$. We will use train a neural network to carry out such mapping. This happens on two separate embedding layers: one maps words to vectors, while the other maps relations to matrices.  
+The embedding of $\mathcal{C}$ into $\mathcal{R}$ is   $\mathcal{C} \to \mathcal{R}$ functor which maps each object $a$ to a vector $v_a$ and each morphism $f$ to a matrix $M_f$. The actual mapping can be learned with a neural network consisting of two separate embedding layers: one mapping objects to vectors and one mapping relations to matrices. The authors of \cite{sheshmani2021categorical} train the embedding layers using co-occurrence statistics and negative sampling to make sure that the embedded morphisms actually represent the same relations between objects elements as the original morphisms between the original objects. It is in fact posited that co-occurrence encodes such relations. In the authors' words, \lq  co-occurrence does not happen for no reason\rq. The training strategy used in the paper is the following: given two embedded words $a$ and $b$, model the probability of co-occurrence as $P(a \to b) = \mathsf{sigmoid}(z(a \to b))$, where the logit $z(a \to b)$ is defined as
+\[z(a \to b) = F\left(\bigoplus_f v_a^TM_fv_b \right).\]
+Here, $F$ is non-linear and $\oplus_f$ represents concatenation (or more sophisticated forms of aggregation) over all morphisms in $\mathcal{C}$. The idea behind the formula is that it is not possible, given the finite precision of computers, to compute a matrix $M_f$ such that $v_b = M_fv_a$ exactly. However, we can find $M_f$ such that $v_b$ and $M_fv_a$ are closely aligned. The alignment can be computed as $v_a^TM_fv_b$. The non-linearity $F$ reads out these measurements into a single. Now, the actual co-occurrence probability $p(a,b)$ of two objects $a,b : \mathcal{C}$ can be approximated directly from the dataset. Given a negative sampling distribution $p_N$ on objects unrelated to $a$, we can implement the negative sampling objective
+\[\mathcal{L} = \mathbb{E}_{(a,b) \sim p(a,b)}\left(\log P(a \to b) + \mathbb{E}_{b' \sim p(b')}\log (1-P(a \to b'))\right).\]
+The embedding network can then be trained by maximizing this objective function. The embedding of $\mathcal{D}$ into $\mathcal{R}$ can be defined and trained in the same way.
 
 \begin{remark}
-  It is worth noticing that a single matrix $M$ can be in many hom-sets of $\mathcal{R}$, and thus we can have a number of different pairs of vectors linked by the same morphism.
+  The morphisms of a category are ordinarily assigned a specific domain and a specific codomain. However, in the case of the vector space category of \textit{Def. \ref{def: vecspacecat}}, a single matrix $M$ can be in many hom-sets of $\mathcal{R}$. This is mirrored in $\mathcal{C}$ and $\mathcal{D}$, where morphisms correspond to classes of chemical bond and link many different objects. From this point of view, morphisms in $\mathcal{R}$, in $\mathcal{C}$, and in $\mathcal{D}$ behave more similarly to relations on sets than to morphisms in categories.  Although this line of thinking does not strictly adhere to the definition of category, it helps our intuition and it greatly reduces the size of the model by limiting the number of parameters that need to be learned. We will see a possible formal solution to this problem later on in this section, when we discuss the approach of \cite{coecke2010mathematical} and \cite{lewis2019compositionality}.
 \end{remark}
 
-
-The embedding layer described above needs to be trained on the data to be effectively functorial. The authors of \cite{sheshmani2021categorical} suggest using concurrence statistics and negative sampling to make sure that the embedded morphisms actually represent the same relations between objects elements as the original morphisms between the original objects. It is in fact posited that concurrence encodes such relations. In the authors' words, \lq  concurrence does not happen for no reason\rq.
-
-
-The training strategy used in the paper is the following: given two embedded words $a$ and $b$, model the probability of concurrence as $P(a \to b) = \mathsf{sigmoid}(z(a \to b))$, where the logit $z(a \to b)$ is defined as
-\[z(a \to b) = F\left(\bigoplus_f v_a^TM_fv_b \right).\]
-Here, $F$ is non-linear and $\oplus_f$ represents concatenation over all morphisms in $\mathcal{C}$. The idea behind the formula is that it is not possible, given the finite precision of a computer, to compute a matrix $M_f$ such that $v_b = M_fv_a$ exactly. However, we can find $M_f$ such that $v_b$ and $M_fv_a$ are closely aligned. The alignment can be computed as $v_a^TM_fv_b$. The non-linearity $F$ serves as an aggregator for such measurements.
-
-
-Now, the concurrence probability $p(a,b)$ of two objects $a,b : \mathcal{C}$ can be computed directly from the dataset. Given a negative sampling distribution $p_N$ on objects unrelated to $a$, we can implement the negative sampling objective function
-\[\mathcal{L} = \mathbb{E}_{(a,b) \sim p(a,b)}\left(\log P(a \to b) + \mathbb{E}_{b' \sim p(b')}\log (1-P(a \to b'))\right),\]
-as described in \cite{sheshmani2021categorical}. The embedding network can then be trained by maximizing this objective function.
-
-Apply the procedure described above to both $\mathcal{C}$ and $\mathcal{D}$ to get categorical embeddings of the datasets. Now, consider a functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$ that translates between English labels and Chinese labels. Such functor must equate chemical bonds of the same kind, e.g. if $f$ is a covalent bond so is $\mathcal{F}(f)$. It is posited in \cite{sheshmani2021categorical} that the action of $\mathcal{F}$ on morphism is sufficient to deduce the action of $\mathcal{F}$ on objects.
-
-
-The function $\mathcal{F}$ can be precomposed with the $\mathcal{C} \to \mathcal{R}$ embedding and postcomposed with the inverse of the $\mathcal{D} \to \mathcal{R}$ to become a $\mathcal{R} \to \mathcal{R}$ functor. The authors of \cite{sheshmani2021categorical} argue that such functor can be represented by a matrix $V_\mathcal{F}$ so that $v_{\mathcal{F}(a)} =  V_\mathcal{F}v_a$ and $M_{\mathcal{F}(f)} = V_\mathcal{F}M_f$. Such representation is only meaningful if (i) $V_{\mathcal{F}}M_f = M_{\mathcal{F}}V_{\mathcal{F}}$ for all $f$, (ii) $V_{\mathcal{F}}M_{\mathrm{id}_a} = M_{\mathrm{id}_{\mathcal{F}(a)}}$ for all $a$, and (iii) $V_{\mathcal{F}}M_{f \circ g} = V_{\mathcal{F}}M_fV_{\mathcal{F}}M_g$ for all $f,g$. This is not true for all choices of  $V_\mathcal{F}$ but, if we choose every $v_a$ to be a unit vector\footnote{The paper does not specify what strategy was used. See ADDREF for a possible example of how this might be carried out. \textcolor{blue}{Check that this is correct!}}, and if we constrain $V_{\mathcal{F}}$ to be orthogonal, (ii) and (iii) are trivially satisfied. The focus can thus be shifted on requirement (i).
-
-
-Requirement (i) in the previous paragraph can be learned through the following structure loss:
+The procedure described above can be been applied to both $\mathcal{C}$ and $\mathcal{D}$, to obtain meaningful vectorial representations of both datasets. An English to Chinese translation functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$ can be similarly embedded as a $\mathcal{R} \to \mathcal{R}$ functor by precomposition with the $\mathcal{C} \to \mathcal{R}$ embedding and postcomposition with the inverse of the $\mathcal{D} \to \mathcal{R}$ embedding. Such functor must equate chemical bonds of the same kind, e.g. if $f$ is a covalent bond so is $\mathcal{F}(f)$. It is argued in \cite{sheshmani2021categorical} that such functor can be represented by a matrix $V_\mathcal{F}$ so that $v_{\mathcal{F}(a)} =  V_\mathcal{F}v_a$ and $M_{\mathcal{F}(f)} = V_\mathcal{F}M_f$. Such representation is only meaningful if (i) $V_{\mathcal{F}}M_f = M_{\mathcal{F}}V_{\mathcal{F}}$ for all $f$, (ii) $V_{\mathcal{F}}M_{\mathrm{id}_a} = M_{\mathrm{id}_{\mathcal{F}(a)}}$ for all $a$, and (iii) $V_{\mathcal{F}}M_{f \circ g} = V_{\mathcal{F}}M_fV_{\mathcal{F}}M_g$ for all $f,g$. This is not true for all choices of  $V_\mathcal{F}$ but, if we choose every $v_a$ to be a unit vector\footnote{The paper does not specify what strategy was used. See ADDREF for a possible example of how this might be carried out. \textcolor{blue}{Check that this is correct!}}, and if we constrain $V_{\mathcal{F}}$ to be orthogonal, (ii) and (iii) are trivially satisfied. Requirement (i), on the other hand, can be learned through the following structure loss:
 \[\mathcal{L}_{\mathrm{struc}} = \sum_{f}\|V_{\mathcal{F}}M_f - M_{\mathcal{F}}V_{\mathcal{F}}\|^2.\]
 As the authors remark, this loss is universal, in the sense that it does not depend on any specific object, but acts on the morphisms themselves. While this approach is very elegant and does indeed return a functor, this might not be the functor we expect because $V_{\mathcal{F}}$ is not unique if the $M_f$ happen to be singular. Thus, it is better to integrate the structure loss with a second alignment loss which introduces some supervision to the unsupervised translation task. For instance, if the value of $\mathcal{F}(a)$ is known for a set $A$ for objects, we can define
-\[\mathcal{L}_{\mathrm{align}} = \sum_{a : A}\|V_{\mathcal{F}}v_a - v_{\mathcal{F}(a)}\|.\]
-Then, the total loss can be written as a weighted sum $\mathcal{L} = \mathcal{L}_{\mathrm{align}} + \lambda \mathcal{L}_{\mathrm{align}}$ of structure loss and alignment loss, where $\lambda$ is a hyperparameter analogous of the $\gamma$ that appears in \textit{Eq. \ref{eq: sumoflosses}}.
+\[\mathcal{L}_{\mathrm{align}} = \sum_{a \in A}\|V_{\mathcal{F}}v_a - v_{\mathcal{F}(a)}\|.\]
+Then, the total loss can be written as a weighted sum 
+\begin{equation}
+  \label{eq: sumoflosses2}
+  \mathcal{L} = \mathcal{L}_{\mathrm{align}} + \lambda \mathcal{L}_{\mathrm{align}},
+\end{equation}
+where $\lambda$ is a hyperparameter that regulates the relative importance of the two losses.
+
+\begin{remark}
+  It is interesting to compare the total loss in \textit{Eq. \ref{eq: sumoflosses2}} to the one in \textit{Eq. \ref{eq: sumoflosses}}. Both losses are obtained as a linear combination of a model specific loss and a second more abstract loss. Both abstract losses enforce path-equivalence constraints. However, the abstract loss in \textit{Eq. \ref{eq: sumoflosses2}} does not enforce functoriality because $\mathsf{Model}_p$ is already a function from the start in the framework of \cite{gavranovic2019compositional}. This highlights the main difference between the approach of \cite{gavranovic2019compositional} and the approach of \cite{sheshmani2021categorical}: the latter requires functoriality to be learned from structure of data, while the former takes functoriality as a given.
+\end{remark}
 
 
 It is shown in \cite{sheshmani2021categorical} that the kind of functor learning illustrated in this section can lead to remarkable improvements in efficiency when compared with more traditional sequence to sequence models. In particular, the authors compared a GRU cell model of similar performance as the functorial model described in the paper, noting that the former needed 17 times more parameters than the latter.
@@ -1524,11 +1486,11 @@ The ADNI classifier model also shows very promising results which are on par wit
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\chapter*{Conclusions}
-%\rhead[\fancyplain{}{\bfseries
-%Conclusions}]{\fancyplain{}{\bfseries\thepage}}
-%\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Conclusions}}
-%\addcontentsline{toc}{chapter}{Conclusions} 
+\chapter*{Conclusions}
+\rhead[\fancyplain{}{\bfseries
+Conclusions}]{\fancyplain{}{\bfseries\thepage}}
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Conclusions}}
+\addcontentsline{toc}{chapter}{Conclusions} 
 
 
 
