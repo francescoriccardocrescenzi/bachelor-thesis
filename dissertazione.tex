@@ -259,7 +259,7 @@ Benedetta
 
 General purpose deep learning libraries like PyTorch or TensorFlow are rich toolkits for gradient-based learning that allow machine learning practitioners to delegate low-level computations and automatic differentiation (AD) so that their focus can be directed to the high-level architectural design. Despite the unquestionable success of these libraries, their internal structure is not informed by a principled mathematical framework and thus, as mentioned in the introduction, it is highly dependent on \textit{ad hoc} optimizations and empirical euristics (ADDREF). Consequently, adding new tools, composing existing ones, and parallelizing computations is not a straight forward process and often lead to unexpected results (ADDREF).
 
-Hence, it would be auspicable to develop a mathematically structure compositional framework for gradient-based learning able to act as a bridge between low-level automatic differentiation and high level architectural specifications (ADDREF). Among the various attempts (ADDREF, ADDREF, ADDREF), a promising combination of differential categories, parametrization and optics has been recently proposed by \cite{cockett2019reverse}, \cite{cruttwell2022categorical}, \cite{gavranovic2024fundamental} and more as full-featured gradient-based framework able to challenge established tools. In this chapter, we illustrate such framwork  and part of its mathematical foundations. 
+Hence, it would be auspicable to develop a mathematically structure compositional framework for gradient-based learning able to act as a bridge between low-level automatic differentiation and high level architectural specifications (ADDREF). Among the various attempts (ADDREF, ADDREF, ADDREF), a promising combination of differential categories, parametrization and optics has been recently proposed by \cite{cockett2019reverse}, \cite{cruttwell2022categorical}, \cite{gavranovic2024fundamental} and more as full-featured gradient-based framework able to challenge established tools. In this chapter, we illustrate such framework  and part of its mathematical foundations. 
 
 
 
@@ -302,6 +302,7 @@ We may also be interested in studying the interaction between actegorical struct
 Suppose we have an $\mathcal{M}$-actegory $(\mathcal{C}, \bullet)$. We wish to study maps in $\mathcal{C}$ which are parametrized using objects of $\mathcal{M}$, i.e., maps in the form $P \bullet A \to B$. We are not just interested in the maps by themselves, but also in their compositional structure. Thus, we abstract away the details by defining a new category $\mathbf{Para}_{\bullet}(\mathcal{C})$ (first introduced in simplified form in \cite{fong2019backprop}). Since we also want to formalize the role of reparametrization, we actually construct $\mathbf{Para}_{\bullet}(\mathcal{C})$ as a bicategory, so that its $0$-cells $A$ can serve as input/output spaces, its $1$-cells $(P,f)$ can serve as parametric maps, and, finally, its $2$-cells $r$ can serve as reparametrizations.
 
 \begin{definition}[$\mathbf{Para}_{\bullet}(\mathcal{C})$]
+  \label{def: para}
   Let $(\mathcal{C}, \bullet)$ be an $\mathcal{M}$-actegory. Then, we define $\mathbf{Para}_{\bullet}(\mathcal{C})$ as the bicategory whose components are as follows.
   \begin{itemize}
     \item The $0$-cells are the objects of $\mathcal{C}$.
@@ -438,6 +439,7 @@ The standard approach to this problem (developed in the last twenty years) invol
 \end{definition}
 
 \begin{example}
+  \label{ex: smooth}
   $\mathbf{Smooth}$ is a both a CDC and a CRDC. In fact, if $\mathcal{J}_f$ is the Jacobian matrix of a smooth morphism $f$,
   \[\mathrm{D}[f]: (x,v) \mapsto \mathcal{J}_f(x)v\]
   and
@@ -552,7 +554,7 @@ It can be helpful to think about dangling wires in the diagrams as open slots wh
 
 The final element needed for the model $\mathsf{Model}$ in Fig. ADDIM to learn is an optimizer. It is shown in \cite{cruttwell2022categorical} that optimizers can be represented as reparametrisations in $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$. More specifically, we might see an optimizer as a lens $\left( \begin{smallmatrix} P \\ P \end{smallmatrix} \right) \to \left( \begin{smallmatrix} Q \\ Q \end{smallmatrix} \right)$. In gradient descent, for example, $P = Q$ and the aforementioned lens is $\left( \begin{smallmatrix} 1_P \\ +_P \end{smallmatrix} \right)$. We can plug such reparametrisation on top of the model to obtain the string diagram in Fig. ADDIM. The diagram shows how the machinery hidden by the $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$ can take care of forward propagation, loss computation, backpropagation and parameter updating in a seamless fashion.
 
-The supervised learning lens in ADDIM actually has two more dangling wires we don't have any use for: namely, the second input $A$ of the model and the second parameter $B$ of the loss functions. These are not a problem as we can just plug them with delete maps taken from the Cartesian structure of $\mathcal{C}$. We can also bend the input wires with an appropriate lens to turn them into parameters. We are then left with a $\left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right) \to \left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right)$ parametric lens with parameter space $\left(\begin{smallmatrix} A \\ 1 \end{smallmatrix}\right) \times \left(\begin{smallmatrix} P \\ P \end{smallmatrix}\right) \times \left(\begin{smallmatrix} B \\ 1 \end{smallmatrix}\right)$. This lens is pictured in ADDIM.
+The supervised learning lens in ADDIM actually has two more dangling wires we do not have any use for: namely, the second input $A$ of the model and the second parameter $B$ of the loss functions. These are not a problem as we can just plug them with delete maps taken from the Cartesian structure of $\mathcal{C}$. We can also bend the input wires with an appropriate lens to turn them into parameters. We are then left with a $\left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right) \to \left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right)$ parametric lens with parameter space $\left(\begin{smallmatrix} A \\ 1 \end{smallmatrix}\right) \times \left(\begin{smallmatrix} P \\ P \end{smallmatrix}\right) \times \left(\begin{smallmatrix} B \\ 1 \end{smallmatrix}\right)$. This lens is pictured in ADDIM.
 
 
 
@@ -568,7 +570,7 @@ Weight tying can also be used for batching: batching is implemented by instantia
 
 \subsection{Empirical evidence}
 
-Empirical evidence for the effectiveness of the parametric lens framwork discussed in this section can be found in \cite{cruttwell2022categorical}, where the authors go on to implement a Python libraries for gradient-based learning based on these ideas. They use the library to develop a MNIST classifier, obtaining comparable accuracy to models developed using traditional tools.
+Empirical evidence for the effectiveness of the parametric lens framework discussed in this section can be found in \cite{cruttwell2022categorical}, where the authors go on to implement a Python libraries for gradient-based learning based on these ideas. They use the library to develop a MNIST classifier, obtaining comparable accuracy to models developed using traditional tools.
 
 
 Since parametric lenses can easily be implemented functionally and without side effects, success stories as the one mentioned above foreshadow a future where popular machine learning libraries also follow elegant functional paradigms informed by category theory. Quoting  \cite{cruttwell2022categorical} directly, \lq[the] proposed algebraic structures naturally guide programming practice\rq.
@@ -995,10 +997,10 @@ In this section we provide a brief introduction to the theory of differentiable 
 Stateful morphisms sequences can be truncated and unrolled as one would expect, and it is proved in \cite{sprunger2019differentiable} that there is a bijection between stateful morphism sequences in $\mathbf{St}(\mathbf{Set})([A],[B])$ and causal functions $A^{\mathbb{N}} \to B^{\mathbb{N}}$ (here $[A]$ is the constant sequence of objects $\{A,A,A,\dots\}$). More generally, given any $\mathbf{St}(\mathcal{C})$, we can restrict our attention to constant sequences $[A]$ and stateful sequences of morphisms in the form $([f],i)$, where $f:X \overset{S}{\underset{S}\longrightarrow} Y$ is a tile in $\mathbf{Dbl}(\mathcal{C})$. This yields a subcategory $\mathbf{St}_0(\mathcal{C})$ whose morphisms can be thought of as Mealy machines that take in an input and produce an output based on an internal state which is updated after every computation. The new state is in a sense fed back to the machine after the computation so that a new computation can take place. This is represented by the diagram in ADDIM.
 
 The authors of \cite{sprunger2019differentiable} go on to define a delayed trace operation which provides a rigorous formalization of feedback loops such as the ones in ADDIM. As stated in the paper, the delayed trace operator is closely related to the more popular trace operator (\cite{joyal1996traced}) and shares many of the same properties. 
-Finally, the authors of \cite{sprunger2019differentiable} show how both $\mathbf{St}(\mathcal{C})$ and $\mathbf{St}_0(\mathcal{C})$ can be given the structure of a CDC (\textit{Def. \ref{def: cdc}}), as long as $\mathcal{C}$ is itself a CDC. This differential structure is conceptually clear, rigorously defined, and compatible with the dealyed trace operator. We don't have space to describe the details of these definitions, but we report the relevant string diagrams in ADDIM.
+Finally, the authors of \cite{sprunger2019differentiable} show how both $\mathbf{St}(\mathcal{C})$ and $\mathbf{St}_0(\mathcal{C})$ can be given the structure of a CDC (\textit{Def. \ref{def: cdc}}), as long as $\mathcal{C}$ is itself a CDC. This differential structure is conceptually clear, rigorously defined, and compatible with the dealyed trace operator. We do not have space to describe the details of these definitions, but we report the relevant string diagrams in ADDIM.
 
 
-The work in \cite{sprunger2019differentiable} provides a theoretical foundation for the technique of backpropagation through time (BPTT), which consists in computing the gradient of the $k$-th unrolling of a RNN in place of the gradient of the such RNN at discrete time $k$. Despite the alleged ad hoc nature of BPTT, \cite{sprunger2019differentiable} proves that the technique doesn't just \lq involve differentiation \rq but is an actual \lq form of differentiation \rq that can be reasoned about in the formalism of CDCs. Nevertheless, as stated in the paper, the differential operator of $\mathbf{St}(\mathcal{C})$ does not compute explicit gradients, and deriving the latter would from the former would be computationally intractable when there are millions of parameters. 
+The work in \cite{sprunger2019differentiable} provides a theoretical foundation for the technique of backpropagation through time (BPTT), which consists in computing the gradient of the $k$-th unrolling of a RNN in place of the gradient of the such RNN at discrete time $k$. Despite the alleged ad hoc nature of BPTT, \cite{sprunger2019differentiable} proves that the technique does not just \lq involve differentiation \rq but is an actual \lq form of differentiation \rq that can be reasoned about in the formalism of CDCs. Nevertheless, as stated in the paper, the differential operator of $\mathbf{St}(\mathcal{C})$ does not compute explicit gradients, and deriving the latter would from the former would be computationally intractable when there are millions of parameters. 
 
 
 It is interesting to compare the approach of \cite{sprunger2019differentiable} with the framework of categorical deep learning: both CDL and the work in \cite{sprunger2019differentiable} synthetically describe RNN architectures, but, while CDL focuses on weight sharing mechanics and the coinductive nature of the definition, \cite{sprunger2019differentiable} focuses the differential properties of these architectures. However, neither categorical framework deals with the problems that come up when computing gradients of unrolled RNNs, such as vanishing or exploding gradients (ADDREF). 
@@ -1149,86 +1151,78 @@ To the best of our knowledge, no one has ever explicitly described SNN architect
 
 
 
-\chapter{Learning Funtcors}
+\chapter{Learning Functors}
 
 
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 
-\section{Functor learning}
-
-In the parametric lens framework presented above, learning happens at the morphism level. The framework is very convenient because its categorical structure hides away the automatic differentiation machinery needed for backpropagation, and thus we can just compose the parametric lenses as modules, so that we can form any network we wish. However, parametric lenses cannot be used to abstract away computations and extract the schema of the model, as they inherently carry out computations. Moreover, the generality of the parametric lens framework means that no tools are developed to study and exploit the inherent structure of the data. Finally, parametric lenses do not offer high level tools to deal with invariance ad equivariance constraints. 
-
-It has been suggested by \cite{gavranovic2019compositional} and \cite{sheshmani2021categorical} that the key to link different layers of abstraction and to exploit the structure of the data is to learn functors instead of morphisms. \cite{gavranovic2019compositional} and \cite{vaswani2017attention} also use functor learning to provide tools that implement abstract constraints on neural networks.
 
 
-
-\subsection{Functors to Separate Layers of Abstraction}
-
-The author of \cite{gavranovic2019compositional} takes inspiration from categorical data migration - a field which is located at the intersection of category theory and database theory - to create a categorical framework for deep learning that separates the development of a machine learning process into a number of key steps. The different steps operate on different levels of abstraction and are linked by functors.
-
-\subsubsection{Schemas}
-
-The first step in the learning pipeline proposed by \cite{gavranovic2019compositional} is to write down the bare-bones structure of the model in question. One can do that using a directed multigraph $G$, where nodes represent data and edges represent neural networks interacting with such data. Constraints can be added at this level in the form of a set $\mathcal{X}$ of equations that identify parallel paths (see e.g. ADDIM, whose multigraph represent a cycleGAN model).
+The categorical machine learning frameworks examined in the previous chapters all share one property: they represent machine learning models, both trained and untrained, as morphisms in some category. Since the considered categories have spaces as their objects, morphism are the intuitive choice. However, the data itself can often be given some form of categorical structure, and there is an advantage in preserving this structure during the learning process (\cite{gavranovic2019compositional}, \cite{sheshmani2021categorical}, \cite{coecke2010mathematical}, \cite{lewis2019compositionality}, \cite{chytas2024poolingimagedatasetsmultiple}). Hence, some authors have proposed learning functors between categories instead of simple morphisms between objects. In this chapter, we will see how learning functors allows us to separate different layers of abstraction in the machine learning process (\cite{gavranovic2019compositional}), to embed data in vector spaces (\cite{sheshmani2021categorical}, \cite{coecke2010mathematical},\cite{lewis2019compositionality}), to carry out unsupervised translation (\cite{sheshmani2021categorical}), and to impose equivariance constraints and pool data effectively (\cite{chytas2024poolingimagedatasetsmultiple}).
+We will illustrate how functors can be learned by gradient descent just like morphisms, as long as we have appropriate parameterizations (\cite{gavranovic2019compositional}) or specialized objective functions (\cite{sheshmani2021categorical}, \cite{chytas2024poolingimagedatasetsmultiple}). 
 
 
-We can now consider the most abstract categorical representation of such model: its schema. 
+
+
+
+\section{Using functors to separate layers of abstraction}
+
+The author of \cite{gavranovic2019compositional} takes inspiration from the field of categorical data migration (\cite{spivak2012functorial}) to create a categorical framework for deep learning that separates the development of a machine learning model into a number of key steps. The different steps concern different levels of abstraction and are linked by functors.
+
+\subsection{Schemas, architectures, models, and concepts}
+
+The first step in the learning pipeline proposed by \cite{gavranovic2019compositional} is to write down the bare-bones structure of the model in question. This can be done by using a directed multigraph $G$, where nodes represent data and edges represent neural networks interacting with such data. Constraints can be added at this level in the form of a set $\mathcal{X}$ of equations that identify parallel paths (see e.g. ADDIM, whose multigraph represent a cycleGAN model). 
 
 \begin{definition}[Model schema]
   The schema of a model represented by a multigraph $G$ is the freely generated category $\mathbf{Free}(G)$.
 \end{definition}
 
-Such schema does not contain any data nor does it do any computation, but it encodes the bare-bones structure of the model. We can take the module $\mathbf{Free}(G)/{\sim}$, where ${\sim}$ is the path congruence relation induced by the equations in $\mathcal{X}$. Depending on the context, the word schema will also refer to such constrained category.
+The schema of a model does not contain any data nor does it do any computation, but it encodes the bare-bones structure of such model. If ${\sim}$ is the path congruence relation induced by the equations in $\mathcal{X}$, we can take the module $\mathbf{Free}(G)/{\sim}$ to impose the constraints represented by $\mathcal{X}$. Depending on the context, the word schema will refer either to $\mathbf{Free}(G)$ or to $\mathbf{Free}(G)/{\sim}$. We will see later that each equation in $\mathcal{X}$ can be associated with a specific loss function and these losses are used to teach models to abide by ${\sim}$.
 
-\subsubsection{Architectures and models}
-
-
-Given the schema $\mathbf{Free}(G)$, we can choose an architecture for the model. What we mean by choosing architecture is assigning to each node a Euclidean space and to each morphism a parametric map, which represents an untrained neural network.
+Given a schema $\mathbf{Free}(G)$, we can choose an architecture for the model, i.e., we can assign to each node a Euclidean space and to each morphism a parametric map. This procedure yields an untrained neural network.
 
 \begin{definition}[Model architecture]
-  Let $\mathrm{Free}(G)$ be a model schema. An architecture for such schema is a functor $\mathsf{Arch}: \mathrm{Free}(G) \to \mathbf{Para}(\mathbf{Smooth})$.
+  Let $\mathrm{Free}(G)$ be a model schema. An architecture for such schema is a functor $\mathsf{Arch}: \mathrm{Free}(G) \to \mathbf{Para}_{\times}(\mathbf{Smooth})$ (see \textit{Def. \ref{def: para}} and see \textit{Ex. \ref{ex: smooth}}).
 \end{definition}
 
-The Euclidean spaces $\mathsf{Arch}$ maps objects to might be intuitively interpreted as the spaces the data will live in, but it is best to consider data outside the $\mathbf{Para}$ machinery and in the simpler $\mathbf{Set}$ category, as this allows for better compartmentalisation. Thus, \cite{gavranovic2019compositional} also defines an embedding functor, which agrees with $\mathsf{Arch}$ on objects but exists independently of it.
+The Euclidean spaces $\mathsf{Arch}$ maps objects to might be intuitively interpreted as the spaces the data will live in, but it is wiser to put data outside the $\mathbf{Para}$ machinery and in the simpler $\mathbf{Set}$ category, as this allows for better compartmentalisation. Thus, \cite{gavranovic2019compositional} also defines an embedding functor, which agrees with $\mathsf{Arch}$ on objects but exists independently of it.
 
 
 \begin{definition}[Model embedding]
-  Let $\mathrm{Free}(G)$ be a model schema and let $\mathsf{Arch}$ be a chosen architecture. An embedding for such schema is a functor $E: |\mathrm{Free}(G)| \to \mathbf{Set}$ which agrees with $\mathsf{Arch}$ on objects\footnote{The reason why the domain $E$ is the discretised schema $|\mathrm{Free}(G)|$ instead of the original schema $\mathrm{Free}(G)$ will be clear once we define datasets.}.
+  Let $\mathrm{Free}(G)$ be a model schema and let $\mathsf{Arch}$ be a chosen architecture. An embedding for such schema is a functor $E: |\mathrm{Free}(G)| \to \mathbf{Set}$ which agrees with $\mathsf{Arch}$ on objects\footnote{The reason why the domain $E$ is the discretized schema $|\mathrm{Free}(G)|$ instead of the original schema $\mathrm{Free}(G)$ is clarified in \textit{Rem. \ref{rem: discretized}}.}.
 \end{definition}
 
-Consider the function $\mathfrak{p}: (P,f) \mapsto P$, which takes the parameter space out of a parametric map in $\mathbf{Para}(\mathbf{Smooth})$. We can use it to define a function 
+Now that we have a model, we must find a way to assign specific values to the parameters, so that the model can be optimized by gradient descent. Consider the function $\mathfrak{p}: (P,f) \mapsto P$, which takes the parameter space out of a parametric map in $\mathbf{Para}_{\times}(\mathbf{Smooth})$. We can use it to define the function 
 \[\mathfrak{P}: \mathsf{Arch} \mapsto \prod_{f : \mathsf{Gen}_{\mathbf{Free}(G)}}\mathfrak{p}(\mathsf{Arch}(f)),\]
-where $\mathsf{Gen}_{\mathbf{Free}(G)}$ is the set of generating morphisms of the free category on the multigraph $G$. The function $\mathfrak{P}$ takes and architecture and returns the parameter space. Given $\mathfrak{P}$, we can define parameter specification function.
+where $\mathsf{Gen}_{\mathbf{Free}(G)}$ is the set of generating morphisms of the free category on the multigraph $G$. The function $\mathfrak{P}$ takes and architecture and returns the parameter space. Given $\mathfrak{P}$, we can define the notion of parameter specification function.
 
 \begin{definition}[Parameter specification function]
-  Let $\mathrm{Free}(G)$ be a model schema and let $\mathsf{Arch}$ be a chosen architecture. A parameter specification function is a function $\mathsf{PSpec}$ which maps a pair $(\mathsf{Arch}, p)$ - comprised of an architecture $\mathsf{Arch}$ and some $p : \mathfrak{P}(\mathsf{Arch})$ - to a functor $\mathsf{Model}_p: \mathbf{Free}(G) \to \mathbf{Smooth}$. The functor $\mathsf{Model}_p$ takes the model schema and returns its implementation according to $\mathsf{Arch}$, partially applying $p_f$ to each $\mathsf{Arch}(f)$, so that we obtain an actual smooth map. 
+  Let $\mathrm{Free}(G)$ be a model schema and let $\mathsf{Arch}$ be a chosen architecture. A parameter specification function is a function $\mathsf{PSpec}$ which maps a pair $(\mathsf{Arch}, p)$ - comprised of an architecture $\mathsf{Arch}$ and some $p \in \mathfrak{P}(\mathsf{Arch})$ - to a functor $\mathsf{Model}_p: \mathbf{Free}(G) \to \mathbf{Smooth}$. The functor $\mathsf{Model}_p$ takes the model schema and returns its implementation according to $\mathsf{Arch}$, partially applying $p_f$ to each $\mathsf{Arch}(f)$, so that we obtain an actual smooth map. 
 \end{definition}
 
-The functor $\mathsf{Model}_p$ can be seen as a bridge between the parametric notion of untrained neural network and the notion of neural network as a smooth map, which makes most sense after training. To better understand the relationship between $\mathsf{Arch}$ and $\mathsf{Model}_p$ see ADDIM.
+The functor $\mathsf{Model}_p$ takes a schema and implements it replacing nodes with Euclidean spaces and arrows with appropriate smooth functions. Notice that, although we need to choose an architecture and specific values for its parameter in order to define $\mathsf{Model}_p$, the latter acts on the schema directly and does not pass through the architecture. See ADDIM for a srting diagram that depicts the relationship between $\mathsf{Arch}$ and $\mathsf{Model}_p$.
 
-\subsubsection{Datasets and concepts}
-
-Now, if we hope to train the model we have defined, we will need a dataset. \cite{gavranovic2019compositional} suggests that a dataset should be represented as a subfunctor of the embedding functor:
+Now, if we hope to train the model we have defined, we will need a dataset. \cite{gavranovic2019compositional} suggests that a dataset should be represented as a subfunctor of the model embedding functor.
 
 \begin{definition}[Dataset]
-  Let $E$ be a model embedding. Then, a dataset is a subfunctor $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$ which maps every object $A$ of the discretised free category to a finite subset $D_E(A) \subseteq E(A)$.
+  Let $E$ be a model embedding. Then, a dataset is a subfunctor $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$ which maps every object $A$ of the discretized free category $|\mathbf{Free}(G)|$ to a finite subset $D_E(A) \subseteq E(A)$.
 \end{definition}
 
 \begin{remark}
-  The reason why the author of \cite{gavranovic2019compositional} chooses to define $E$ and $D_E$ on discretized categories is because it often happens in practical machine learning that the available data is not paired. In these cases, it would be meaningless to provide an action on morphisms because they would end up being incomplete maps.
+  \label{rem: discretized}
+  The reason why \cite{gavranovic2019compositional} defines $E$ and $D_E$ on discretized categories is because it often happens in practical machine learning that the available data is not paired. In these cases, it would be meaningless to provide an action on morphisms because they would end up being incomplete maps.
 \end{remark}
 
-Given a node $A$ of $G$, we have associated to $A$ a Euclidean space $E(A)$, e.g. $\mathbb{R}^n$, and a dataset $D_E(A)$. It makes sense to define another set $\mathfrak{C}(A)$ such that $D_E(A) \subseteq \mathfrak{C}(A) \subseteq E(A)$. A dataset may be considered a collection of instances of something more specific than just vectors; for instance, if we have a finite dataset of pictures of horses, we are clearly interested in the concept of horse, i.e. in the set of all possible pictures of horses, which is much larger than our dataset but still much smaller than the vector space used to host such pictures. The set $\mathfrak{C}(A)$ is the concept represented by $D_E(A)$: in the aforementioned example, $\mathfrak{C}(A)$ might be the set of all images representing horses. Hence, we can call $\mathcal{C}$ the concept functor. 
+Given a node $A$ of $G$, we have associated to $A$ a Euclidean space $E(A)$ and a dataset $D_E(A)$. A dataset may be considered a collection of instances of something more specific than just vectors; for instance, if we have a finite dataset of pictures of horses, we are clearly interested in the concept of horse, i.e. in the set of all possible pictures of horses, which is much larger than our dataset but still much smaller than the vector space used to host such pictures. It makes thus sense to define another set $\mathfrak{C}(A)$ representing such concept: this set will satisfy the inclusion relations $D_E(A) \subseteq \mathfrak{C}(A) \subseteq E(A)$. Moreover, since concepts are assumed to be complete, we can extend $\mathcal{C}$ to a functor.
 
 \begin{definition}[Concept functor]
-  Given a schema $\mathbf{Free}(G)/{\sim}$, an embedding $E$ and a dataset $D_E$, a concept associated with this information is a functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$ such that, if $I: |\mathbf{Free}(G)| \to \mathbf{Free}(G)/{\sim}$ is the inclusion functor, $D_E \subseteq I;\mathfrak{C} \subseteq E$.
+  Given a schema $\mathbf{Free}(G)/{\sim}$, an embedding $E$ and a dataset $D_E$, a concept associated with this information is a functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$ such that, if $I: |\mathbf{Free}(G)| \to \mathbf{Free}(G)/{\sim}$ is the inclusion functor, $D_E \subseteq I \fatsemi \mathfrak{C} \subseteq E$.
 \end{definition}
 
-As \cite{gavranovic2019compositional} states, $\mathfrak{C}$ is an idealization, but it is a useful idealization as it represent the goal of the optimization process: given a dataset $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$, we wish to learn the concept functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$. Total achievement of such goal is clearly impossible as, even in the simplest cases such as linear regression on linearly generated data, finite arithmetics and the finite nature of the learning iteration prevent us from obtaining a perfect copy of the generating function.
-Nevertheless, we will hopefully design an optimization process which makes the learning iteration converge towards such ideal goal.
+As \cite{gavranovic2019compositional} states, $\mathfrak{C}$ is an idealization, but it is a useful idealization as it represent the goal of the optimization process: given a dataset $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$, we wish to learn the concept functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$. More concretely, we want to train a model $\mathsf{Model}_p$ which is as close of an approximation of $\mathfrak{C}$ as possible\footnote{Notice that $\mathsf{Model}_p$ and $\mathfrak{C}$ have different domains and codomains. The difference of codomains is not an issue: we can just forget the differential structure of the codomain of $\mathsf{Model}_p$, which yeilds a functor $H_p$ with image in $\mathbf{Set}$ (see ADDIM). The difference of domains, on the other hand, is by design as $\mathsf{Model}_p$ can only approximate the constraints imposed by $\sim$. This is not an issue in practice as we are only interested in the performance of the image of the trained model $\mathsf{Model}_p$.}. Total achievement of such goal is clearly impossible as, even in the simplest of cases (such as linear regression on synthetic linearly generated data), finite arithmetics and the finite nature of the learning iteration prevent us from obtaining a perfect copy of the generating function.
+Nevertheless, we will hopefully design an optimization process which makes the learning iteration converge towards the ideal goal.
 
-\subsubsection{Optimization}
-
-Now that we know what the optimization goal is, we can define what a task is. The task formalism brings together what has been defined in this section in an integrated fashion.
+Now that we know what the optimization goal is, we can define tasks. The task formalism brings together what has been defined in this section in an integrated fashion.
 
 \begin{definition}[Task]
   Let $G$ be a directed multigraph, let ${\sim}$ be a congruence relation on $\mathbf{Free}(G)$ and let $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$ be a dataset. Then, we call the triple $(G,{\sim},D_E)$ a task.
@@ -1249,33 +1243,78 @@ Once we are assigned a machine learning task $(G,{\sim},D_E)$, we have to choose
   \end{equation}
 \end{definition}
 
-We can now proceed as usual, computing the loss on the dataset for a number of epochs and updating the parameter $p$ each time. Notice that $\mathcal{L}$ implicitly depends on $p$ because each $\mathcal{L}_{\sim}^{f,g}$. Thus, the explicit formula for the loss changes each time the parameter is updated.
+We can now proceed as usual, computing the loss on the dataset for a number of epochs and updating the parameter $p$ each time. Notice that $\mathcal{L}$ implicitly depends on $p$ because each $\mathcal{L}_{\sim}^{f,g}$ does.
+
+It is important to notice that, while the learning iteration employed by \cite{gavranovic2019compositional} is nothing new, the functor approach is actually novel, in that the usual optimization process is used to explore a functor space instead of a simple morphism space. This point of view offers two main advantages: on one hand, it separates different layers of abstraction are separated providing much needed conceptual clarity; on the other hand, it offers an explicit treatment of constraints, which are often only described implicitly and hidden away in the architecture of the model or in the loss function. 
+
+\subsection{Datasets influence the semantics of taks}
+
+\cite{gavranovic2019compositional} centers its investigation around the powerful cycleGAN architecture (\cite{zhu2017unpaired}), which is described using an appropriate task consisting of the cycleGAN schema (see ADDIM), the cycle consistency equations, and a cycleGAN dataset, i.e., a dataset with two sets $A$ and $B$ containing data which is essentially isomorphic, such as pictures of horses and zebras. This description is particularly insightful because it can be used to prove a very important point: the choice of dataset influences the semantics of the learned task in non-trivial ways. In other words, changing the dataset functor can result in semantically different tasks even if the same schema and equations are retained. 
 
 
-\subsubsection{Product Task}
+The example shown in the paper is the \cite{gavranovic2019compositional}: combining the cycleGAN schema with the cycleGAN equations and a cycleGAN dataset yields a task whose semantics can be described as \textit{learn maps that turn horses into zebras and vice versa}. Now replace the cycleGAN dataset with a new dataset consisting in two sets $A$ and $B$, where $A$ contains pictures depicting two elements $X$ and $Y$ together, and $B$ contains separate images of $X$ and $Y$. The resulting tasks has very different semantics: \textit{learn how to separate $X$ from $Y$}. For instance, \cite{gavranovic2019compositional} shows how to use the CelebA dataset to train a neural network able to remove glasses from pictures of faces, or even insert them (see image ADDIM).
 
 
-It is important to notice that, while the learning iteration employed by \cite{gavranovic2019compositional} is nothing new, the functor approach is actually novel, in that the usual optimization process is used to explore a functor space instead of a simple morphism space. The main advantage offered by this procedure is that different layers of abstraction are separated, which allows greater expressive power when defining tasks and solving them. 
-
-
-For instance, it is shown in \cite{gavranovic2019compositional} that changing the dataset functor can result in semantically different networks and tasks even if we keep the same schema. The example shown in the paper is the following: if we take the cycleGAN schema (see ADDIM) and we pair it with a cycleGAN dataset, we obtain a cycleGAN network. Here, by cycleGAN dataset, we mean a dataset where $A$ and $B$ contain data which is essentially isomorphic, such as pictures of horses and zebras. The semantics of the task thus the following: \textit{learn maps that turns horses into zebras and vice versa}. However, if we select a dataset where $A$ consists in pictures which contain two elements $X$ and $Y$, and $B$ contains separate images of $X$ and $Y$, then the semantics of the task become \textit{learn how to separate $X$ from $Y$}. For example, \cite{gavranovic2019compositional} shows how to use the CelebA dataset to train a neural network able to remove glasses from pictures of faces, or even insert them (see image ADDIM).
-
-
-This example is especially relevant to the present discussion because it shows how relevant the categorical structure of $\mathbf{Set}$ can be to machine learning problems. We can interpret pairs \textit{(face, glasses)} as elements of the Cartesian product of the set of faces and the set of glasses. The set of pictures of faces with glasses can instead be considered another categorical product of the aforementioned sets. Then, one interpretation of the task is the following: \textit{find the canonical isomorphisms between two categorical products}. This task, first introduced by \cite{gavranovic2019compositional}, is known as product task.
+This example is especially relevant to the present discussion because it shows how important the categorical structure of $\mathbf{Set}$ can be to machine learning. We can interpret pairs \textit{(face, glasses)} as elements of the Cartesian product of the set of faces and the set of glasses. On the other hand, the set of pictures of faces with glasses can instead be considered another categorical product of the aforementioned sets. Since categorical products are unique, we know that there must be a unique isomorphism between the two products. Then, one interpretation of the task becomes: \textit{find the canonical isomorphism}. \cite{gavranovic2019compositional} labels this task as the product task and shows empirical evidence of the validity of the approach.
 
 
 
 
 
-\subsection{Categorical Representation Learning}
+\section{Categorical representation learning}
 
 
-While the functorial approach described above provides a categorical interpretation of datasets, namely as functors into $\mathbf{Set}$, no categorical structure is given to the data itself, besides the trivial notion that the data lives in sets. It is argued in \cite{sheshmani2021categorical} that sometimes data can be given a categorical structure of its own, and preserving such categorical structure makes learning more efficient. This can be done in two steps: (i) functorially embed the data into appropriately defined embedding categories, (ii) learn functors between such embeddings. 
+
+Although datasets and concepts are defined as functors in the framework of \cite{gavranovic2019compositional}, their functorial nature mainly serves the purpose of integrating data of different kinds: the data itself has very little structure. However, if we suppose that the data at hand has a categorical structure in itself, we can investigate models that preserve this structure (\cite{coecke2010mathematical}, \cite{lewis2019compositionality}, \cite{sheshmani2021categorical}, \cite{chytas2024poolingimagedatasetsmultiple}). This is advantageous because the semantics of data is often closely linked with its structure, especially in the field like nautural language processing (NLP) where the data is human-generated. If we want models able to preserve categorical structure, we need to represent such structure in a way that is accessible to machines: hence the focus on \textit{categorical representation learning} (\cite{coecke2010mathematical}, \cite{lewis2019compositionality}, \cite{sheshmani2021categorical}), or CRL. CRL is the subfield of representation tasked with learning representations that have a categorical structure that mirrors the one of the original data, which often comes in symbolic form. We will examine two examples of CRL: the approach of \cite{sheshmani2021categorical}, which uses CRL to execute (partially) unsupervised translations, and the approaches of \cite{coecke2010mathematical} and \cite{lewis2019compositionality}, which develop a compositional distributional model of meaning for NLP.
 
 
-\subsubsection{Categorical Embeddings}
 
-We will illustrate this procedure with the same example employed in the original paper \cite{sheshmani2021categorical}: unsupervised translation of the names of chemical elements from English to Chinese. Suppose we have two datasets containing thousands of chemical formulas of various inorganic compounds; the first dataset labels the elements with English labels, while the second dataset labels them in Chinese. These datasets can be given a categorical structure with elements and functional groups being the objects, and bonds between them being the morphisms. Let $\mathcal{C}$ and $\mathcal{D}$ be the resulting categories.
+
+\subsection{Unsupervised functorial translation}
+
+
+In this subsection we illustrate the approach of \cite{sheshmani2021categorical} following the same example described in the original paper: unsupervised translation of the names of chemical elements from English to Chinese. The authors are tasked with converting between two identical chemical compound datasets, one labeled in English and the other in Chinese. Both datasets can be given a categorical structure by considering elements and functional groups as objects, and chemical bonds as morphisms. Suppose $\mathcal{C}$ and $\mathcal{D}$ are the resulting categories. The authors of \cite{sheshmani2021categorical} leverage these structures by training a model to learn a translation functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Any category $\mathcal{C}$ can be functorially embedded in the Euclidean space $\mathbb{R}^n$ by considering the vector space category $\mathcal{R}$ associated to the aforementioned vector space (\textit{Def. \ref{def: vecspacecat}}). Given a categorical structure to the embedding codomain, it suffices to define a $\mathcal{C} \to \mathcal{R}$ functor which maps $a \mapsto v_a$ and $f \mapsto M_f$. We will use train a neural network to carry out such mapping. This happens on two separate embedding layers: one maps words to vectors, while the other maps relations to matrices.  
@@ -1285,8 +1324,6 @@ Any category $\mathcal{C}$ can be functorially embedded in the Euclidean space $
 \end{remark}
 
 
-\subsubsection{Concurrence Statistics}
-
 The embedding layer described above needs to be trained on the data to be effectively functorial. The authors of \cite{sheshmani2021categorical} suggest using concurrence statistics and negative sampling to make sure that the embedded morphisms actually represent the same relations between objects elements as the original morphisms between the original objects. It is in fact posited that concurrence encodes such relations. In the authors' words, \lq  concurrence does not happen for no reason\rq.
 
 
@@ -1295,12 +1332,9 @@ The training strategy used in the paper is the following: given two embedded wor
 Here, $F$ is non-linear and $\oplus_f$ represents concatenation over all morphisms in $\mathcal{C}$. The idea behind the formula is that it is not possible, given the finite precision of a computer, to compute a matrix $M_f$ such that $v_b = M_fv_a$ exactly. However, we can find $M_f$ such that $v_b$ and $M_fv_a$ are closely aligned. The alignment can be computed as $v_a^TM_fv_b$. The non-linearity $F$ serves as an aggregator for such measurements.
 
 
-Now, the concurrence probability $p(a,b)$ of two objects $a,b : \mathcal{C}$ can be computed directly from the dataset. Given a negative sampling distribution $p_N$ on objects unrelated to $a$, we can implement the negative sampling loss
-\[\mathcal{L} = \mathbb{E}_{(a,b) \sim p(a,b)}\left(\log P(a \to b) + \mathbb{E}_{b' \sim p(b')}\right),\]
-as described in \cite{sheshmani2021categorical}. The embedding network can then be trained by maximizing such loss.
-
-
-\subsubsection{Training Functors as Models}
+Now, the concurrence probability $p(a,b)$ of two objects $a,b : \mathcal{C}$ can be computed directly from the dataset. Given a negative sampling distribution $p_N$ on objects unrelated to $a$, we can implement the negative sampling objective function
+\[\mathcal{L} = \mathbb{E}_{(a,b) \sim p(a,b)}\left(\log P(a \to b) + \mathbb{E}_{b' \sim p(b')}\log (1-P(a \to b'))\right),\]
+as described in \cite{sheshmani2021categorical}. The embedding network can then be trained by maximizing this objective function.
 
 Apply the procedure described above to both $\mathcal{C}$ and $\mathcal{D}$ to get categorical embeddings of the datasets. Now, consider a functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$ that translates between English labels and Chinese labels. Such functor must equate chemical bonds of the same kind, e.g. if $f$ is a covalent bond so is $\mathcal{F}(f)$. It is posited in \cite{sheshmani2021categorical} that the action of $\mathcal{F}$ on morphism is sufficient to deduce the action of $\mathcal{F}$ on objects.
 
@@ -1315,15 +1349,18 @@ As the authors remark, this loss is universal, in the sense that it does not dep
 Then, the total loss can be written as a weighted sum $\mathcal{L} = \mathcal{L}_{\mathrm{align}} + \lambda \mathcal{L}_{\mathrm{align}}$ of structure loss and alignment loss, where $\lambda$ is a hyperparameter analogous of the $\gamma$ that appears in \textit{Eq. \ref{eq: sumoflosses}}.
 
 
-\subsubsection{Comparison with Traditional Models}
-
 It is shown in \cite{sheshmani2021categorical} that the kind of functor learning illustrated in this section can lead to remarkable improvements in efficiency when compared with more traditional sequence to sequence models. In particular, the authors compared a GRU cell model of similar performance as the functorial model described in the paper, noting that the former needed 17 times more parameters than the latter.
 
 
 The authors also compare their approach with the multi-head attention approach first introduced by \cite{vaswani2017attention} (the title of \cite{sheshmani2021categorical} is clearly inspired on the title of \cite{vaswani2017attention}). It is argued in the article that the categorical approach is an improvement over multi-head attention as the matrices $M_f$ are essentially equivalent to the products $Q_f^TK_f$, where $Q_f$ is the query matrix associated to $f$ and $K_f$ is the key matrix associated to $f$. Categorical representation learning differs from multi-head attention as it does not separate the $M_f$'s into their components, which is useful to learn the matrix $V_{\mathcal{F}}$ and allows us to benefit from functoriality. 
 
 
-\subsection{Invariance and Equivariance with Functors}
+
+\subsection{Compositional distributional model for NLP}
+
+
+
+\section{Invariance and equivariance with functors}
 
 Inspired in part by the formalization in \cite{gavranovic2019compositional}, \cite{chytas2024poolingimagedatasetsmultiple} presents a categorical framework that describes neural networks as functors and uses their functorial nature to impose invariance and equivariance constraints. In particular, it is shown that such constraints are helpful in accounting for shift and imbalance in covariates when pooling medical image datasets.
 
