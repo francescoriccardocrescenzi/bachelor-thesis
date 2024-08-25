@@ -19,6 +19,11 @@
 \usepackage{amsthm}
 \usepackage{mathabx}
 
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{tikz-cd}
+
 \usepackage[left=2cm,right=2cm,bottom=3cm]{geometry}
 
 
@@ -124,21 +129,13 @@ Benedetta
 
 
 
-  \section*{English version}
+\section*{English version}
 
 
 
+\section*{Italian version}
 
-  \textcolor{blue}{Machine learning literature is exploding in size and complexity, but most solutions found are ad hoc, there is little communication between different subfields, and there is a large research debt. Category theory can solve these problems.  \cite{shiebler2021category}.}
-
-  \textcolor{blue}{Talk about the origins of category theory and its "rise to power" as a common language that aims to unite different fields of knowledge.}
-    
-  \textcolor{blue}{Discuss the purpose of this work: a beginner-friendly survey of categorical approaches to neural networks, causal models, and interpretability.}
-
-
-  \section*{Italian version}
-
-  \textcolor{blue}{Traduzione italiana dell'introduzione.}
+\textcolor{blue}{Traduzione italiana dell'introduzione.}
 
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
@@ -320,8 +317,27 @@ Suppose we have an $\mathcal{M}$-actegory $(\mathcal{C}, \bullet)$. We wish to s
     \[(P,f) \fatsemi (Q,g) = (Q \otimes P, (Q \bullet f)  \fatsemi g).\]
     \item The horizontal and vertical $2$-cell composition laws are respectively given by parallel and sequential composition in $\mathcal{M}$. 
   \end{itemize}
-  It is quite handy to represent such cells using the string diagram notation illustrated in figure ADDIM. The $\mathbf{Para}$ construction has a dual $\mathbf{coPara}$ construction whose $1$-cells $f:\mathbf{coPara}_{\bullet}(\mathcal{C})(A,B)$ take the form $(P,f)$, where $f: A \to P \bullet B$. Cells in $\mathbf{coPara}_{\bullet}(\mathcal{C})$ can also be represented with appropriate string diagrams (see ADDIM). The reader can find a complete definition in \cite{gavranovic2024fundamental}.
+  It is quite handy to represent the cells of $\mathbf{Para}_{\bullet}(\mathcal{C})$ using the string diagram notation illustrated in \textit{Fig. \ref{fig: paramorphisms}}. The $\mathbf{Para}$ construction has a dual $\mathbf{coPara}$ construction whose $1$-cells $f:\mathbf{coPara}_{\bullet}(\mathcal{C})(A,B)$ take the form $(P,f)$, where $f: A \to P \bullet B$. Cells in $\mathbf{coPara}_{\bullet}(\mathcal{C})$ can also be represented with appropriate string diagrams. The reader can find a complete definition in \cite{gavranovic2024fundamental}.
 \end{definition}
+
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.3\textwidth}
+      \includegraphics[width=\textwidth]{figures/para.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{figures/para_reparametrization.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.7\textwidth}
+      \includegraphics[width=\textwidth]{figures/para_composition.png}
+      \caption{}
+    \end{subfigure}                 
+    \caption[Parametric morphisms]{String diagrams representing (a) a parametric morphism, (b) a reparametrization of a parametric morphism, (c) a composition of parametric morphisms. (Images taken from \cite{gavranovic2024fundamental}.)}\label{fig: paramorphisms}
+  \end{center}
+\end{figure}
 
 
 It is shown in \cite{gavranovic2024fundamental} that $\mathbf{Para}_{\bullet}(\mathcal{C})$ is actually a $2$-category if the underlying actegory is strict. Assuming this is the case (as we do in this thesis), we can use a functor $F: \mathbf{Cat} \to \mathbf{Set}$ to quotient out the $2$-categorical structure and turn $\mathbf{Para}_{\bullet}(\mathcal{C})$ into a $1$-category $F_{*}(\mathbf{Para}_{\bullet}(\mathcal{C}))$. Here, $F_{*}: \mathbf{2Cat} \to \mathbf{Set}$ is the change of enrichment basis functor induced by $F$. This meaningfully recovers the $1$-categorical perspective of \cite{fong2019backprop}.
@@ -366,8 +382,25 @@ As stated in \cite{gavranovic2024fundamental}, there is no standard definition o
     \item the composition of $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right): \left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)$ and $\left(\begin{smallmatrix} g \\ g' \end{smallmatrix}\right): \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} C \\ C' \end{smallmatrix}\right)$ is
     \[\left(\begin{smallmatrix} f \fatsemi g \\ \langle \pi_0, \langle \pi_0 \fatsemi f, \pi_1 \rangle \fatsemi g' \rangle \fatsemi f' \end{smallmatrix}\right).\]
   \end{itemize}
-  Lenses are best thought of in the helpful language of the string diagrams illustrated in ADDIM.
+  Lenses are best thought of in the helpful language of the string diagrams illustrated in \textit{Fig. \ref{fig: lenses}}.
 \end{definition}
+
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.3\textwidth}
+      \includegraphics[width=\textwidth]{figures/lens_inner_view.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.6\textwidth}
+      \includegraphics[width=\textwidth]{figures/lens_composition.png}
+      \caption{}
+    \end{subfigure}                 
+    \caption[Lenses]{String diagrams representing (a) a lens $\left(\begin{smallmatrix} f \\ f^* \end{smallmatrix}\right)$, (b) the composition of two lenses $\left(\begin{smallmatrix} f \\ f^* \end{smallmatrix}\right)$ and $\left(\begin{smallmatrix} g \\ g^* \end{smallmatrix}\right)$. (Images taken from \cite{cruttwell2022categorical}.)}
+    \label{fig: lenses}
+  \end{center}
+\end{figure}
+
 
 Lenses are a powerful tool, but they cannot be used to model all situations: for instance, lenses cannot be used if we wish to be able to choose not to interact with the environment depending on the input, or if we wish like to reuse values computed in the forward pass for further computation in the backward pass.
 
@@ -383,7 +416,7 @@ We will provide the definition given by \cite{riley2018categories}\footnote{\cit
     \item a $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)$ morphism (or optic) is a pair $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right)$ of morphisms of $\mathcal{C}$ such that $f: A \to M \otimes B$ and $f': M \otimes B' \to A'$, where $M : \mathcal{C}$ is known as residual space; such pairs $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right)$ are also quotiented by an equivalence relation that allows for reparametrization of the residual space and effectively makes it inaccessible;
     \item the identity on $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right)$ is the optic represented by $(\lambda_A^{-1}, \lambda_A)$.
   \end{itemize}
-  We will only show how optics compose using the string diagrams in ADDIM (see \cite{riley2018categories} for the composition formula).
+  See \cite{riley2018categories} for the more information about how optics compose and about the associated string diagrams.
 \end{definition}
 
 Lenses come up as a special case of optics (\cite{riley2018categories}), and optics do solve some of the issues we have with lenses. However, optics are not perfect either: for instance, \cite{gavranovic2024fundamental} points out that optics cannot be used in cases where we ask that the forward pass and backward pass are different kind of maps, as they are both forced to live in the same category. Thus, we need a further layer of generalization: namely, weighted optics.
@@ -531,8 +564,18 @@ We conclude this section discussing the relation between the $\mathbf{Para}$ con
   \end{pmatrix} = \begin{pmatrix}
     P \times A \\ P' \times A'
   \end{pmatrix}.\]
-  Refer to \textit{Fig. ADDIM} to see a string diagram that shows the inner workings of a parametric lens.
+  Refer to \textit{Fig. \ref{fig: paralenses}} to see a string diagram that shows the inner workings of a parametric lens.
 \end{definition}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{figures/parametric_lens.png}             
+    \caption[Parametric lens]{String diagrams representing the inner workings of a parametric lens. (Images taken from \cite{cruttwell2022categorical}.)}
+    \label{fig: paralenses}
+  \end{center}
+\end{figure}
+
+
 
 
 
@@ -555,25 +598,63 @@ Supervised gradient-based learning can be modeled using parametric lenses as fol
 The theory of parametric optics and differential categories does not offer explicit insight with respect to architecture design, so we will assume a good architecture as already been designed (at least for now). Given an architecture $(P,\mathsf{Model})$, it can be embedded into $\mathbf{Para}_{\bullet}(\mathbf{Lens}_A(\mathcal{C}))$ as a lens $\left(\begin{smallmatrix} P \times A \\ P \times A \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B \end{smallmatrix}\right)$ by breaking it up into its basic components (such as linear layers, convolutional layers, etc.), augmenting such components with their reverse derivatives, and the composing the resulting lenses. The backward pass of the composition is the reverse derivative of its forward pass because $\mathbf{R}_{\mathcal{C}}$ is a functor\footnote{As highlighted by \cite{shiebler2021category}, the diagram for the backward pass of the composition of two lenses looks exactly like the diagram describing the chain rule for reverse derivatives, which is what makes $\mathbf{R}_{\mathcal{C}}$ a well-defined functor.}. Many examples can be found in \cite{cruttwell2022categorical}.
 
 
-Updating the parameters based on data requires a loss function, an optimizer and a learning rate. Loss functions can be implemented as parametric lenses which take in predictions as input and labels as parameters. The output they produce can be considered the actual loss that needs to be differentiatied. Given a model parametric lens $\left(\begin{smallmatrix} \mathsf{Model} \\ \mathrm{R}[\mathsf{Model}] \end{smallmatrix}\right):\left(\begin{smallmatrix} P \times A \\ P \times A \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B \end{smallmatrix}\right)$ and a loss parametric lens $\left(\begin{smallmatrix} \mathsf{Loss} \\ \mathrm{R}[\mathsf{Loss}] \end{smallmatrix}\right):\left(\begin{smallmatrix} B \times B\\ B \times B \end{smallmatrix}\right) \to \left(\begin{smallmatrix} L \\ L \end{smallmatrix}\right)$, the composition $m \fatsemi l$ takes in features as input and takes model parameters and labels as parameters. Then, $\left(\begin{smallmatrix} \mathsf{Model} \\ \mathrm{R}[\mathsf{Model}] \end{smallmatrix}\right) \fatsemi \left(\begin{smallmatrix} \mathsf{Loss} \\ \mathrm{R}[\mathsf{Loss}] \end{smallmatrix}\right)$ computes the loss associated with the model predictions. See ADDIM for the associated string diagram.
+Updating the parameters based on data requires a loss function, an optimizer and a learning rate. Loss functions can be implemented as parametric lenses which take in predictions as input and labels as parameters. The output they produce can be considered the actual loss that needs to be differentiatied. Given a model parametric lens $\left(\begin{smallmatrix} \mathsf{Model} \\ \mathrm{R}[\mathsf{Model}] \end{smallmatrix}\right):\left(\begin{smallmatrix} P \times A \\ P \times A \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B \end{smallmatrix}\right)$ and a loss parametric lens $\left(\begin{smallmatrix} \mathsf{Loss} \\ \mathrm{R}[\mathsf{Loss}] \end{smallmatrix}\right):\left(\begin{smallmatrix} B \times B\\ B \times B \end{smallmatrix}\right) \to \left(\begin{smallmatrix} L \\ L \end{smallmatrix}\right)$, the composition $\left(\begin{smallmatrix} \mathsf{Model} \\ \mathrm{R}[\mathsf{Model}] \end{smallmatrix}\right) \fatsemi \left(\begin{smallmatrix} \mathsf{Loss} \\ \mathrm{R}[\mathsf{Loss}] \end{smallmatrix}\right)$ takes in features as input and takes model parameters and labels as parameters. Then, this information is used to compute the loss associated with the model predictions. See \textit{Fig. \ref{fig: suplearnlenses} (a)} for the associated string diagram.
 
-It can be helpful to think about dangling wires in the diagrams as open slots where other components can be plugged. For instance, the diagram of ADDIM has dangling wires labeled with $L$ on its right. We can use a learning rate lens $\alpha$ to link these wires and allow forward-propagating information to "change direction" and go backwards. $\alpha$ must have domain equal to $\left( \begin{smallmatrix} L \\ L \end{smallmatrix} \right)$ and codomain equal to $\left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right)$, where $1$ is the terminal object of $\mathcal{C}$. For instance, if $\mathcal{C} = \mathbf{Smooth}$, $\alpha$ might just multiply the loss by some $\epsilon$, which is what machine learning practitioners would ordinarily call learning rate. Fig. ADDIM shows how a learning rate can be linked to the loss function and the model using post-composition.
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.3\textwidth}
+      \includegraphics[width=\textwidth]{figures/lenses_model_loss.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+      \includegraphics[width=\textwidth]{figures/lenses_model_loss_optimizer.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{figures/lenses_supervised_learning1.png}
+      \caption{}
+    \end{subfigure}   
+    \begin{subfigure}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{figures/lenses_supervised_learning2.png}
+      \caption{}
+    \end{subfigure}                   
+    \caption[Supervised learning with parametric lenses]{String diagrams representing (a) the composition of a model lens and an optimizer lens (b) the composition of a model lens, an optimizer lens, and a learning rate lens, (c) a composition of lenses representing a complete supervised learning algorithm, (d) the same lens of the previous point withuseless wires plugged. (Images taken from \cite{cruttwell2022categorical}.)}
+    \label{fig: suplearnlenses}
+  \end{center}
+\end{figure}
+
+It can be helpful to think about dangling wires in the diagrams as open slots where other components can be plugged. For instance, the diagram of \textit{Fig. \ref{fig: suplearnlenses} (a)} has dangling wires labeled with $L$ on its right. We can use a learning rate lens $\alpha$ to link these wires and allow forward-propagating information to "change direction" and go backwards. $\alpha$ must have domain equal to $\left( \begin{smallmatrix} L \\ L \end{smallmatrix} \right)$ and codomain equal to $\left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right)$, where $1$ is the terminal object of $\mathcal{C}$. For instance, if $\mathcal{C} = \mathbf{Smooth}$, $\alpha$ might just multiply the loss by some $\epsilon$, which is what machine learning practitioners would ordinarily call learning rate. \textit{Fig. \ref{fig: suplearnlenses} (b)} shows how a learning rate can be linked to the loss function and the model using post-composition.
 
 
-The final element needed for the model $\mathsf{Model}$ in Fig. ADDIM to learn is an optimizer. It is shown in \cite{cruttwell2022categorical} that optimizers can be represented as reparametrisations in $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$. More specifically, we might see an optimizer as a lens $\left( \begin{smallmatrix} P \\ P \end{smallmatrix} \right) \to \left( \begin{smallmatrix} Q \\ Q \end{smallmatrix} \right)$. In gradient descent, for example, $P = Q$ and the aforementioned lens is $\left( \begin{smallmatrix} 1_P \\ +_P \end{smallmatrix} \right)$. We can plug such reparametrisation on top of the model to obtain the string diagram in Fig. ADDIM. The diagram shows how the machinery hidden by the $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$ can take care of forward propagation, loss computation, backpropagation and parameter updating in a seamless fashion.
+The final element needed for the model $\mathsf{Model}$ in \textit{Fig. \ref{fig: suplearnlenses} (b)} to learn is an optimizer. It is shown in \cite{cruttwell2022categorical} that optimizers can be represented as reparametrisations in $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$. More specifically, we might see an optimizer as a lens $\left( \begin{smallmatrix} P \\ P \end{smallmatrix} \right) \to \left( \begin{smallmatrix} Q \\ Q \end{smallmatrix} \right)$. In gradient descent, for example, $P = Q$ and the aforementioned lens is $\left( \begin{smallmatrix} 1_P \\ +_P \end{smallmatrix} \right)$. We can plug such reparametrisation on top of the model to obtain the string diagram in \textit{Fig. \ref{fig: suplearnlenses} (c)}. The diagram shows how the machinery hidden by the $\mathbf{Para}(\mathbf{Lens}(\mathcal{C}))$ can take care of forward propagation, loss computation, backpropagation and parameter updating in a seamless fashion.
 
-The supervised learning lens in ADDIM actually has two more dangling wires we do not have any use for: namely, the second input $A$ of the model and the second parameter $B$ of the loss functions. These are not a problem as we can just plug them with delete maps taken from the Cartesian structure of $\mathcal{C}$. We can also bend the input wires with an appropriate lens to turn them into parameters. We are then left with a $\left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right) \to \left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right)$ parametric lens with parameter space $\left(\begin{smallmatrix} A \\ 1 \end{smallmatrix}\right) \times \left(\begin{smallmatrix} P \\ P \end{smallmatrix}\right) \times \left(\begin{smallmatrix} B \\ 1 \end{smallmatrix}\right)$. This lens is pictured in ADDIM.
+In the supervised learning lens in \textit{Fig. \ref{fig: suplearnlenses} (c)}, there are actually has two more dangling wires we do not have any use for: namely, the second input $A$ of the model and the second parameter $B$ of the loss functions. These are not a problem as we can just plug them with delete maps taken from the Cartesian structure of $\mathcal{C}$. We can also bend the input wires with an appropriate lens to turn them into parameters. We are then left with a $\left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right) \to \left(\begin{smallmatrix} 1 \\ 1 \end{smallmatrix}\right)$ parametric lens with parameter space $\left(\begin{smallmatrix} A \\ 1 \end{smallmatrix}\right) \times \left(\begin{smallmatrix} P \\ P \end{smallmatrix}\right) \times \left(\begin{smallmatrix} B \\ 1 \end{smallmatrix}\right)$. This lens is pictured in \textit{Fig. \ref{fig: suplearnlenses} (d)}.
 
 
 
 
 \subsection{Weight tying, batching, and the learning iteration}
 
-Both \cite{cruttwell2022categorical} and \cite{gavranovic2024fundamental} emphasize the essential role played by weight tying in deep learning. Weight tying can be implemented within the parametric lens framework as a reparametrization that copies a single parameter to many parameter slots (see ADDIM): given $(P \times P, f): \mathbf{Para}(\mathcal{C})(X,Y)$, we can define $(P, f^{\Delta_P}): \mathbf{Para}(\mathcal{C})(X,Y)$ so that
+Both \cite{cruttwell2022categorical} and \cite{gavranovic2024fundamental} emphasize the essential role played by weight tying in deep learning. Weight tying can be implemented within the parametric lens framework as a reparametrization that copies a single parameter to many parameter slots (see \textit{Fig. \ref{fig: weighttying}} (a)): given $(P \times P, f): \mathbf{Para}(\mathcal{C})(X,Y)$, we can define $(P, f^{\Delta_P}): \mathbf{Para}(\mathcal{C})(X,Y)$ so that
 \[f^{\Delta_P}: P \times X \stackrel{\Delta_P \times X}{\longrightarrow} P \times P \times X \stackrel{f}{\longrightarrow} Y.\]
-Weight tying can also be used for batching: batching is implemented by instantiating $n$ different copies of our supervised learning lens (comprised of model, loss function, and learning rate) and tying the parameters to a unique value. Then, it suffices to feed the $n$ data points to the $n$ lenses, and we can optimize across a single parameter (see ADDIM).
+Weight tying can also be used for batching: batching is implemented by instantiating $n$ different copies of our supervised learning lens (comprised of model, loss function, and learning rate) and tying the parameters to a unique value. Then, it suffices to feed the $n$ data points to the $n$ lenses, and we can optimize across a single parameter (see \textit{Fig. \ref{fig: weighttying}} (b)).
 
-\cite{cruttwell2022categorical} introduces a possible representation for the whole learning iteration of a supervised learning model within the parametric lens framework. The paper suggests extracting the bacward pass of the lens in ADDIM and reframing it as a $P \to P$ parametric map with parameters $A \times B$. Since this is an endomap, it can be composed $n$ times with itself to obtain a $P \to P$ map, which is proposed as a model of the learning iteration. While this approach requires breaking lenses apart, it is markedly simple.
+\cite{cruttwell2022categorical} introduces a possible representation for the whole learning iteration of a supervised learning model within the parametric lens framework. The paper suggests extracting the bacward pass of the lens in \textit{Fig. \ref{fig: suplearnlenses} (d)} and reframing it as a $P \to P$ parametric map with parameters $A \times B$. Since this is an endomap, it can be composed $n$ times with itself to obtain a $P \to P$ map, which is proposed as a model of the learning iteration. While this approach requires breaking lenses apart, it is markedly simple.
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.3\textwidth}
+      \includegraphics[width=\textwidth]{figures/weight_tying.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+      \includegraphics[width=\textwidth]{figures/batching.png}
+      \caption{}
+    \end{subfigure}              
+    \caption[Weight tying and batching]{String diagrams representing (a) weight trying and (b) batching, both implemented using the copy maps of a Cartesian category. (Images taken from \cite{cruttwell2022categorical}.)}
+    \label{fig: weighttying}
+  \end{center}
+\end{figure}
 
 
 \subsection{Empirical evidence}
@@ -632,7 +713,7 @@ Among the main insights of \cite{elliott2018simple}, it is stated that derivativ
 
 
 
-
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 
 
@@ -727,11 +808,31 @@ Algebras and coalgebras are a categorical formalization of the principles of ind
 (Co)algebras can also be defined on monads: the only difference between (co)algebras over an endofunctor and (co)algebras over a monad is that the latter also need to be compatible with the monad structure, that is satisfy commutative diagrams that represent coherence conditions (see \cite{gavranovicposition}). (Co)algebras over the same functor can be given a categorical structure by using the following notion of homomorphism.
 
 \begin{definition}[Homomorphisms of (co)algebras over an endofunctor]
-  Let $(A,a)$ and $(B,b)$ be algebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. An algebra homomorphism $(A,a)\to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
+  Let $(A,a)$ and $(B,b)$ be algebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. An algebra homomorphism $(A,a)\to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in \textit{Fig. \ref{fig: alghom} (a)} is commutative.
 
 
-  Now suppose $(A,a)$ and $(B,b)$ are coalgebras. A homomorphism between them is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
+  Now suppose $(A,a)$ and $(B,b)$ are coalgebras. A homomorphism between them is a map $f: \mathcal{C}(A,B)$ such that the diagram in \textit{Fig. \ref{fig: alghom} (b)} is commutative.
 \end{definition}
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.25\textwidth}
+      \includegraphics[width=\textwidth]{figures/algebra_hom.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.25\textwidth}
+      \includegraphics[width=\textwidth]{figures/coalgebra_hom.png}
+      \caption{}
+    \end{subfigure}   
+    \begin{subfigure}{0.25\textwidth}
+      \includegraphics[width=\textwidth]{figures/lax_algebra_hom.png}
+      \caption{}
+    \end{subfigure}            
+    \caption[(Co)algebra homomorphisms]{Conditions under which $f:(A,a)\to(B,b)$ is (a) an algebra homomorphism, (b) a coalgebra homomorphism, (c) a lax algebra homomorphism. (Image (c) is taken from \cite{gavranovicposition}.)}
+    \label{fig: alghom}
+  \end{center}
+\end{figure}
+
 
 The main intuition behind the notions of algebra and coalgebra is the following: the underlying functor defines a signature for the (co)algebraic structure; the structure of an algebra is a constructor that takes data from $F(A)$ and uses it to build data from $A$, whereas the structure of a coalgebra observes data from $A$ and produces an observation in the form of data from $F(A)$; (co)algebra homomorphism are arrows that preserve the underlying structure. Consider the following clarifying examples from \cite{gavranovicposition}.
 
@@ -766,7 +867,7 @@ The link between (co)algebras and (co)induction does not stop at the definition 
   Hence, $f$ is necessarily a fold over a list with recursive components $r_0$ and $r_1$. Incidentally, this proves that $f$ is unique, making $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ an initial object in the category of algebras over the polynomial endofunctor $1 + A \times X$.
 \end{example}
 
-The notion of (co)algebra over a functor can be generalized to the sphere $2$-categories, defining the notion of (co)algebra over a $2$-endofunctor. The basic concepts stay the same but the commutativity of the diagrams definining (co)algebra homomorphisms is relaxed into lax-commutativity. A square diagram of $1$-cells is lax-commutative if there exists a $2$-cell that carries the composition of the top and the right edge onto the composition of the left and bottom edge, as in ADDIM. Once again we refer to \cite{gavranovicposition} for further information.
+The notion of (co)algebra over a functor can be generalized to the sphere $2$-categories, defining the notion of (co)algebra over a $2$-endofunctor. The basic concepts stay the same but the commutativity of the diagrams definining (co)algebra homomorphisms is relaxed into lax-commutativity. A square diagram of $1$-cells is lax-commutative if there exists a $2$-cell that carries the composition of the top and the right edge onto the composition of the left and bottom edge, as in \textit{Fig. \ref{fig: alghom} (c)}. Once again we refer to \cite{gavranovicposition} for further information.
 
 
 We conclude the section with the following proposition (\cite{gavranovicposition}), which shows that actegorical strong endofunctors induce $2$-endofunctors over parametric categories. We will use the proposition to study parametric versions of the endofunctors of \textit{Ex. \ref{ex: lists}} and \textit{Ex. \ref{ex: mealy}}.
@@ -794,7 +895,7 @@ We conclude the section with the following proposition (\cite{gavranovicposition
 Suppose $(R, \oplus, \otimes)$ is a commutative semiring. An integral transform is a transformation that carries a function in $[W,R]$ to a function in $[Z,R]$ following a precise chain of steps. Integral transforms\footnote{The label integral transform refers to the fact that similar ideas can be used to write categorical definitions for familiar analytical integral transforms (\cite{golem_ph_utexas_edu}). A similar construct is also used in physics (\cite{eastwood1980cohomology}).} have been introduced by \cite{dudzik2022graph} to provide a single formalism able to describe both dynamic programming and GNNs. Integral transforms can be encoded as polynomial spans.
 
 \begin{definition}[Polynomial span]
-  A polynomial span is a triplet $(i: X \to W,p: X \to Y,o: Y \to Z)$ of morphisms in $\mathbf{FinSet}$, the category of finite sets and functions. $i$ is known as input, $p$ as process, $o$ as ouput. $W$ is known as input set, $X$ as argument set, $Y$ as message set, $Z$ as ouput set. We also ask that the fibers of $p$ have total orderings\footnote{Neither we nor \cite{dudzik2022graph} use this requirement but, as stated in the original paper, the requirement is useful to support functions with non-commuting arguments.}. The polynomial span $(i,p,o)$ can be graphically represented as the string diagram in ADDIM.
+  A polynomial span is a triplet $(i: X \to W,p: X \to Y,o: Y \to Z)$ of morphisms in $\mathbf{FinSet}$, the category of finite sets and functions. $i$ is known as input, $p$ as process, $o$ as ouput. $W$ is known as input set, $X$ as argument set, $Y$ as message set, $Z$ as ouput set. We also ask that the fibers of $p$ have total orderings\footnote{Neither we nor \cite{dudzik2022graph} use this requirement but, as stated in the original paper, the requirement is useful to support functions with non-commuting arguments.}. The polynomial span $(i,p,o)$ can be graphically represented as the string diagram in \textit{Fig. \ref{fig: inttransform} (a)}.
 \end{definition}
 
 \begin{definition}[Integral transform]
@@ -806,8 +907,25 @@ Suppose $(R, \oplus, \otimes)$ is a commutative semiring. An integral transform 
     \item $o_{\otimes}$ is the message pushforward mapping 
     \[o_{\oplus}(m)(v) = \bigoplus_{e \in o^{-1}(v)}m(e).\]
   \end{enumerate}
-  The integral transform $(i^*, p_{\otimes}, o_{\oplus})$ can be represented by the diagram in ADDIM.
+  The integral transform $(i^*, p_{\otimes}, o_{\oplus})$ can be represented by the diagram in \textit{Fig. \ref{fig: inttransform} (b)}.
 \end{definition}
+
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.21\textwidth}
+      \includegraphics[width=\textwidth]{figures/polynomial_span.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.28\textwidth}
+      \includegraphics[width=\textwidth]{figures/integral_transform.png}
+      \caption{}
+    \end{subfigure}            
+    \caption[Integral transform]{(a) A polynomial span and (b) the associated integral transform. (Images taken from \cite{dudzik2022graph}.)}
+    \label{fig: inttransform}
+  \end{center}
+\end{figure}
+
 
 \begin{remark}
   Whereas defining $i^*$ is quite straight-forward, defining $p_{\otimes}$ and $o_{\otimes}$ is more difficult because the arrows $p$ and $o$ point in the wrong direction, which implies that the underlying functions must be inverted before considering the associated pullbacks. However, inverting non-invertible functions yields functions into the powersets of the original domains. Moreover, if we want to preserve the multiplicity of arguments and messages, we have to construct inverses that go into the sets of multisets over the original domains. Hence why we need $\otimes$ and $\oplus$ to aggregate results over such multisets.
@@ -853,7 +971,7 @@ The following proposition and the subsequent example show how exactly CDL subsum
   The monad $(G \times -, \eta, \mu)$ can serve as a signature for $G$-actions. The actions themselves can be recovered by considering algebras $(S,\ast)$ for the monad, and, given two actions $(S,\ast)$ and $(T,\star)$, an associated equivariant map $f: S \to T$ is a $(S,\ast) \to (T,\star)$ monad algebra homomorphism.
 \end{proposition}
 \begin{proof}
-  It suffices to compare the equations that define group actions and group action invariance with the commutative diagrams in ADDIM and ADDIM.
+  It suffices to compare the equations that define group actions and group action invariance with the commutative diagrams in \textit{Fig. \ref{fig: alghom}}.
 \end{proof}
 
 \begin{example}[Linear equivariant layer]
@@ -869,22 +987,53 @@ As seen in \textit{Ex. \ref{ex: translationaction}}, the formalism of CDL subsum
 
 \begin{example}[Folding recurrent neural network cell]
   \label{ex: frnncell}
-  Consider the endofunctor $1 + A \times X: \mathbf{Set} \to \mathbf{Set}$ from \textit{Ex. \ref{ex: lists}}. Consider the Cartesian action of $\mathbf{Set}$ on itself and associate the following actegorical strength to the functor: $\sigma_{P,X}(p,\mathrm{inl}) = \mathrm{inl}$ and  $\sigma_{P,A}(p,\mathrm{inr}(x,x')) = \mathrm{inr}((p,x), (p,x'))$. Now that the functor is actegorical strong, we can use \textit{Prop. \ref{prop: paraend}} to construct an endofunctor $\mathbf{Para}(1 + A \times X): \mathbf{Para}_{\bullet}(\mathbf{Set}) \to \mathbf{Para}_{\bullet}(\mathbf{Set})$. Consider an algebra $(S,(P,\mathsf{Cell}))$ for this functor. Via the isomorphism $P \times (1 + A \times X) \cong P + P \times A \times X$, we deduce that $\mathsf{Cell} = [\mathsf{Cell}_0, \mathsf{Cell}_1]$, where $\mathsf{Cell}_0: P \to S$ and  $\mathsf{Cell}_1: P \times A \times S \to S$. We can interpret $\mathsf{Cell}_0$ and $\mathsf{Cell}_1$ as folding recurrent neural network cells: $\mathsf{Cell}_0$ provides the initial state based on its parameter and $\mathsf{Cell}_1$ takes in the old state, a parameter, and an input, which are then used to return a new state (ADDIM).
+  Consider the endofunctor $1 + A \times X: \mathbf{Set} \to \mathbf{Set}$ from \textit{Ex. \ref{ex: lists}}. Consider the Cartesian action of $\mathbf{Set}$ on itself and associate the following actegorical strength to the functor: $\sigma_{P,X}(p,\mathrm{inl}) = \mathrm{inl}$ and  $\sigma_{P,A}(p,\mathrm{inr}(x,x')) = \mathrm{inr}((p,x), (p,x'))$. Now that the functor is actegorical strong, we can use \textit{Prop. \ref{prop: paraend}} to construct an endofunctor $\mathbf{Para}(1 + A \times X): \mathbf{Para}_{\bullet}(\mathbf{Set}) \to \mathbf{Para}_{\bullet}(\mathbf{Set})$. Consider an algebra $(S,(P,\mathsf{Cell}))$ for this functor. Via the isomorphism $P \times (1 + A \times X) \cong P + P \times A \times X$, we deduce that $\mathsf{Cell} = [\mathsf{Cell}_0, \mathsf{Cell}_1]$, where $\mathsf{Cell}_0: P \to S$ and  $\mathsf{Cell}_1: P \times A \times S \to S$. We can interpret $\mathsf{Cell}_0$ and $\mathsf{Cell}_1$ as folding recurrent neural network cells: $\mathsf{Cell}_0$ provides the initial state based on its parameter and $\mathsf{Cell}_1$ takes in the old state, a parameter, and an input, which are then used to return a new state (\textit{Fig. \ref{fig: foldingrnn} (a)}).
 \end{example}
 
 \begin{example}[Unrolling of a folding recurrent neural network]
   \label{ex: frnnunroll}
-  Use \textit{Prop. \ref{prop: embeddingth}} to embed the list algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ from \textit{Ex. \ref{ex: lists}} as an algebra over the endofunctor $\mathbf{Para}(1 + A \times X)$ define in \textit{Def. \ref{ex: frnncell}}. Now consider an algebra homomorphism $(P,f): (\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}]) \to (S,(P,\mathsf{Cell}))$. Since we are working with algebras over a $2$-endofunctor, we also need to specify a $2$-cell that makes the diagram in ADDIM lax-commutative. Using the weight-tying reparameterization $\Delta_P$ yields the lax commutative diagram in ADDIM, which uniquely identifies $f$ as the fold function which takes a list of inputs in $A$ and unrolls a folding recurrent neural network that reads such inputs. The weight-tying reparametrization makes sure that each cell of the unrolled network uses the same parameters (see ADDIM for a graphical representation). 
+  Use \textit{Prop. \ref{prop: embeddingth}} to embed the list algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ from \textit{Ex. \ref{ex: lists}} as an algebra over the endofunctor $\mathbf{Para}(1 + A \times X)$ define in \textit{Def. \ref{ex: frnncell}}. Now consider an algebra homomorphism $(P,f): (\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}]) \to (S,(P,\mathsf{Cell}))$. Since we are working with algebras over a $2$-endofunctor, we also need to specify a $2$-cell that makes the homomorphism diagram (\textit{Fig. \ref{fig: alghom} (c)}) lax-commutative. Using the weight-tying reparameterization $\Delta_P$ yields the lax commutative diagram in \textit{Fig. \ref{fig: foldingrnncommdiag}}, which uniquely identifies $f$ as the fold function which takes a list of inputs in $A$ and unrolls a folding recurrent neural network that reads such inputs. The weight-tying reparametrization makes sure that each cell of the unrolled network uses the same parameters (see \textit{Fig. \ref{fig: foldingrnn} (b)} for a graphical representation). 
 \end{example}
 
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.3\textwidth}
+      \includegraphics[width=\textwidth]{figures/folding_rnn_cell.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+      \includegraphics[width=\textwidth]{figures/folding_rnn.png}
+      \caption{}
+    \end{subfigure}            
+    \caption[Folding RNN]{(a) Two kinds of folding RNN cell represeting the initial state of the network and a generic state update based on input. (b) A folding RNN unrolled using weight tying. (Images taken from \cite{gavranovicposition}.)}
+    \label{fig: foldingrnn}
+  \end{center}
+\end{figure}
 
-The construction in  \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: frnnunroll}} constitutes a precise mathematical link between the classical data structure of lists and the machine learning construct of folding RNNs. Similarly, \cite{gavranovicposition} recovers recursive neural networks (TreeRNNs) by building upon classical binary trees and, even more interestingly, complete RNNs are recovered from the coalgebra of \textit{Ex. \ref{ex: mealy}}, which reveals an interesting link between RNNs and Mealy machines. This begs the question: if Mealy machines generalize to recurrent neural networks, what do Moore machines generalize to? It is argued in the paper that they generalize to a variant of RNN where different cells (which share the same weights) are used for state update and output production. ADDIM shows how different classical concepts generalize to different NN cells. Hopefully, more work in this direction will lead to new NN architectures inspired from other classical concepts.
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{figures/folding_rnn_lax_diagram.png}     
+    \caption[Lax-commutative diagram for the unrolling of a folding RNN]{ Lax-commutative diagram that makes $(P,f): (\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}]) \to (S,(P,\mathsf{Cell}))$ an algebra homomorphisms. (Image taken from \cite{gavranovicposition}.)}
+    \label{fig: foldingrnncommdiag}
+  \end{center}
+\end{figure}
+
+
+
+The construction in  \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: frnnunroll}} constitutes a precise mathematical link between the classical data structure of lists and the machine learning construct of folding RNNs. Similarly, \cite{gavranovicposition} recovers recursive neural networks (TreeRNNs) by building upon classical binary trees and, even more interestingly, complete RNNs are recovered from the coalgebra of \textit{Ex. \ref{ex: mealy}}, which reveals an interesting link between RNNs and Mealy machines. This begs the question: if Mealy machines generalize to recurrent neural networks, what do Moore machines generalize to? It is argued in the paper that they generalize to a variant of RNN where different cells (which share the same weights) are used for state update and output production. Hopefully, more work in this direction will lead to new NN architectures inspired from other classical concepts. \textit{Fig. \ref{fig: cells}} shows various kinds of NN cells and the endofunctors used in their (co)algebraic definitions.
 
 \begin{remark}[CDL and optic-based learning]
   In all the examples discussed above, the (co)algebra homomorphisms in question return parametric maps $(P,\mathsf{model})$, which we can interpret as untrained NN models. We can feed these maps into the $\mathbf{R}_{\mathcal{C}}$ functor associated with a generalized Cartesian reverse differential category\footnote{The examples illustrated in this section have been developed in $\mathbf{Set}$, but we see no reason why they couldn't be specialized to an appropriate CRDC.} to augment them with their reverse derivative. The framework of parametric lenses described in 
   \textit{Sec. \ref{sec: opticbasedlearning}} can then be used to train these networks. CDL and optic-based learning are thus compatible and even complementary.
 \end{remark}
 
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{figures/cells.png}     
+    \caption[Neural network cells]{Various kinds of NN cells and the endofunctors used in their (co)algebraic definitions. (Image taken from \cite{gavranovicposition}.)}
+    \label{fig: cells}
+  \end{center}
+\end{figure}
 
 \section{Algorithmic alignment: GNNs and dynamic programming}
 
@@ -906,14 +1055,29 @@ The Bellman-Ford (BF) algorithm is one of the most popular dynamic programming a
 \[d_u \longleftarrow  \min\left(d_u, \min_{v \in \mathcal{N}_u}(d_v) + w_{v,u}\right).\]
 
 
-\cite{dudzik2022graph} propose the integral transform encoded by the polynomial span in ADDIM as the supporting structure of the BF algorithm. The functions $i$, $p$, and $o$ are defined as follows:
+\cite{dudzik2022graph} propose the integral transform encoded by the polynomial span in \textit{Fig. \ref{fig: polyspans} (a)} as the supporting structure of the BF algorithm. The functions $i$, $p$, and $o$ are defined as follows:
 \begin{enumerate}
   \item $i: (V + E) + (V + E) \to V + (V + E)$ acts as the identity on the first $V$, it maps the edges of the first $E$ to their sources, and it acts as the identity on the second $V + E$ pair;
   \item $p: (V + E) + (V + E) \to V + E$ just collapses the two copies of $V + E$;
   \item $o$ acts as the target function on the $E$ and as the identity on $V$.
 \end{enumerate}
 It is argued in the paper that the whole integral transform acts as step of the algorithm, carrying the data in $(d, b, w)$ to the updated function $d$. Let's examine each step: the input pullback extracts the distances the sources of every edge; the argument pushforward computes the lengths of the one-hop extensions of the known shortest paths (the weight of each node is treated as the weight of a self-edge in this case); finally, the message pushforward selects the shortest paths to each node among the ones studied by the argument pushforward. 
-Hence, the simple polynomial span in ADDIM successfully encode the whole BP algorithm without any information loss or ad hoc choice. 
+Hence, the simple polynomial span in \textit{Fig. \ref{fig: polyspans} (a)} successfully encode the whole BP algorithm without any information loss or ad hoc choice. 
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.45\textwidth}
+      \includegraphics[width=\textwidth]{figures/poly_span_bellman_ford.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+      \includegraphics[width=\textwidth]{figures/poly_span_message_passing.png}
+      \caption{}
+    \end{subfigure}            
+    \caption[Bellman-Ford algorithm and message passing networks]{Polynomial spans used to by \cite{dudzik2022graph} to model (a) the Bellman-Ford algorithm and (b) a message pasing neural network. (Images taken from \cite{dudzik2022graph}.)}
+    \label{fig: polyspans}
+  \end{center}
+\end{figure}
 
 \subsubsection{Message passing neural network}
 
@@ -925,7 +1089,7 @@ A message passing neural network (MPNN) is a graph neural network described by t
 where $t$ represents the time step, and $M_t$ and $U_t$ are learned differentiable functions.
 
 
-\cite{dudzik2022graph} argues that an MPNN layer can be implemented as the integral transform associated with the polynomial span of ADDIM, with an extra MLP, as show in ADDIM. Here,
+\cite{dudzik2022graph} argues that an MPNN layer can be implemented as the integral transform associated with the polynomial span of \textit{Fig. \ref{fig: polyspans} (b)}, with an extra MLP. Here,
 \begin{enumerate}
   \item $i$ sends the first $E$ to $1$, it acts as source and target on the second $E$ and third $E$ respectively, and it acts as the identity on the fourth $E$;
   \item $p$ collapses four $E$'s into one;
@@ -934,14 +1098,30 @@ where $t$ represents the time step, and $M_t$ and $U_t$ are learned differentiab
 In the associated integral transform, $i^*$ gathers graph, features, node features and edge features, $p_{\otimes}$ "projects" the such features on the edges, the MLP combines them, and, finally, $o_{\oplus}$ sends them to the right target.
 
 
-Although not a perfect representation of the target architecture (due to the extra MLP), the polynomial span in ADDIM can be used to inform the design of new architectures which are obtained by simple manipulations of the arrows or objects in the diagram. For instance, \cite{dudzik2022graph} uses the integral transform formalism to investigate possible performance improvements on CLRS benchmark tasks (\cite{velivckovic2022clrs}). They consider messages that reduce over intermediate nodes they show these architectures lead to better average performance on these tasks, likely a result of better algorithmic alignment.
+Although not a perfect representation of the target architecture (due to the extra MLP), the polynomial span in \textit{Fig. \ref{fig: polyspans} (b)} can be used to inform the design of new architectures which are obtained by simple manipulations of the arrows or objects in the diagram. For instance, \cite{dudzik2022graph} uses the integral transform formalism to investigate possible performance improvements on CLRS benchmark tasks (\cite{velivckovic2022clrs}). They consider messages that reduce over intermediate nodes they show these architectures lead to better average performance on these tasks, likely a result of better algorithmic alignment.
 
 
 \subsection{Asynchronous algorithmic alignment}
 
 \cite{dudzik2024asynchronous} derives conditions under which synchronous GNNs are invariant under asynchronous execution. This is relevant because, as stated in the paper, in many dynamic programming tasks modeled by graphs, only small parts of the aforementioned graphs are changed at each step. A synchronously executed GNN that is trained on these tasks must learn the identity function many times over, which leads to brittleness and wasted computational resources. However, implementing many algorithms that are invariant under asynchronous execution as synchronous GNNs that are also invariant under asynchronous execution leads to better algorithmic alignment and thus more robust and efficient learning.
 
-The authors of \cite{dudzik2024asynchronous} revise the model explored in \cite{dudzik2022graph} so that it includes a message function $\psi$ that generates messages based on gathered arguments (see ADDIM for the update diagram). Moreover, the authors argue that it is best to consider GNNs where every graph component that has a persistent state is elevated to the status of node, whereas transient computations are carried out along edges. The resulting GNN can be described by the diagram in ADDIM, where $\phi$ is the transit function that updates the persistent state of each node, and $\delta$ is the function that computes the arguments needed to generate the next messages.
+The authors of \cite{dudzik2024asynchronous} revise the model explored in \cite{dudzik2022graph} so that it includes a message function $\psi$ that generates messages based on gathered arguments (see \textit{Fig. \ref{fig: messagepassing} (a)} for the update diagram). Moreover, the authors argue that it is best to consider GNNs where every graph component that has a persistent state is elevated to the status of node, whereas transient computations are carried out along edges. The resulting GNN can be described by the diagram in \textit{Fig. \ref{fig: messagepassing} (b)}, where $\phi$ is the transit function that updates the persistent state of each node, and $\delta$ is the function that computes the arguments needed to generate the next messages.
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.4\textwidth}
+      \includegraphics[width=\textwidth]{figures/message_passing_network1.png}
+      \caption{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+      \includegraphics[width=\textwidth]{figures/message_passing_network2.png}
+      \caption{}
+    \end{subfigure}            
+    \caption[Graph neural network architecture]{Diagrams describing the GNN architecture described in \cite{dudzik2024asynchronous}. (Images taken from \cite{dudzik2024asynchronous}.)}
+    \label{fig: messagepassing}
+  \end{center}
+\end{figure}
 
 It is argued in \cite{dudzik2024asynchronous} that invariance under asynchrony can be modeled by giving both arguments and messages monoidal structures. For instance, let $(M, 1, \cdot)$ be the message monoid and let $(A, 0, +)$ be the argument monoid. Then, if $S$ is the set of persistent states, state update and argument generation can be modeled as a function $M \times S \to S \times A$ which maps $(m,s) \mapsto (m \bullet s, \delta_m(s))$. Invariance under asynchronous message aggregation is obtained by defining $\bullet$ as a monoidal action of $M$ on $S$. However, \cite{dudzik2024asynchronous} shows that this is meaningful if and only if the argument generation function $\delta$ is compatible with the unitality and associativity equations of the action. This can only happen if $\delta: m \mapsto \delta_m$ is a $1$-cocycle.
 
@@ -990,7 +1170,7 @@ In this section we provide a brief introduction to the theory of differentiable 
     \item the horizontal and vertical $1$-cells are the objects of $\mathcal{C}$;
     \item a $2$-cell (tile) with horizontal source $S$, horizontal target $S'$, vertical source $X$, and vertical target $Y$ is a morphism $f: S \times X \to S' \times Y$ which we represent with the symbol $f:X \overset{S}{\underset{S'}\longrightarrow} Y$.
   \end{enumerate}
-  It is handy to also represent $2$-cells $f$ as the tile string diagrams in ADDIM. The horizontal and vertical composition laws for $2$-cells are given consistently with the tile diagrams.
+  It is handy to also represent $2$-cells $f$ as the tile string diagrams in \textit{Fig. \ref{fig: tiles} (a)}. The horizontal and vertical composition laws for $2$-cells are given consistently with the tile diagrams.
 \end{definition}
 
 \begin{definition}[Category of stateful morphism sequences]
@@ -999,13 +1179,51 @@ In this section we provide a brief introduction to the theory of differentiable 
     \item the objects of $\mathbf{St}(\mathcal{C})$ are sequences $\mathbf{X} = \{X_k\}_{k = 0,1,\dots}$ of objects of $\mathcal{C}$;
     \item the morphisms $\mathbf{X} \to \mathbf{Y}$ are pairs $(\mathbf{f}, i)$, where $\mathbf{f} = \{f_k\}_{k = 0,1,\dots}$ is a sequence of tiles in $\mathbf{Dbl}(\mathcal{C})$ such that $f_k: X_k \overset{S_k}{\underset{S_{k+1}}\longrightarrow} Y_k$, for some sequence $\mathbf{S}$ of states, and $i: 1 \to S_0$ selects an initial state. 
   \end{enumerate}
-  The morphisms of $\mathbf{St}(\mathcal{C})$ are known as stateful morphisms sequences and are represented using string diagrams as in ADDIM.
+  The morphisms of $\mathbf{St}(\mathcal{C})$ are known as stateful morphisms sequences and are represented using string diagrams as in \textit{Fig. \ref{fig: tiles} (b)}.
 \end{definition}
 
-Stateful morphisms sequences can be truncated and unrolled as one would expect, and it is proved in \cite{sprunger2019differentiable} that there is a bijection between stateful morphism sequences in $\mathbf{St}(\mathbf{Set})([A],[B])$ and causal functions $A^{\mathbb{N}} \to B^{\mathbb{N}}$ (here $[A]$ is the constant sequence of objects $\{A,A,A,\dots\}$). More generally, given any $\mathbf{St}(\mathcal{C})$, we can restrict our attention to constant sequences $[A]$ and stateful sequences of morphisms in the form $([f],i)$, where $f:X \overset{S}{\underset{S}\longrightarrow} Y$ is a tile in $\mathbf{Dbl}(\mathcal{C})$. This yields a subcategory $\mathbf{St}_0(\mathcal{C})$ whose morphisms can be thought of as Mealy machines that take in an input and produce an output based on an internal state which is updated after every computation. The new state is in a sense fed back to the machine after the computation so that a new computation can take place. This is represented by the diagram in ADDIM.
+Stateful morphisms sequences can be truncated and unrolled as one would expect, and it is proved in \cite{sprunger2019differentiable} that there is a bijection between stateful morphism sequences in $\mathbf{St}(\mathbf{Set})([A],[B])$ and causal functions $A^{\mathbb{N}} \to B^{\mathbb{N}}$ (here $[A]$ is the constant sequence of objects $\{A,A,A,\dots\}$). More generally, given any $\mathbf{St}(\mathcal{C})$, we can restrict our attention to constant sequences $[A]$ and stateful sequences of morphisms in the form $([f],i)$, where $f:X \overset{S}{\underset{S}\longrightarrow} Y$ is a tile in $\mathbf{Dbl}(\mathcal{C})$. This yields a subcategory $\mathbf{St}_0(\mathcal{C})$ whose morphisms can be thought of as Mealy machines that take in an input and produce an output based on an internal state which is updated after every computation. The new state is in a sense fed back to the machine after the computation so that a new computation can take place. This is represented by the diagram in \textit{Fig. \ref{fig: tiles} (b)}.
 
-The authors of \cite{sprunger2019differentiable} go on to define a delayed trace operation which provides a rigorous formalization of feedback loops such as the ones in ADDIM. As stated in the paper, the delayed trace operator is closely related to the more popular trace operator (\cite{joyal1996traced}) and shares many of the same properties. 
-Finally, the authors of \cite{sprunger2019differentiable} show how both $\mathbf{St}(\mathcal{C})$ and $\mathbf{St}_0(\mathcal{C})$ can be given the structure of a CDC (\textit{Def. \ref{def: cdc}}), as long as $\mathcal{C}$ is itself a CDC. This differential structure is conceptually clear, rigorously defined, and compatible with the dealyed trace operator. We do not have space to describe the details of these definitions, but we report the relevant string diagrams in ADDIM.
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}[c]{0.3\textwidth}
+      \includegraphics[width=\textwidth]{figures/tiles.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}[c]{0.45\textwidth}
+      \includegraphics[width=\textwidth]{figures/stateful_morphism_sequences.png}
+      \caption{}
+    \end{subfigure}            
+    \caption[Tiles and stateful morphisms]{(a) String diagrams for a tile in $\mathbf{Dbl}(\mathcal{C})$. (b) String diagrams for a stateful morphism in $\mathbf{St}(\mathcal{C})$ and one of its truncation. (Images taken from \cite{sprunger2019differentiable}.)}
+    \label{fig: tiles}
+  \end{center}
+\end{figure}
+
+
+The authors of \cite{sprunger2019differentiable} go on to define a delayed trace operation which provides a rigorous formalization of feedback loops such as the one in \textit{Fig. \ref{fig: differentiationanddelayedtrace} (a)}. As stated in the paper, the delayed trace operator is closely related to the more popular trace operator (\cite{joyal1996traced}) and shares many of the same properties. 
+Finally, the authors of \cite{sprunger2019differentiable} show how both $\mathbf{St}(\mathcal{C})$ and $\mathbf{St}_0(\mathcal{C})$ can be given the structure of a CDC (\textit{Def. \ref{def: cdc}}), as long as $\mathcal{C}$ is itself a CDC. This differential structure is conceptually clear, rigorously defined, and compatible with the dealyed trace operator. We do not have space to describe the details of these definitions, but we report the relevant string diagrams in \textit{Fig. \ref{fig: differentiationanddelayedtrace} (b),(c)}.
+
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.3\textwidth}
+      \includegraphics[width=\textwidth]{figures/delayed_trace.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+      \includegraphics[width=\textwidth]{figures/differentiation_of_stateful_morphism.png}
+      \caption{}
+    \end{subfigure}
+    \\[1cm]
+    \begin{subfigure}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{figures/differentiation_of_delayed_trace.png}
+      \caption{}
+    \end{subfigure}           
+    \caption[Delayed trace and derivatives in $\mathbf{St}_0(\mathcal{C})$]{String diagrams (a) representing a delayed trace in $\mathbf{St}(\mathcal{C})$ as a delayed feedback loop, (b) representing the derivative of a morphism in $\mathbf{St}_0(\mathcal{C})$, (c) representing the derivative of a delayed trace in $\mathbf{St}_0(\mathcal{C})$. (Images taken from \cite{sprunger2019differentiable}.)}
+    \label{fig: differentiationanddelayedtrace}
+  \end{center}
+\end{figure}
 
 
 The work in \cite{sprunger2019differentiable} provides a theoretical foundation for the technique of backpropagation through time (BPTT), which consists in computing the gradient of the $k$-th unrolling of a RNN in place of the gradient of the such RNN at discrete time $k$. Despite the alleged ad hoc nature of BPTT, \cite{sprunger2019differentiable} proves that the technique does not just \lq involve differentiation \rq but is an actual \lq form of differentiation \rq that can be reasoned about in the formalism of CDCs. Nevertheless, as stated in the paper, the differential operator of $\mathbf{St}(\mathcal{C})$ does not compute explicit gradients, and deriving the latter would from the former would be computationally intractable when there are millions of parameters. 
@@ -1064,7 +1282,7 @@ It is important to notice that SNNs can be considered a strict generalization of
 To the best of our knowledge, no one has ever explicitly described SNN architectures using integral transforms either. However, a passing remark in \cite{dudzik2024asynchronous} hints that the message passing dynamic of GNNs is very similar to sheaf diffusion and thus such a generalization should be all but impossible. Hopefully, future research will shed light on these conjectures.
 
 
-
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 
 
@@ -1176,7 +1394,16 @@ The author of \cite{gavranovic2019compositional} takes inspiration from the fiel
 
 \subsection{Schemas, architectures, models, and concepts}
 
-The first step in the learning pipeline proposed by \cite{gavranovic2019compositional} is to write down the bare-bones structure of the model in question. This can be done by using a directed multigraph $G$, where nodes represent data and edges represent neural networks interacting with such data. Constraints can be added at this level in the form of a set $\mathcal{X}$ of equations that identify parallel paths (see e.g. ADDIM, whose multigraph represent a cycleGAN model). 
+The first step in the learning pipeline proposed by \cite{gavranovic2019compositional} is to write down the bare-bones structure of the model in question. This can be done by using a directed multigraph $G$, where nodes represent data and edges represent neural networks interacting with such data. Constraints can be added at this level in the form of a set $\mathcal{X}$ of equations that identify parallel paths (see e.g. \textit{Fig. \ref{fig: cyclegan}}). 
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.2\textwidth]{figures/cyclegan_schema.png}     
+    \caption[CycleGAN schema]{Schema for the cycleGAN architecture. (Image taken from \cite{gavranovic2019compositional}.)}
+    \label{fig: cyclegan}
+  \end{center}
+\end{figure}
+
 
 \begin{definition}[Model schema]
   The schema of a model represented by a multigraph $G$ is the freely generated category $\mathbf{Free}(G)$.
@@ -1205,7 +1432,15 @@ where $\mathsf{Gen}_{\mathbf{Free}(G)}$ is the set of generating morphisms of th
   Let $\mathrm{Free}(G)$ be a model schema and let $\mathsf{Arch}$ be a chosen architecture. A parameter specification function is a function $\mathsf{PSpec}$ which maps a pair $(\mathsf{Arch}, p)$ - comprised of an architecture $\mathsf{Arch}$ and some $p \in \mathfrak{P}(\mathsf{Arch})$ - to a functor $\mathsf{Model}_p: \mathbf{Free}(G) \to \mathbf{Smooth}$. The functor $\mathsf{Model}_p$ takes the model schema and returns its implementation according to $\mathsf{Arch}$, partially applying $p_f$ to each $\mathsf{Arch}(f)$, so that we obtain an actual smooth map. 
 \end{definition}
 
-The functor $\mathsf{Model}_p$ takes a schema and implements it replacing nodes with Euclidean spaces and arrows with appropriate smooth functions. Notice that, although we need to choose an architecture and specific values for its parameter in order to define $\mathsf{Model}_p$, the latter acts on the schema directly and does not pass through the architecture. See ADDIM for a srting diagram that depicts the relationship between $\mathsf{Arch}$ and $\mathsf{Model}_p$.
+The functor $\mathsf{Model}_p$ takes a schema and implements it replacing nodes with Euclidean spaces and arrows with appropriate smooth functions. Notice that, although we need to choose an architecture and specific values for its parameter in order to define $\mathsf{Model}_p$, the latter acts on the schema directly and does not pass through the architecture. See \textit{Fig. \ref{fig: layers}} for a srting diagram that depicts the relationship between $\mathsf{Arch}$ and $\mathsf{Model}_p$.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.35\textwidth]{figures/layers_of_abstraction.png}     
+    \caption[CycleGAN schema]{Functors are used to link different layers of abstraction in the framework of \cite{gavranovic2019compositional}. (Image taken from \cite{gavranovic2019compositional}.)}
+    \label{fig: layers}
+  \end{center}
+\end{figure}
 
 Now, if we hope to train the model we have defined, we will need a dataset. \cite{gavranovic2019compositional} suggests that a dataset should be represented as a subfunctor of the model embedding functor.
 
@@ -1224,7 +1459,7 @@ Given a node $A$ of $G$, we have associated to $A$ a Euclidean space $E(A)$ and 
   Given a schema $\mathbf{Free}(G)/{\sim}$, an embedding $E$ and a dataset $D_E$, a concept associated with this information is a functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$ such that, if $I: |\mathbf{Free}(G)| \to \mathbf{Free}(G)/{\sim}$ is the inclusion functor, $D_E \subseteq I \fatsemi \mathfrak{C} \subseteq E$.
 \end{definition}
 
-As \cite{gavranovic2019compositional} states, $\mathfrak{C}$ is an idealization, but it is a useful idealization as it represent the goal of the optimization process: given a dataset $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$, we wish to learn the concept functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$. More concretely, we want to train a model $\mathsf{Model}_p$ which is as close of an approximation of $\mathfrak{C}$ as possible\footnote{Notice that $\mathsf{Model}_p$ and $\mathfrak{C}$ have different domains and codomains. The difference of codomains is not an issue: we can just forget the differential structure of the codomain of $\mathsf{Model}_p$, which yields a functor $H_p$ with image in $\mathbf{Set}$ (see ADDIM). The difference of domains, on the other hand, is by design as $\mathsf{Model}_p$ can only approximate the constraints imposed by $\sim$. This is not an issue in practice as we are only interested in the performance of the image of the trained model $\mathsf{Model}_p$.}. Total achievement of such goal is clearly impossible as, even in the simplest of cases (such as linear regression on synthetic linearly generated data), finite arithmetics and the finite nature of the learning iteration prevent us from obtaining a perfect copy of the generating function.
+As \cite{gavranovic2019compositional} states, $\mathfrak{C}$ is an idealization, but it is a useful idealization as it represent the goal of the optimization process: given a dataset $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$, we wish to learn the concept functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$. More concretely, we want to train a model $\mathsf{Model}_p$ which is as close of an approximation of $\mathfrak{C}$ as possible\footnote{Notice that $\mathsf{Model}_p$ and $\mathfrak{C}$ have different domains and codomains. The difference of codomains is not an issue: we can just forget the differential structure of the codomain of $\mathsf{Model}_p$, which yields a functor $H_p$ with image in $\mathbf{Set}$ (see \textit{Fig. \ref{fig: layers}}). The difference of domains, on the other hand, is by design as $\mathsf{Model}_p$ can only approximate the constraints imposed by $\sim$. This is not an issue in practice as we are only interested in the performance of the image of the trained model $\mathsf{Model}_p$.}. Total achievement of such goal is clearly impossible as, even in the simplest of cases (such as linear regression on synthetic linearly generated data), finite arithmetics and the finite nature of the learning iteration prevent us from obtaining a perfect copy of the generating function.
 Nevertheless, we will hopefully design an optimization process which makes the learning iteration converge towards the ideal goal.
 
 Now that we know what the optimization goal is, we can define tasks. The task formalism brings together what has been defined in this section in an integrated fashion.
@@ -1254,10 +1489,10 @@ It is important to notice that, while the learning iteration employed by \cite{g
 
 \subsection{Datasets influence the semantics of tasks}
 
-\cite{gavranovic2019compositional} centers its investigation around the powerful cycleGAN architecture (\cite{zhu2017unpaired}), which is described using an appropriate task consisting of the cycleGAN schema (see ADDIM), the cycle consistency equations, and a cycleGAN dataset, that is, a dataset with two sets $A$ and $B$ containing data which is essentially isomorphic, such as pictures of horses and zebras. This description is particularly insightful because it can be used to prove a very important point: the choice of dataset influences the semantics of the learned task in non-trivial ways. In other words, changing the dataset functor can result in semantically different tasks even if the same schema and equations are retained. 
+\cite{gavranovic2019compositional} centers its investigation around the powerful cycleGAN architecture (\cite{zhu2017unpaired}), which is described using an appropriate task consisting of the cycleGAN schema (see \textit{Fig. \ref{fig: cyclegan}}), the cycle consistency equations, and a cycleGAN dataset, that is, a dataset with two sets $A$ and $B$ containing data which is essentially isomorphic, such as pictures of horses and zebras. This description is particularly insightful because it can be used to prove a very important point: the choice of dataset influences the semantics of the learned task in non-trivial ways. In other words, changing the dataset functor can result in semantically different tasks even if the same schema and equations are retained. 
 
 
-The example shown in the paper is the \cite{gavranovic2019compositional}: combining the cycleGAN schema with the cycleGAN equations and a cycleGAN dataset yields a task whose semantics can be described as \textit{learn maps that turn horses into zebras and vice versa}. Now replace the cycleGAN dataset with a new dataset consisting of two sets $A$ and $B$, where $A$ contains pictures depicting two elements $X$ and $Y$ together, and $B$ contains separate images of $X$ and $Y$. The resulting task has very different semantics: \textit{learn how to separate $X$ from $Y$}. For instance, \cite{gavranovic2019compositional} shows how to use the CelebA dataset to train a neural network able to remove glasses from pictures of faces, or even insert them (see image ADDIM).
+The example shown in the paper is the \cite{gavranovic2019compositional}: combining the cycleGAN schema with the cycleGAN equations and a cycleGAN dataset yields a task whose semantics can be described as \textit{learn maps that turn horses into zebras and vice versa}. Now replace the cycleGAN dataset with a new dataset consisting of two sets $A$ and $B$, where $A$ contains pictures depicting two elements $X$ and $Y$ together, and $B$ contains separate images of $X$ and $Y$. The resulting task has very different semantics: \textit{learn how to separate $X$ from $Y$}. For instance, \cite{gavranovic2019compositional} shows how to use the CelebA dataset to train a neural network able to remove glasses from pictures of faces, or even insert them.
 
 
 This example is especially relevant to the present discussion because it shows how important the categorical structure of $\mathbf{Set}$ can be to machine learning. We can interpret pairs \textit{(face, glasses)} as elements of the Cartesian product of the set of faces and the set of glasses. On the other hand, the set of pictures of faces with glasses can instead be considered another categorical product of the aforementioned sets. Since categorical products are unique, we know that there must be a unique isomorphism between the two products. Then, one interpretation of the task becomes: \textit{find the canonical isomorphism}. \cite{gavranovic2019compositional} labels this task as the product task and shows empirical evidence of the validity of the approach.
@@ -1356,9 +1591,23 @@ The use of pregroups to model grammatical structures dates back to \cite{lambek1
     \label{eq: grammreduction}
     n(n^rsn^l)n = nn^rsn^ln = (nn^r)s(n^ln) \leq 1s1 \leq s.
   \end{equation}
-  The pregroup axioms show that the structure of  \dblquote{Dragons breathe fire.} can be reduced to the sentence type $s$. This is proof that the sentence is grammatical. More complex patter can be modeled by adding more grammatical types or by combining types in other ways. These kinds of computations have a nice representation in the form of string diagrams such as the ones of ADDIM.
+  The pregroup axioms show that the structure of  \dblquote{Dragons breathe fire.} can be reduced to the sentence type $s$. This is proof that the sentence is grammatical. More complex patter can be modeled by adding more grammatical types or by combining types in other ways. These kinds of computations have a nice representation in the form of string diagrams such as the ones of \textit{Fig. \ref{fig: pregroup}}.
 \end{example}
 
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.32\textwidth}
+      \includegraphics[width=\textwidth]{figures/pregroup1.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.47\textwidth}
+      \includegraphics[width=\textwidth]{figures/pregroup2.png}
+      \caption{}
+    \end{subfigure}         
+    \caption[Pregroup representation of grammar]{Two string diagram representations of the grammatical structure of the sentence \dblquote{Dragons breathe fire.} (Images taken from \cite{lewis2019compositionality}.)}
+    \label{fig: pregroup}
+  \end{center}
+\end{figure}
 
 The pregroup grammar framework is useful to analyze the basic structure of language but gives no access to the actual meaning of words and sentences. The compositional distributional model of \cite{coecke2010mathematical} solves this problem by building a functor $\Phi: P \to  \mathbf{FVect}$. Given a certain pregroup grammar category $P$, for every grammatical type $x: \mathcal{P}$, we can associate a vector space $X:\mathbf{FVect}$ containing vectorial representations of utterances of type $x$. $\Phi$ can be defined so that it preserves the pregroup structure of $P$ thanks to the following proposition (\cite{coecke2010mathematical}).
 
@@ -1384,7 +1633,7 @@ Now, pregroups have a trivial compact-closed structure as well. Thus, the functo
 \end{remark}
 
 
-String diagrams such as the ones in ADDIM can be written down as binary trees thanks to the associativity of the monomial product of $P$ and the associativity of the tensor product of $\mathbf{FVect}$. 
+String diagrams such as the ones in \textit{Fig. \ref{fig: pregroup}} can be written down as binary trees thanks to the associativity of the monomial product of $P$ and the associativity of the tensor product of $\mathbf{FVect}$. 
 \cite{lewis2019compositionality} proposes to exploit this fact and augment the compositional distributional model of \cite{coecke2010mathematical} by implementing the (co)unit maps of $\mathbf{FVect}$ as one or more recursive neural network (TreeRNN) cells. The paper argues that the use of TreeRNN cells should make the model easier to train and more robust. To our knowledge, such proposal has not yet been implemented, although the use of TreeRNNs in NLP has already been applied in practice (see e.g. \cite{ahmed2019improving}).
 
 
@@ -1416,7 +1665,16 @@ Invariance with respect to $g$ is not much harder to define: it suffices to impo
 \end{remark}
 
 
-The authors of \cite{chytas2024poolingimagedatasetsmultiple} solve the Alzheimer's disease diagnosis task using a classifier that actively exploits the equivariant nature of functors. The proposed architecture consists of two modules: an invertible functor $F: \mathcal{S} \to \mathcal{T}$ that embeds the data into a latent space, and a functor $C: \mathcal{T} \to \mathbf{Free}(\mathbb{N})$ that does the actual classification (see ADDIM for a diagrammatic representation). Here, $\mathcal{T}$ acts as a latent space and the equivariance of $F$ forces the representations in $\mathcal{T}$ to be robust with respect to covariate shifts and imbalances, so that the actual classification operated by $\mathcal{C}$ can be more effective at diagnosing the disease. The whole model can be compactly represented as $F \fatsemi C: \mathcal{S} \to \mathbf{Free}(\mathbb{N})$. Although the inverse of $F$ does not appear in the formula, its existence is needed to ensure that the latent space accurately represents the data.
+The authors of \cite{chytas2024poolingimagedatasetsmultiple} solve the Alzheimer's disease diagnosis task using a classifier that actively exploits the equivariant nature of functors. The proposed architecture consists of two modules: an invertible functor $F: \mathcal{S} \to \mathcal{T}$ that embeds the data into a latent space, and a functor $C: \mathcal{T} \to \mathbf{Free}(\mathbb{N})$ that does the actual classification (see \textit{Fig. \ref{fig: classifier}} for a diagrammatic representation). Here, $\mathcal{T}$ acts as a latent space and the equivariance of $F$ forces the representations in $\mathcal{T}$ to be robust with respect to covariate shifts and imbalances, so that the actual classification operated by $\mathcal{C}$ can be more effective at diagnosing the disease. The whole model can be compactly represented as $F \fatsemi C: \mathcal{S} \to \mathbf{Free}(\mathbb{N})$. Although the inverse of $F$ does not appear in the formula, its existence is needed to ensure that the latent space accurately represents the data.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.35\textwidth]{figures/classifier.png}     
+    \caption[Classifier]{Classifier model proposed by \cite{chytas2024poolingimagedatasetsmultiple} (Image taken from \cite{chytas2024poolingimagedatasetsmultiple}.)}
+    \label{fig: classifier}
+  \end{center}
+\end{figure}
+
 
 
 The classifier described above is implemented using similar tools as the ones employed by \cite{sheshmani2021categorical}. The latent space $\mathcal{T}$ can be defined as a vector space category as in \textit{Def. \ref{def: vecspacecat}}. The functor $F$ is realized as the encoder of an appropriate autoencoder, and the decoder portion of this autoencoder acts as the inverse $F^{-1}$. The maps $f: \mathcal{S}(s_1,s_2)$ can be embedded as matrices as described in the previous section. In particular, \cite{chytas2024poolingimagedatasetsmultiple}  suggests using orthogonal matrices $F(f) = W_f$ so that the resulting transformations can be efficiently inverted.
@@ -1431,16 +1689,31 @@ Now that the architecture has been specifies in terms of neural networks, the re
   Notice that the amount of equivariance constraints imposed can vary with no substantial changes to the proposed architecture: it suffices to add or remove terms from $\mathcal{L}_s$. This is in stark contrast with approaches such as \cite{lokhande2022equivariance}, where handling multiple covariates requires a complicate multi-stage model. 
 \end{remark}
 
-The authors of \cite{chytas2024poolingimagedatasetsmultiple} test the validity of the proposed approach with two interesting experiments: a proof of concept trained on the MNIST dataset, and a working classifier trained on the ADNI brain imaging dataset. The proposed MNIST model implements equivariance with respect to increments, rotations, and zooming. It is shown in the paper that representing the associated morphisms with orthogonal matrices allows such morphisms to be inverted and combined in the latent space. A subsequent application of $F^{-1}$ shows the results of the aforementioned manipulation in human-understandable form. Such results are indeed very promising: the authors are able to combine rotations and zooming successfully, even though the network was only trained to apply them separately (see ADDIM) for an example. The ADNI classifier model also shows promising results which are on par with state-of-the-art models that do not use categorical tools. The comparison takes place according to accuracy of prediction, maximum mean discrepancy, and adversarial validation.
+The authors of \cite{chytas2024poolingimagedatasetsmultiple} test the validity of the proposed approach with two interesting experiments: a proof of concept trained on the MNIST dataset, and a working classifier trained on the ADNI brain imaging dataset. The proposed MNIST model implements equivariance with respect to increments, rotations, and zooming. It is shown in the paper that representing the associated morphisms with orthogonal matrices allows such morphisms to be inverted and combined in the latent space. A subsequent application of $F^{-1}$ shows the results of the aforementioned manipulation in human-understandable form. Such results are indeed very promising: the authors are able to combine rotations and scaling successfully, even though the network was only trained to apply them separately (see \textit{Fig. \ref{fig: rotationsscaling}}) for an example. The ADNI classifier model also shows promising results which are on par with state-of-the-art models that do not use categorical tools. The comparison takes place according to accuracy of prediction, maximum mean discrepancy, and adversarial validation.
 
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{figures/rotations_and_scaling.png}     
+    \caption[Classifier]{The authors of \cite{chytas2024poolingimagedatasetsmultiple} applied rotations and scaling on MNIST images using the operators learned in the latent space. Despite being learned separately, the two transformations were successfully combined. (Image taken from \cite{chytas2024poolingimagedatasetsmultiple}.)}
+    \label{fig: rotationsscaling}
+  \end{center}
+\end{figure}
 
 \subsection{Transporting algebraic structure into embedding spaces}
 
 Although stated in terms of equivariance conditions, the work of \cite{chytas2024poolingimagedatasetsmultiple} can be seen from an algebraic point of view as a framework that allows to transport unary operators from a space of data to an embedding space. This line of thinking has also been explored by \cite{pfrommer2024transport}. While \cite{pfrommer2024transport} deos not use category theory, the authors themselves state that their approach could be easily categorified using the language of categorical algebras (see \textit{Def. \ref{def: endalg}}). The main innovation of \cite{pfrommer2024transport} is the use of \textit{mirrored algebras} to fill the gaps between original data and the embeddings.
 
 
-Consider a pre-trained autoencoder consisting of an encoder $E: \mathcal{S} \to \mathcal{L}$ and a decoder $D: \mathcal{L} \to \mathcal{S}$, where $\mathcal{S}$ is a data space endowed with an algebraic structure, such as a monomial product $\bullet^{\mathcal{S}}$, and where $\mathcal{L}=\mathbb{R}^n$ is a latent space. Suppose we want to transport this algebraic structure to $\mathbb{R}^n$ through $E$, that is, we want to find a monomial product $\bullet^{\mathcal{L}}$ over $\mathcal{L}$ so that $E$ acts as a $(\mathcal{S},\bullet^{\mathcal{S}}) \to (\mathcal{L},\bullet^{\mathcal{L}})$ homomorphism. While finding a product $\ast$ that makes $(\mathcal{S},\bullet^{\mathcal{S}})$ and $(\mathcal{L},\bullet^{\mathcal{L}})$ homomorphic might be easy, there is no guarantee that $E$ is an actual homomorphism with respect to this choice of algebraic structure. \cite{chytas2024poolingimagedatasetsmultiple} solves this problem for unary operators by learning appropriate orthogonal matrices, but it is not clear how this approach could be scaled to operators with arities greater than $1$.  \cite{pfrommer2024transport} suggests an alternative approach consisting in learning a bijection $\phi$ between the latent space and a copy $\mathcal{M} = \mathbb{R}^n$ of this space. Endow $\mathcal{M} = \mathbb{R}^n$ with a product $\bullet^{\mathcal{M}}$ which enjoyes similar properties as $\bullet^{\mathcal{S}}$ (see ADDIM). We will say that $(\mathcal{M},\bullet^{\mathcal{M}})$ is the mirrored algebra of $(\mathcal{S},\bullet^{\mathcal{S}})$. Now train $\phi$ so that $E$ is $(\mathcal{S},\bullet^{\mathcal{S}}) \to (\mathcal{L},\bullet^{\mathcal{L}})$ homomorphism, where $\bullet^{\mathcal{L}}$ is defined by
+Consider a pre-trained autoencoder consisting of an encoder $E: \mathcal{S} \to \mathcal{L}$ and a decoder $D: \mathcal{L} \to \mathcal{S}$, where $\mathcal{S}$ is a data space endowed with an algebraic structure, such as a monomial product $\bullet^{\mathcal{S}}$, and where $\mathcal{L}=\mathbb{R}^n$ is a latent space. Suppose we want to transport this algebraic structure to $\mathbb{R}^n$ through $E$, that is, we want to find a monomial product $\bullet^{\mathcal{L}}$ over $\mathcal{L}$ so that $E$ acts as a $(\mathcal{S},\bullet^{\mathcal{S}}) \to (\mathcal{L},\bullet^{\mathcal{L}})$ homomorphism. While finding a product $\ast$ that makes $(\mathcal{S},\bullet^{\mathcal{S}})$ and $(\mathcal{L},\bullet^{\mathcal{L}})$ homomorphic might be easy, there is no guarantee that $E$ is an actual homomorphism with respect to this choice of algebraic structure. \cite{chytas2024poolingimagedatasetsmultiple} solves this problem for unary operators by learning appropriate orthogonal matrices, but it is not clear how this approach could be scaled to operators with arities greater than $1$.  \cite{pfrommer2024transport} suggests an alternative approach consisting in learning a bijection $\phi$ between the latent space and a copy $\mathcal{M} = \mathbb{R}^n$ of this space. Endow $\mathcal{M} = \mathbb{R}^n$ with a product $\bullet^{\mathcal{M}}$ which enjoyes similar properties as $\bullet^{\mathcal{S}}$ (see \textit{Fig. \ref{fig: algtranspor}}). We will say that $(\mathcal{M},\bullet^{\mathcal{M}})$ is the mirrored algebra of $(\mathcal{S},\bullet^{\mathcal{S}})$. Now train $\phi$ so that $E$ is $(\mathcal{S},\bullet^{\mathcal{S}}) \to (\mathcal{L},\bullet^{\mathcal{L}})$ homomorphism, where $\bullet^{\mathcal{L}}$ is defined by
 \[l_1 \bullet^{\mathcal{L}} l_2 = \phi^{-1}(\phi(l_1) \bullet^{\mathcal{M}} \phi(l_2)).\]
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{figures/transport_of_algebraic_structure.png}     
+    \caption[Transport of algebraic structure]{Method proposed by \cite{pfrommer2024transport} to transport algebraic structure. (Image taken from \cite{pfrommer2024transport}.)}
+    \label{fig: algtransport}
+  \end{center}
+\end{figure}
 
 As stated in \cite{pfrommer2024transport}, the bijection $\phi$ can be implemented as an invertible neural network and can be trained using a loss in the form
 \[\mathcal{L} = \frac{1}{N}\sum_{i=1}^N d(D(p_i^{\mathcal{L}}(E(s_1),\dots,E(s_{n_i}))),p_i^{\mathcal{S}}(s_1, \dots, s_{n_i}))\]
