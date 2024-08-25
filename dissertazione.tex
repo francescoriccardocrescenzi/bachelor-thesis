@@ -31,17 +31,19 @@
 \linespread{1}
 
 
+
 % Style theorem boxes
 
+\newcounter{mycounter}
 \theoremstyle{plain}
-\newtheorem{proposition}{Proposition}
-\newtheorem{definition}[proposition]{Definition}
-\newtheorem{conjecture}[proposition]{Conjecture}
+\newtheorem{proposition}[mycounter]{Proposition}
+\newtheorem{definition}[mycounter]{Definition}
+\newtheorem{conjecture}[mycounter]{Conjecture}
 
 \theoremstyle{definition}
-\newtheorem{remark}[proposition]{Remark}
-\newtheorem{example}[proposition]{Example}
-\newtheorem{warning}[proposition]{Warning}
+\newtheorem{remark}[mycounter]{Remark}
+\newtheorem{example}[mycounter]{Example}
+\newtheorem{warning}[mycounter]{Warning}
 
 
 % Quotation marks
@@ -263,9 +265,9 @@ Benedetta
 
 
 
-General purpose deep learning libraries like PyTorch or TensorFlow are rich toolkits for gradient-based learning that allow machine learning practitioners to delegate low-level computations and automatic differentiation (AD) so that their focus can be directed to the high-level architectural design. Despite the unquestionable success of these libraries, their internal structure is not informed by a principled mathematical framework and thus, as mentioned in the introduction, it is highly dependent on \textit{ad hoc} optimizations and empirical euristics (ADDREF). Consequently, adding new tools, composing existing ones, and parallelizing computations is not a straight forward process and often lead to unexpected results (ADDREF).
+Despite the unquestionable success that gradient-based deep learning has enjoyed in recent years, the field is still both young and poorly understood. As mentioned in the introduction, the lack of theoretical underpinnings means that good performance is highly dependent on \textit{ad hoc} choices and empirical euristics leading to brittleness and poorly understood phenomena (\cite{cruttwell2022categorical}, \cite{shiebler2021category}, \cite{gavranovic2024fundamental}). The ever-growing complexity of deep learning models poses significant challenges both in terms of optimization (\cite{elliott2018simple}) and architectural design (\cite{gavranovicposition}), and, while there are a number of general purpose deep learning libraries that automatically implement backpropagation and provide tools for designing a wide variety of neural networks, these tools often rely on inelegant machinery difficult to parallelize (\cite{elliott2018simple}). Given the ever-increasing role graident based learning plays in the sciences, in industry, and in every day life, solving these issues is of the outmost importance. 
 
-Hence, it would be auspicable to develop a mathematically structure compositional framework for gradient-based learning able to act as a bridge between low-level automatic differentiation and high level architectural specifications (ADDREF). Among the various attempts (ADDREF, ADDREF, ADDREF), a promising combination of differential categories, parametrization and optics has been recently proposed by \cite{cockett2019reverse}, \cite{cruttwell2022categorical}, \cite{gavranovic2024fundamental} and more as full-featured gradient-based framework able to challenge established tools. In this chapter, we illustrate such framework  and part of its mathematical foundations. 
+Hence, it would be auspicable to develop a mathematically structured framework for gradient-based learning able to act as a bridge between low-level automatic differentiation and high level architectural specifications (\cite{gavranovic2024fundamental}). The great number of architectures developed in recent years and the inherently modular structure of deep neural networks call for a model which is general (that is, not dependent on a specific differentiation algorithm or a specific optimizer) and compositional (that is, we should be able to predict the behavior of the entire model if the behavior of each part is known). Among the various attempts (see e.g. \cite{fong2019backprop} or \cite{sennesh2023computing}), a promising combination of differential categories, parametrization and optics has been recently proposed by \cite{cockett2019reverse}, \cite{cruttwell2022categorical}, \cite{gavranovic2024fundamental} and more as full-featured gradient-based framework able to challenge established tools. In this chapter, we illustrate such framework  and part of its mathematical foundations. 
 
 
 
@@ -305,7 +307,7 @@ We may also be interested in studying the interaction between actegorical struct
 \subsection{The $\mathbf{Para}$ construction}
 
 
-Suppose we have an $\mathcal{M}$-actegory $(\mathcal{C}, \bullet)$. We wish to study maps in $\mathcal{C}$ which are parametrized using objects of $\mathcal{M}$, i.e., maps in the form $P \bullet A \to B$. We are not just interested in the maps by themselves, but also in their compositional structure. Thus, we abstract away the details by defining a new category $\mathbf{Para}_{\bullet}(\mathcal{C})$ (first introduced in simplified form in \cite{fong2019backprop}). Since we also want to formalize the role of reparametrization, we actually construct $\mathbf{Para}_{\bullet}(\mathcal{C})$ as a bicategory, so that its $0$-cells $A$ can serve as input/output spaces, its $1$-cells $(P,f)$ can serve as parametric maps, and, finally, its $2$-cells $r$ can serve as reparametrizations.
+Suppose we have an $\mathcal{M}$-actegory $(\mathcal{C}, \bullet)$. We wish to study maps in $\mathcal{C}$ which are parametrized using objects of $\mathcal{M}$, that is, maps in the form $P \bullet A \to B$. We are not just interested in the maps by themselves, but also in their compositional structure. Thus, we abstract away the details by defining a new category $\mathbf{Para}_{\bullet}(\mathcal{C})$ (first introduced in simplified form in \cite{fong2019backprop}). Since we also want to formalize the role of reparametrization, we actually construct $\mathbf{Para}_{\bullet}(\mathcal{C})$ as a bicategory, so that its $0$-cells $A$ can serve as input/output spaces, its $1$-cells $(P,f)$ can serve as parametric maps, and, finally, its $2$-cells $r$ can serve as reparametrizations.
 
 \begin{definition}[$\mathbf{Para}_{\bullet}(\mathcal{C})$]
   \label{def: para}
@@ -430,10 +432,10 @@ The advantages of weighted optics over ordinary optics are clear: when dealing w
 \label{subsec: diffcats}
 
 
-Modelling gradient-based learning obviously requires a setting where differentiation can take place. Although it is tempting to directly employ smooth functions over Euclidean spaces, recent research has shown that there are tangible advantages in working with generalized differential combinators that extend the notion of derivative to polynomial circuits (\cite{wilson2022categories}, \cite{wilson2021reverse}), manifolds (ADDREF), complex spaces (ADDREF), and so on.  Thus, it makes sense to work with an abstract notion of derivative which can then be appropriately implemented depending on the requirements at hand.
+Modelling gradient-based learning obviously requires a setting where differentiation can take place. Although it is tempting to directly employ smooth functions over Euclidean spaces, recent research has shown that there are tangible advantages in working with generalized differential combinators that extend the notion of derivative to polynomial circuits (\cite{wilson2022categories}, \cite{wilson2021reverse}), manifolds (\cite{peng2021hyperbolic}), complex spaces (\cite{bassey2021survey}), and so on.  Thus, it makes sense to work with an abstract notion of derivative which can then be appropriately implemented depending on the requirements at hand.
 
 
-The standard approach to this problem (developed in the last twenty years) involves the explicit definition of two kidns of differential categories: Cartesian differential categories (first introduced in \cite{blute2006differential}) and Cartesian reverse differential categories (first introduced by \cite{cockett2019reverse}). The former allow for forward differentiation, while the latter allow for reverse differentiation. We will omit the defining axioms for the sake of brevity, but the reader can find complete definitions in \cite{cockett2019reverse}.
+One approach to this problem involves the explicit definition of two kidns of differential categories: Cartesian differential categories (first introduced in \cite{blute2006differential}) and Cartesian reverse differential categories (first introduced by \cite{cockett2019reverse}). The former allow for forward differentiation, while the latter allow for reverse differentiation. We will omit the defining axioms for the sake of brevity, but the reader can find complete definitions in \cite{cockett2019reverse}.
 
 \begin{definition}[Cartesian differential category]
   \label{def: cdc}
@@ -454,7 +456,7 @@ The standard approach to this problem (developed in the last twenty years) invol
 \end{example}
 
 
-As it turns out, forward differentiation tends to be less efficient when dealing with neural networks that come up in practice (ADDREF), so CDCs are not extremely useful when studying deep learning. CRDCs, on the other hand, have been applied to great success (see e.g. \cite{cruttwell2022categorical}). As shown in \cite{wilson2022categories}, a large supply of CRDCs can be obtained by providing the generators of a finitely presented Cartesian left-additive category with associated reverse derivatives (as long as the choices of reverse derivative are consistent).
+As it turns out, forward differentiation tends to be less efficient when dealing with neural networks that come up in practice (\cite{elliott2018simple}), so CDCs are not extremely useful when studying deep learning. CRDCs, on the other hand, have been applied to great success (see e.g. \cite{cruttwell2022categorical}). As shown in \cite{wilson2022categories}, a large supply of CRDCs can be obtained by providing the generators of a finitely presented Cartesian left-additive category with associated reverse derivatives (as long as the choices of reverse derivative are consistent).
 Moreover, CRDCs have been recently generalized by \cite{gavranovic2024fundamental} to coalgebras associated with copointed endofunctors, which could also increase the number of known CRDCs in the future. The rest if this section is devoted to this generalization.
 
 
@@ -584,7 +586,7 @@ Since parametric lenses can easily be implemented functionally and without side 
 
 \section{Future directions and related work}
 
-The parametric optic framework discussed in this chapter is very promising, but there is still a lot of work that needs to be done so that it can reach its full potential. For instance, \cite{gavranovic2024fundamental} conjectures that weighted optics can be used in its full generality to model differentiation in cases which are not covered by lenses. For instance, lenses cannot model AD algorithms that do not use gradient checkpointing, while weighted optics are conjectured to be able to do so. \cite{gavranovic2024fundamental} also suggests investigating locally graded categories as potential replacements for actegories, and also investigating the applications of parametric optics to meta-learning, i.e. deep learning where the optimizers themselves are learned. Moreover, \cite{cruttwell2022categorical} conjectures that some of the axioms of CRDC may be used to model higher order optimization algorithms. Finally, as suggested by \cite{cruttwell2022categorical}, hopefully future work will allow the parametric optic framework to encompass non-gradient based optimizers such as the ones used in probabilistic learning. See \cite{shiebler2021category} for more on this topic.
+The parametric optic framework discussed in this chapter is very promising, but there is still a lot of work that needs to be done so that it can reach its full potential. For instance, \cite{gavranovic2024fundamental} conjectures that weighted optics can be used in its full generality to model differentiation in cases which are not covered by lenses. For instance, lenses cannot model AD algorithms that do not use gradient checkpointing, while weighted optics are conjectured to be able to do so. \cite{gavranovic2024fundamental} also suggests investigating locally graded categories as potential replacements for actegories, and also investigating the applications of parametric optics to meta-learning, that is deep learning where the optimizers themselves are learned. Moreover, \cite{cruttwell2022categorical} conjectures that some of the axioms of CRDC may be used to model higher order optimization algorithms. Finally, as suggested by \cite{cruttwell2022categorical}, hopefully future work will allow the parametric optic framework to encompass non-gradient based optimizers such as the ones used in probabilistic learning. See \cite{shiebler2021category} for more on this topic.
 
 We conclude this chapter by discussing three other directions of machine learning research that are closely related to the framework of parametric optics.
   
@@ -618,7 +620,7 @@ Despite the similarities, there is one fundamental difference between the lens-b
 We have presented the parametric weighted optic approach of \cite{gavranovic2024fundamental} and \cite{cruttwell2022categorical} within the context of neural networks for the sake of simplicity, but the framework has been developed with generality in mind and applies to a much wider range of situations. For instance, we can easily replace $\mathbf{Smooth}$ with any other CRDC $\mathcal{C}$, yielding a full-feature compositional framework for gradient-based learning over $\mathcal{C}$.
 
 
-Switching to a different CRDC is useful because different differential categories can lead to very different learning outcomes, both in terms of accuracy of the model and in terms of training computational costs (ADDREF).
+Switching to a different CRDC is useful because different differential categories can lead to different learning outcomes, both in terms of accuracy of the model and in terms of training computational costs (\cite{wilson2022categories}).
 For instance, is argued in \cite{wilson2022categories} that polynomial circuits can be used to define and train intrinsecally discrete machine learning models. Even \lq radical \rq environments such as Boolean circuits - where scalars reside in $\mathbb{Z}_2$ - seem to be conductive to machine learning under the right choice of architecture and optimizer (\cite{wilson2021reverse}). Using such exotic differential categories may be of great advantage because they might be able to better reflect the intrinsic computational limits of computer arithmetics, leading to more efficient learning (\cite{wilson2022categories}). 
 
 
@@ -699,7 +701,7 @@ Among the main insights of \cite{elliott2018simple}, it is stated that derivativ
 
 
 
-Classical computer science focuses on discovering algorithms, i.e. ordered sequences of steps which operate in precisely set, idealized conditions and have strong guarantees of correctness due to their exact mathematical formulations. Neural networks, on the other hand, are able to work in messy, real-world conditions, but offer very so few guarantees of correctness that their performance is often described as \textit{unreasonably} good. Moreover, whereas algorithms generalize very well (most software engineers will only need a few dozen algorithms in their entire career), neural networks are often completely helpless when pitted against out of distribution inputs. Hence, algorithms and neural networks can be seen as complementary opposites (\cite{velivckovic2021neural}, \cite{velivckovic2022clrs}).
+Classical computer science focuses on discovering algorithms, that is ordered sequences of steps which operate in precisely set, idealized conditions and have strong guarantees of correctness due to their exact mathematical formulations. Neural networks, on the other hand, are able to work in messy, real-world conditions, but offer very so few guarantees of correctness that their performance is often described as \textit{unreasonably} good. Moreover, whereas algorithms generalize very well (most software engineers will only need a few dozen algorithms in their entire career), neural networks are often completely helpless when pitted against out of distribution inputs. Hence, algorithms and neural networks can be seen as complementary opposites (\cite{velivckovic2021neural}, \cite{velivckovic2022clrs}).
 
 
 Recent attempts going under the label of \textit{neural algorithmic reasoning} (see \cite{velivckovic2021neural} for a very short introduction to the subject) have tried to get the best of both worlds by training neural networks to execute algorithms (see e.g \cite{ibarz2022generalist}). The CLRS benchmark (introduced by \cite{velivckovic2022clrs}) uses graphs to represent the computations associated with a few classical algorithms from the famous CLRS introductory textbook (\cite{cormen2022introduction}) so that graph neural networks (GNNs) can be trained to learn these algorithms. The benchmark has spurred a large amount of research in this direction, with very promising results.
@@ -722,7 +724,7 @@ Algebras and coalgebras are a categorical formalization of the principles of ind
   Let $F: \mathcal{C} \to \mathcal{C}$ be an endofunctor. An algebra over $F$ is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(F(A),A)$. A coalgebra is a pair $(A,a)$ where $A: \mathcal{C}$ and $a:\mathcal{C}(A,F(A))$. In both cases $A$ is known as carrier set and $a$ as structure map.
 \end{definition}
 
-(Co)algebras can also be defined on monads: the only difference between (co)algebras over an endofunctor and (co)algebras over a monad is that the latter also need to be compatible with the monad structure, i.e. satisfy commutative diagrams that represent coherence conditions (see \cite{gavranovicposition}). (Co)algebras over the same functor can be given a categorical structure by using the following notion of homomorphism.
+(Co)algebras can also be defined on monads: the only difference between (co)algebras over an endofunctor and (co)algebras over a monad is that the latter also need to be compatible with the monad structure, that is satisfy commutative diagrams that represent coherence conditions (see \cite{gavranovicposition}). (Co)algebras over the same functor can be given a categorical structure by using the following notion of homomorphism.
 
 \begin{definition}[Homomorphisms of (co)algebras over an endofunctor]
   Let $(A,a)$ and $(B,b)$ be algebras over the same endofunctor $F: \mathcal{C} \to \mathcal{C}$. An algebra homomorphism $(A,a)\to (B,b)$ is a map $f: \mathcal{C}(A,B)$ such that the diagram in ADDIM is commutative.
@@ -820,8 +822,7 @@ The optic-based framework we presented in the last chapter provides a structured
 Therefore, finding a principled mathematical framework able to guide such architectural choices is of paramount importance. 
 
 
-Designing an architecture is almost synonymous to imposing a set of constraints: for instance, convolutional layers are notoriously equivalent to translationally equivariant linear layers (ADDREF).
-Hence, it makes sense to inform the choice of architecture by informing the choice of constraint. Among the various attempts to develop a principled theory of machine learning constraints, \textit{geometric deep learning} (see e.g. \cite{bronstein2021geometric}), or GDL is particularly relevant. Categorical deep learning, or CDL, evolved as categorical generalization of GDL (\cite{gavranovicposition}).
+Designing an architecture is almost synonymous to imposing a set of constraints: for instance, convolutional layers are notoriously equivalent to translationally equivariant linear layers. Hence, it makes sense to inform the choice of architecture by informing the choice of constraint. Among the various attempts to develop a principled theory of machine learning constraints, \textit{geometric deep learning} (see e.g. \cite{bronstein2021geometric}), or GDL is particularly relevant. Categorical deep learning, or CDL, evolved as categorical generalization of GDL (\cite{gavranovicposition}).
 
 
 \subsection{From GDL to CDL}
@@ -829,13 +830,14 @@ Hence, it makes sense to inform the choice of architecture by informing the choi
 Geometric deep learning focuses on equivariance constraints defined with respect to group actions, according to the following definition.
 
 \begin{definition}[Group action equivariance and invariance]
+  \label{def: equivariance}
   Let $G$ be a group and let $(S, \cdot)$ and $(T, \ast)$ be $G$-actions. A function $f: S \to T$ is equivariant with respect to the aforementioned actions if $f(g \cdot s) = g \ast f(s)$ for all $s \in \mathcal{S}$ and for all $g \in \mathcal{G}$. We say that $f$ is invariant if $\ast$ is the trivial action on $T$, and thus $f(g \cdot s) = f(s)$ for all $s$ and $g$.
 \end{definition}
 
-The GDL approach prescribes that a desired constraint should be expressed in terms of equivariance with respect to group action so that associated equations can be derived. Solving such equations usually implies tying weights, which reduces the net number of parameters in the models and provides the various advantages (ADDREF, ADDREF, ADDREF) afforded by equivariance.
+The GDL approach prescribes that a desired constraint should be expressed in terms of equivariance with respect to group action so that associated equations can be derived. Solving such equations usually implies tying weights, which reduces the net number of parameters in the models and provides the various advantages (see e.g. \cite{olah2020naturally}) afforded by equivariance.
 
 
-GLD has been successfully applied in contexts where data transformations can be expressed in group-theoretical terms (ADDREF). Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (\cite{gavranovicposition}). Moreover, as highlighted in \cite{gavranovicposition}, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented since solving the equations associated with a constraint might be extremely challenging.  
+GLD has been successfully applied in contexts where data transformations can be expressed in group-theoretical terms (see e.g. \cite{bronstein2021geometric}). Regrettably, this is not always the case, as many transformations we can subject the data to are either not invertible or even not compositional (\cite{gavranovicposition}). Moreover, as highlighted in \cite{gavranovicposition}, although GDL is effective at describing the constraints that a model should implement, it is not always clear how such constraints can be actually be implemented since solving the equations associated with a constraint might be extremely challenging.  
 Categorical deep learning, introduced by \cite{gavranovicposition}, attempts to solve the aforementioned problems using category theory\footnote{As stated in \cite{bronstein2021geometric}, GDL is inspired by the \textit{Erlangen Programme}, which unified geometry around the notion of invariant at the end of the nineteenth century. Since category theory can be seen as an extension of the \textit{Programme} (as we already remarked in the introduction to this thesis), it is only natural to attempt to generalize GDL by categorical means.} to generalize the notion of equivariance and to tie specific constraints to specific architectures.
 
 \begin{remark}
@@ -887,7 +889,7 @@ The construction in  \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: fr
 \section{Algorithmic alignment: GNNs and dynamic programming}
 
 
-One of them main tenets of neural algorithmic reasoning is \textit{algorithmic alignment} (\cite{xu2019can}), i.e., the presence of structural similarities between the subroutines of a particular algorithm and the architecture of the neural network selected to learn such algorithm.
+One of them main tenets of neural algorithmic reasoning is \textit{algorithmic alignment} (\cite{xu2019can}), that is, the presence of structural similarities between the subroutines of a particular algorithm and the architecture of the neural network selected to learn such algorithm.
 Since \cite{xu2019can} has shown that dynamic programming algorithms align very well with GNNs, and since dynamic programming encompasses a wide variety of techniques algorithms to many different domains, GNNs  are at the forefront of neural algorithmic reasoning research (\cite{dudzik2022graph}). However, the exact link between GNNs and dynamic programming has yet to be fully formalized. In this section we present the work of \cite{dudzik2022graph}, which attempts to derive such a formalization, and the work in \cite{dudzik2024asynchronous}, which studies conditions under which GNNs are invariant with respect to various form of asynchrony\footnote{While much of the work described in \cite{dudzik2024asynchronous} does not fall under the umbrella of applied category theory, we still mention it because on its close link with the work of \cite{dudzik2022graph} and with the idea of algorithmic alignment. Hopefully, future work will explore the intersection between this work and category theory.}, which is argued to improve algorithmic alignment in some cases.
 
 
@@ -1009,7 +1011,7 @@ Finally, the authors of \cite{sprunger2019differentiable} show how both $\mathbf
 The work in \cite{sprunger2019differentiable} provides a theoretical foundation for the technique of backpropagation through time (BPTT), which consists in computing the gradient of the $k$-th unrolling of a RNN in place of the gradient of the such RNN at discrete time $k$. Despite the alleged ad hoc nature of BPTT, \cite{sprunger2019differentiable} proves that the technique does not just \lq involve differentiation \rq but is an actual \lq form of differentiation \rq that can be reasoned about in the formalism of CDCs. Nevertheless, as stated in the paper, the differential operator of $\mathbf{St}(\mathcal{C})$ does not compute explicit gradients, and deriving the latter would from the former would be computationally intractable when there are millions of parameters. 
 
 
-It is interesting to compare the approach of \cite{sprunger2019differentiable} with the framework of categorical deep learning: both CDL and the work in \cite{sprunger2019differentiable} synthetically describe RNN architectures, but, while CDL focuses on weight sharing mechanics and the coinductive nature of the definition, \cite{sprunger2019differentiable} focuses the differential properties of these architectures. However, neither categorical framework deals with the problems that come up when computing gradients of unrolled RNNs, such as vanishing or exploding gradients (ADDREF). 
+It is interesting to compare the approach of \cite{sprunger2019differentiable} with the framework of categorical deep learning: both CDL and the work in \cite{sprunger2019differentiable} synthetically describe RNN architectures, but, while CDL focuses on weight sharing mechanics and the coinductive nature of the definition, \cite{sprunger2019differentiable} focuses the differential properties of these architectures. However, neither categorical framework deals with the problems that come up when computing gradients of unrolled RNNs, such as vanishing or exploding gradients (see e.g. \cite{hanin2018neural}). 
 
 
 \subsection{Sheaf neural networks}
@@ -1017,7 +1019,7 @@ It is interesting to compare the approach of \cite{sprunger2019differentiable} w
 The theory of sheaf neural networks (\cite{hansen2020sheaf}, \cite{bodnar2022neural}, \cite{zaghen2024nonlinear}), or SNNs, is informed by both topology and category theory and aims to improve the GNN architecture by endowing graphs with cellular sheaf structures. In particular, SNNs are designed to solve two main issues that are encountered when training GNNs: oversmoothing, which is the tendency of deep GNNs to spread information too far in the graph to be able to effectively classify nodes, and poor performance on heterophilic graphs, that is graphs where the nodes features are diverse in structure and attributes.
 
 \begin{definition}[Cellular sheaf]
-  A cellular sheaf $\mathcal{F}$ associated with a graph $G = (E,V)$ consists in the following data:
+  A cellular sheaf $\mathcal{F}$ associated with a graph $G = (E,V)$ consists of the following data:
   \begin{enumerate}
     \item a vector space $\mathcal{F}(v)$ for every node $v \in V$;
     \item a vector space $\mathcal{F}(e)$ for every edge $e \in E$;
@@ -1182,7 +1184,7 @@ The first step in the learning pipeline proposed by \cite{gavranovic2019composit
 
 The schema of a model does not contain any data nor does it do any computation, but it encodes the bare-bones structure of such model. If ${\sim}$ is the path congruence relation induced by the equations in $\mathcal{X}$, we can take the module $\mathbf{Free}(G)/{\sim}$ to impose the constraints represented by $\mathcal{X}$. Depending on the context, the word schema will refer either to $\mathbf{Free}(G)$ or to $\mathbf{Free}(G)/{\sim}$. We will see later that each equation in $\mathcal{X}$ can be associated with a specific loss function and these losses are used to teach models to abide by ${\sim}$.
 
-Given a schema $\mathbf{Free}(G)$, we can choose an architecture for the model, i.e., we can assign to each node a Euclidean space and to each morphism a parametric map. This procedure yields an untrained neural network.
+Given a schema $\mathbf{Free}(G)$, we can choose an architecture for the model, that is, we can assign to each node a Euclidean space and to each morphism a parametric map. This procedure yields an untrained neural network.
 
 \begin{definition}[Model architecture]
   Let $\mathrm{Free}(G)$ be a model schema. An architecture for such schema is a functor $\mathsf{Arch}: \mathrm{Free}(G) \to \mathbf{Para}_{\times}(\mathbf{Smooth})$ (see \textit{Def. \ref{def: para}} and see \textit{Ex. \ref{ex: smooth}}).
@@ -1216,7 +1218,7 @@ Now, if we hope to train the model we have defined, we will need a dataset. \cit
   The reason why \cite{gavranovic2019compositional} defines $E$ and $D_E$ on discretized categories is because it often happens in practical machine learning that the available data is not paired. In these cases, it would be meaningless to provide an action on morphisms because they would end up being incomplete maps.
 \end{remark}
 
-Given a node $A$ of $G$, we have associated to $A$ a Euclidean space $E(A)$ and a dataset $D_E(A)$. A dataset may be considered a collection of instances of something more specific than just vectors; for instance, if we have a finite dataset of pictures of horses, we are clearly interested in the concept of horse, i.e. in the set of all possible pictures of horses, which is much larger than our dataset but still much smaller than the vector space used to host such pictures. It makes thus sense to define another set $\mathfrak{C}(A)$ representing such concept: this set will satisfy the inclusion relations $D_E(A) \subseteq \mathfrak{C}(A) \subseteq E(A)$. Moreover, since concepts are assumed to be complete, we can extend $\mathcal{C}$ to a functor.
+Given a node $A$ of $G$, we have associated to $A$ a Euclidean space $E(A)$ and a dataset $D_E(A)$. A dataset may be considered a collection of instances of something more specific than just vectors; for instance, if we have a finite dataset of pictures of horses, we are clearly interested in the concept of horse, that is in the set of all possible pictures of horses, which is much larger than our dataset but still much smaller than the vector space used to host such pictures. It makes thus sense to define another set $\mathfrak{C}(A)$ representing such concept: this set will satisfy the inclusion relations $D_E(A) \subseteq \mathfrak{C}(A) \subseteq E(A)$. Moreover, since concepts are assumed to be complete, we can extend $\mathcal{C}$ to a functor.
 
 \begin{definition}[Concept functor]
   Given a schema $\mathbf{Free}(G)/{\sim}$, an embedding $E$ and a dataset $D_E$, a concept associated with this information is a functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$ such that, if $I: |\mathbf{Free}(G)| \to \mathbf{Free}(G)/{\sim}$ is the inclusion functor, $D_E \subseteq I \fatsemi \mathfrak{C} \subseteq E$.
@@ -1252,10 +1254,10 @@ It is important to notice that, while the learning iteration employed by \cite{g
 
 \subsection{Datasets influence the semantics of tasks}
 
-\cite{gavranovic2019compositional} centers its investigation around the powerful cycleGAN architecture (\cite{zhu2017unpaired}), which is described using an appropriate task consisting of the cycleGAN schema (see ADDIM), the cycle consistency equations, and a cycleGAN dataset, i.e., a dataset with two sets $A$ and $B$ containing data which is essentially isomorphic, such as pictures of horses and zebras. This description is particularly insightful because it can be used to prove a very important point: the choice of dataset influences the semantics of the learned task in non-trivial ways. In other words, changing the dataset functor can result in semantically different tasks even if the same schema and equations are retained. 
+\cite{gavranovic2019compositional} centers its investigation around the powerful cycleGAN architecture (\cite{zhu2017unpaired}), which is described using an appropriate task consisting of the cycleGAN schema (see ADDIM), the cycle consistency equations, and a cycleGAN dataset, that is, a dataset with two sets $A$ and $B$ containing data which is essentially isomorphic, such as pictures of horses and zebras. This description is particularly insightful because it can be used to prove a very important point: the choice of dataset influences the semantics of the learned task in non-trivial ways. In other words, changing the dataset functor can result in semantically different tasks even if the same schema and equations are retained. 
 
 
-The example shown in the paper is the \cite{gavranovic2019compositional}: combining the cycleGAN schema with the cycleGAN equations and a cycleGAN dataset yields a task whose semantics can be described as \textit{learn maps that turn horses into zebras and vice versa}. Now replace the cycleGAN dataset with a new dataset consisting in two sets $A$ and $B$, where $A$ contains pictures depicting two elements $X$ and $Y$ together, and $B$ contains separate images of $X$ and $Y$. The resulting task has very different semantics: \textit{learn how to separate $X$ from $Y$}. For instance, \cite{gavranovic2019compositional} shows how to use the CelebA dataset to train a neural network able to remove glasses from pictures of faces, or even insert them (see image ADDIM).
+The example shown in the paper is the \cite{gavranovic2019compositional}: combining the cycleGAN schema with the cycleGAN equations and a cycleGAN dataset yields a task whose semantics can be described as \textit{learn maps that turn horses into zebras and vice versa}. Now replace the cycleGAN dataset with a new dataset consisting of two sets $A$ and $B$, where $A$ contains pictures depicting two elements $X$ and $Y$ together, and $B$ contains separate images of $X$ and $Y$. The resulting task has very different semantics: \textit{learn how to separate $X$ from $Y$}. For instance, \cite{gavranovic2019compositional} shows how to use the CelebA dataset to train a neural network able to remove glasses from pictures of faces, or even insert them (see image ADDIM).
 
 
 This example is especially relevant to the present discussion because it shows how important the categorical structure of $\mathbf{Set}$ can be to machine learning. We can interpret pairs \textit{(face, glasses)} as elements of the Cartesian product of the set of faces and the set of glasses. On the other hand, the set of pictures of faces with glasses can instead be considered another categorical product of the aforementioned sets. Since categorical products are unique, we know that there must be a unique isomorphism between the two products. Then, one interpretation of the task becomes: \textit{find the canonical isomorphism}. \cite{gavranovic2019compositional} labels this task as the product task and shows empirical evidence of the validity of the approach.
@@ -1301,7 +1303,7 @@ The embedding network can then be trained by maximizing this objective function.
   Strictly speaking, morphisms in category should have a specific domain and a specific codomain but, in the case of the vector space category of \textit{Def. \ref{def: vecspacecat}}, a single matrix $M$ can be in many hom-sets of $\mathcal{R}$. This is mirrored by $\mathcal{C}$ and $\mathcal{D}$, where morphisms correspond to classes of chemical bond and the same morphism can link different objects. From this point of view, morphisms in $\mathcal{R}$, in $\mathcal{C}$, and in $\mathcal{D}$ behave more similarly to relations on sets than to morphisms in categories.  Although this line of thinking does not strictly adhere to the definition of category, it helps our intuition and greatly reduces the size of the model by limiting the number of parameters that need to be learned. We will see a possible formal solution to this problem later on in this section, when we discuss the approach of \cite{coecke2010mathematical} and \cite{lewis2019compositionality}.
 \end{remark}
 
-The procedure described above can be been applied to both $\mathcal{C}$ and $\mathcal{D}$ to obtain meaningful vectorial representations of both datasets. An English to Chinese translation functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$ can be similarly embedded as a $\mathcal{R} \to \mathcal{R}$ functor by precomposition with the $\mathcal{C} \to \mathcal{R}$ embedding and postcomposition with the inverse of the $\mathcal{D} \to \mathcal{R}$ embedding. Such functor must equate chemical bonds of the same kind, e.g. if $f$ is a covalent bond so is $\mathcal{F}(f)$. It is argued in \cite{sheshmani2021categorical} that this functor can be represented by a matrix $V_\mathcal{F}$ so that $v_{\mathcal{F}(a)} =  V_\mathcal{F}v_a$ and $M_{\mathcal{F}(f)} = V_\mathcal{F}M_f$. This representation is only meaningful if (i) $V_{\mathcal{F}}M_f = M_{\mathcal{F}}V_{\mathcal{F}}$ for all $f$, (ii) $V_{\mathcal{F}}M_{\mathrm{id}_a} = M_{\mathrm{id}_{\mathcal{F}(a)}}$ for all $a$, and (iii) $V_{\mathcal{F}}M_{f \circ g} = V_{\mathcal{F}}M_fV_{\mathcal{F}}M_g$ for all $f,g$. This is not true for all choices of  $V_\mathcal{F}$ but, if we choose every $v_a$ to be a unit vector, and if we constrain $V_{\mathcal{F}}$ to be orthogonal, (ii) and (iii) are trivially satisfied. Requirement (i), on the other hand, can be learned by minimizing the following structure loss:
+The procedure described above can be been applied to both $\mathcal{C}$ and $\mathcal{D}$ to obtain meaningful vectorial representations of both datasets. An English to Chinese translation functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$ can be similarly embedded as a $\mathcal{R} \to \mathcal{R}$ functor by precomposition with the $\mathcal{C} \to \mathcal{R}$ embedding and postcomposition with the inverse of the $\mathcal{D} \to \mathcal{R}$ embedding. Such functor must equate chemical bonds of the same kind, for example, if $f$ is a covalent bond so is $\mathcal{F}(f)$. It is argued in \cite{sheshmani2021categorical} that this functor can be represented by a matrix $V_\mathcal{F}$ so that $v_{\mathcal{F}(a)} =  V_\mathcal{F}v_a$ and $M_{\mathcal{F}(f)} = V_\mathcal{F}M_f$. This representation is only meaningful if (i) $V_{\mathcal{F}}M_f = M_{\mathcal{F}}V_{\mathcal{F}}$ for all $f$, (ii) $V_{\mathcal{F}}M_{\mathrm{id}_a} = M_{\mathrm{id}_{\mathcal{F}(a)}}$ for all $a$, and (iii) $V_{\mathcal{F}}M_{f \circ g} = V_{\mathcal{F}}M_fV_{\mathcal{F}}M_g$ for all $f,g$. This is not true for all choices of  $V_\mathcal{F}$ but, if we choose every $v_a$ to be a unit vector, and if we constrain $V_{\mathcal{F}}$ to be orthogonal, (ii) and (iii) are trivially satisfied. Requirement (i), on the other hand, can be learned by minimizing the following structure loss:
 \[\mathcal{L}_{\mathrm{struc}} = \sum_{f}\|V_{\mathcal{F}}M_f - M_{\mathcal{F}(f)}V_{\mathcal{F}}\|^2.\]
 As the authors of \cite{sheshmani2021categorical} remark, this loss is universal, in the sense that it does not depend on any specific object, but acts on the morphisms themselves. While this approach is very elegant and does indeed return a functor, it might not produce the functor we expect because $V_{\mathcal{F}}$ is not unique if the $M_f$ happen to be singular. Thus, it is better to integrate the structure loss with a second alignment loss that introduces some supervision to the unsupervised translation task. For instance, if the value of $\mathcal{F}(a)$ is known for a set $A$ for objects, we can define
 \[\mathcal{L}_{\mathrm{align}} = \sum_{a \in A}\|V_{\mathcal{F}}v_a - v_{\mathcal{F}(a)}\|.\]
@@ -1389,78 +1391,63 @@ String diagrams such as the ones in ADDIM can be written down as binary trees th
 
 
 
-\section{Invariance and equivariance with functors}
+\section{Equivariant neural networks as functors}
 
 \begin{warning}
-  We warn the reader that the paper \cite{chytas2024poolingimagedatasetsmultiple}, whose contents are discussed in this section, has been \textit{withdrawn by the authors} citing issues with the references. We decided against omitting the paper from this thesis because we think its research direction is intriguing and potentially highly valuable. Hopefully, future reasearch will soon clarify the epistemological status of the ideas hereby discussed.
+  We warn the reader that the paper \cite{chytas2024poolingimagedatasetsmultiple}, whose contents are discussed in this section, has been \textit{withdrawn by the authors} citing issues with the references. We decided against omitting the paper from this thesis because we think its research direction is intriguing and potentially highly valuable. Hopefully, future research will soon clarify the epistemological status of the ideas hereby discussed.
 \end{warning}
 
-Inspired in part by the formalization in \cite{gavranovic2019compositional}, \cite{chytas2024poolingimagedatasetsmultiple} presents a categorical framework that describes neural networks as functors and uses their functorial nature to impose invariance and equivariance constraints. In particular, it is shown that such constraints are helpful in accounting for shift and imbalance in covariates when pooling medical image datasets.
+\cite{chytas2024poolingimagedatasetsmultiple} presents a categorical framework that describes neural network layers as functors and uses their functorial nature to impose invariance and equivariance constraints. In particular, equivariance constraints are used to effectively transport the unary operators from the dataset into a latent embedding layer. It is shown that this enables the creation of models that account for shifts and imbalance in covariates when being trained on pooled medical image datasets. In this section, we describe the framework of \cite{chytas2024poolingimagedatasetsmultiple} and we draw a short comparison with the work of \cite{pfrommer2024transport}, which also deals with the transport of algebraic structure into embedding layers.
 
 
-\subsubsection{Categorical Structure of Data}
+\subsection{An equivariant classifier to diagnose Alzheimer's disease}
 
-The first challenge in using functors to enforce invariance and equivariance constraints is giving data a categorical structure. The strategy employed by \cite{chytas2024poolingimagedatasetsmultiple} consists in defining a data category $\mathcal{S}$ whose objects $s$ are data points and whose morphisms $f: s_1 \to s_2$ represent differences in covariates. 
-
-
-An example considered in the paper is the following: suppose the objects $s$ are comprised of brain scans and associated information concerning patient age and other covariates. The goal is to develop a model trained to diagnose Alzheimer's disease from the scans. An example of morphism in such data category is $f_x: s_1 \to s_2$, which indicates a difference of $x$ years in age: $s_2.\mathrm{age} = s_1.\mathrm{age} + x$.
-
-
-Since we are dealing with a classification task, the dataset here has labels. It is important not to include the labels in the data category, else any classifier model would just read such labels instead of learning to predict them. Use the notation $\mathbf{y}_s$ to represent the label associated to $s$. Since the dataset has labels while the data category must not have them, we feel justified in using the phrase data category in place of the phrase dataset category employed above.
-
-
-\subsubsection{Invariance and Equivariance}
-
+The authors of \cite{chytas2024poolingimagedatasetsmultiple} consider a data category $\mathcal{S}$ whose objects $s$ are data points and whose morphisms $f: s_1 \to s_2$ represent differences in covariates. An example considered in the paper is the following: suppose the objects $s$ are comprised of brain scans and associated information concerning patient age and other covariates. The goal is to develop a model trained to diagnose Alzheimer's disease from the scans. An example of morphism in such data category is $f_x: s_1 \to s_2$, which indicates a difference of $x$ years in age\footnote{Notice that this kind of operator clearly possesses an algebraic structure as $f_x \fatsemi f_y = f_{x+y}$.}: $s_2.\mathrm{age} = s_1.\mathrm{age} + x$. Since we are dealing with a classification task, the dataset here has labels. It is important not to include the labels in the data category, else any classifier model would just read such labels instead of learning to predict them. Use the notation $\mathbf{y}_s$ to represent the label associated to $s$. Since the dataset has labels while the data category must not have them, we feel justified in using the phrase data category in place of the phrase dataset category employed above.
 
 Now, if we consider another category $\mathcal{T}$, we can use a functor $F: \mathcal{S} \to \mathcal{T}$ to project $\mathcal{S}$ onto $\mathcal{T}$. Learning such functor instead of a simple map between objects is advantageous because the functoriality axioms imply that $F$ automatically satisfies equivariance constraints: if $g: s_1 \to s_2$,
-
 \begin{equation}
   \label{eq: categorical_equivariance}
   F(g): F(s_1) \to F(s_2).
 \end{equation}
-
-\textit{Eq. \ref{eq: categorical_equivariance}} is a categorical generalization of the more usual group theoretical notion of invariance, defined as
-\begin{equation}
-  \label{eq: group_equivariance}
-  f(g \cdot s) = g \cdot f(s),
-\end{equation}
-where $s : S$, $g : G$, $G$ is a group, and $S$ is a $G$-set. To be precise, \textit{Eq. \ref{eq: group_equivariance}} is equivalent to \textit{Eq. \ref{eq: categorical_equivariance}} if $\mathcal{S}$, $\mathcal{T}$ are Borel spaces and $g$, $F(g)$ are group actions, as highlighted in \cite{chytas2024poolingimagedatasetsmultiple}.
-
-
-Hence, a functor $F$ is automatically equivariant with respect to any change $g: s_1 \to s_2$ in covariates incarnated as a morphism in the domain category. Invariance with respect to $g$ is not much harder to define: it suffices to impose $F(s_1) = F(s_2)$ and $F(g) = \mathrm{id}_{F(s_1)}$.
-
-
-\subsubsection{Classification Task}
-
-
-A functor $F$ able to satisfy invariance and equivariance can be used as a first step to create a classifier that satisfies such constraints. The architecture proposed by \cite{chytas2024poolingimagedatasetsmultiple} consists in two modules: (i) an autoencoder whose encoder is $F: \mathcal{S} \to \mathcal{T}$ and whose decoder is $F^{-1}: \mathcal{T} \to \mathcal{S}$; (ii) a functor $C: \mathcal{T} \to \mathbf{Free}(\mathbb{N})$ that actually does the classification. Thus, the whole model admits the compact representation $F \fatsemi C: \mathcal{S} \to \mathbf{Free}(\mathbb{N})$ (a diagram representing such structure can be seen in ADDIM).
-
-
-In the model described above, $\mathcal{T}$ acts as a latent space. The hope is that the latent representation of the data in $\mathcal{S}$ satisfies the given equivariance and invariance constraints, so that the actual classification operated by $\mathcal{C}$ naturally satisfies the requirements as well.
-This same strategy is used in non-categorical approaches such as ADDREF. The main advantage to the categorical formalization presented by \cite{chytas2024poolingimagedatasetsmultiple} is that an arbitrary number of covariates can be handled at once without any additional complexity. This is in stark contrast with ADDREF, where at most two covariates can be handled at once, and with ADDREF, where increasing the number of covariates requires a much more complicated training pipeline. The authors argue that the framework can also be easily adapted to regression tasks by replacing $\mathbf{Free}(\mathbb{N})$ with $\mathbf{Free}(\mathbb{R})$.
+Invariance with respect to $g$ is not much harder to define: it suffices to impose $F(s_1) = F(s_2)$ and $F(g) = \mathrm{id}_{F(s_1)}$.
 
 \begin{remark}
-  It only makes sense to consider $F^{-1}$ is $F$ is fully-faithful. In practical applications, this isn't usually a concern.
+  \textit{Eq. \ref{eq: categorical_equivariance}} is a categorical generalization of the more usual group-theoretical notion of invariance, as defined in \textit{Def. \ref{def: equivariance}}. To be precise, \textit{Def. \ref{def: equivariance}} is equivalent to \textit{Eq. \ref{eq: categorical_equivariance}} if $\mathcal{S}$, $\mathcal{T}$ are Borel spaces and $g$, $F(g)$ are group actions, as highlighted in \cite{chytas2024poolingimagedatasetsmultiple}.
 \end{remark}
 
 
-\subsubsection{Training}
+The authors of \cite{chytas2024poolingimagedatasetsmultiple} solve the Alzheimer's disease diagnosis task using a classifier that actively exploits the equivariant nature of functors. The proposed architecture consists of two modules: an invertible functor $F: \mathcal{S} \to \mathcal{T}$ that embeds the data into a latent space, and a functor $C: \mathcal{T} \to \mathbf{Free}(\mathbb{N})$ that does the actual classification (see ADDIM for a diagrammatic representation). Here, $\mathcal{T}$ acts as a latent space and the equivariance of $F$ forces the representations in $\mathcal{T}$ to be robust with respect to covariate shifts and imbalances, so that the actual classification operated by $\mathcal{C}$ can be more effective at diagnosing the disease. The whole model can be compactly represented as $F \fatsemi C: \mathcal{S} \to \mathbf{Free}(\mathbb{N})$. Although the inverse of $F$ does not appear in the formula, its existence is needed to ensure that the latent space accurately represents the data.
 
-What is now needed is an algorithm able to learn $F$ and $C$. \cite{chytas2024poolingimagedatasetsmultiple} suggests implementing $\mathcal{T}$ as a vector space category (\textit{Def. \ref{def: vecspacecat}}) and to train a neural network to embed data points $s : \mathcal{S}$ as vectors $F(s) = v_s$, and covariate morphisms $f$ as matrices $w_f$. It is often useful to restrict ourselves to representing morphisms using orthogonal matrices, as the latter can be inverted by transposition, which is computationally efficient. As shown in the paper, being able to invert such morphisms offers great benefits.
 
-The embeddings and matrices can now be trained using a linear combination of three separate losses: $\mathcal{L} = \gamma_1\mathcal{L}_r + \gamma_2\mathcal{L}_p + \gamma_3\mathcal{L}_s$, where $\gamma_1$, $\gamma_2$, and $\gamma_3$ are hyperparameters. Here, $\mathcal{L}_r$ is a reconstruction loss, which makes sure that $F$ is invertible and that its inverse accurately reconstructs the original data; $\mathcal{L}_p$ is a prediction loss, which makes sure that $F \fatsemi G$ accurately predicts the labels of the data; $\mathcal{L}_s$ a structure loss, which makes sure that $F$ acts as a functor and not just a map. In formulae,
+The classifier described above is implemented using similar tools as the ones employed by \cite{sheshmani2021categorical}. The latent space $\mathcal{T}$ can be defined as a vector space category as in \textit{Def. \ref{def: vecspacecat}}. The functor $F$ is realized as the encoder of an appropriate autoencoder, and the decoder portion of this autoencoder acts as the inverse $F^{-1}$. The maps $f: \mathcal{S}(s_1,s_2)$ can be embedded as matrices as described in the previous section. In particular, \cite{chytas2024poolingimagedatasetsmultiple}  suggests using orthogonal matrices $F(f) = W_f$ so that the resulting transformations can be efficiently inverted.
+Finally, $C$ can be implemented as a MLP classifier.
+
+Now that the architecture has been specifies in terms of neural networks, the resulting model can be trained using gradient descent and a linear combination of three separate losses: $\mathcal{L} = \gamma_1\mathcal{L}_r + \gamma_2\mathcal{L}_p + \gamma_3\mathcal{L}_s$, where $\gamma_1$, $\gamma_2$, and $\gamma_3$ are hyperparameters. Here, $\mathcal{L}_r$ is a reconstruction loss, which makes sure that $F$ is invertible and that its inverse accurately reconstructs the original data; $\mathcal{L}_p$ is a prediction loss, which makes sure that $F \fatsemi C$ accurately predicts the labels of the data; $\mathcal{L}_s$ a structure loss, which makes sure that $F$ acts as a functor and not just a map. In formulas,
 \[\mathcal{L}_r = \sum_{s : \mathcal{S}}\|s-(F^{-1} \circ F)(s)\|^2_2,\]
 \[\mathcal{L}_p = \sum_{s : \mathcal{S}}\mathsf{crossentropy}(\mathbf{y}_s,(C \circ F)(s)),\]
 \[\mathcal{L}_s = \sum_{\begin{smallmatrix}s_1, s_2 : \mathcal{S} \\ f: s_1 \to s_2 \end{smallmatrix}}\|W_fF(s_1)-F(s_2)\|^2_2.\]
 
-\subsubsection{Experimental Results}
+\begin{remark}
+  Notice that the amount of equivariance constraints imposed can vary with no substantial changes to the proposed architecture: it suffices to add or remove terms from $\mathcal{L}_s$. This is in stark contrast with approaches such as \cite{lokhande2022equivariance}, where handling multiple covariates requires a complicate multi-stage model. 
+\end{remark}
 
-The authors of \cite{chytas2024poolingimagedatasetsmultiple} prove the validity of the proposed approach with two interesting experiments: a proof of concept trained on the MNIST dataset, and a working classifier trained on the ADNI brain imaging dataset.
-
-The proposed MNIST model implements equivariance with respect to increments, rotations, and zooming. It is shown in the paper that representing the associated morphisms with orthogonal matrices allows such morphisms to be inverted and combined in the latent space. A subsequent application of $F^{-1}$ shows the results of the aforementioned manipulation in human-understandable form. Such results are indeed very promising: the authors are able to combine rotations and zooming successfully, even though the network was only trained to apply them separately (see ADDIM) for an example.
+The authors of \cite{chytas2024poolingimagedatasetsmultiple} test the validity of the proposed approach with two interesting experiments: a proof of concept trained on the MNIST dataset, and a working classifier trained on the ADNI brain imaging dataset. The proposed MNIST model implements equivariance with respect to increments, rotations, and zooming. It is shown in the paper that representing the associated morphisms with orthogonal matrices allows such morphisms to be inverted and combined in the latent space. A subsequent application of $F^{-1}$ shows the results of the aforementioned manipulation in human-understandable form. Such results are indeed very promising: the authors are able to combine rotations and zooming successfully, even though the network was only trained to apply them separately (see ADDIM) for an example. The ADNI classifier model also shows promising results which are on par with state-of-the-art models that do not use categorical tools. The comparison takes place according to accuracy of prediction, maximum mean discrepancy, and adversarial validation.
 
 
-The ADNI classifier model also shows very promising results which are on par with state-of-the-art models that do not use categorical tools. The comparison takes place according to accuracy of prediction, maximum mean discrepancy, and adversarial validation.
+\subsection{Transporting algebraic structure into embedding spaces}
+
+Although stated in terms of equivariance conditions, the work of \cite{chytas2024poolingimagedatasetsmultiple} can be seen from an algebraic point of view as a framework that allows to transport unary operators from a space of data to an embedding space. This line of thinking has also been explored by \cite{pfrommer2024transport}. While \cite{pfrommer2024transport} deos not use category theory, the authors themselves state that their approach could be easily categorified using the language of categorical algebras (see \textit{Def. \ref{def: endalg}}). The main innovation of \cite{pfrommer2024transport} is the use of \textit{mirrored algebras} to fill the gaps between original data and the embeddings.
+
+
+Consider a pre-trained autoencoder consisting of an encoder $E: \mathcal{S} \to \mathcal{L}$ and a decoder $D: \mathcal{L} \to \mathcal{S}$, where $\mathcal{S}$ is a data space endowed with an algebraic structure, such as a monomial product $\bullet^{\mathcal{S}}$, and where $\mathcal{L}=\mathbb{R}^n$ is a latent space. Suppose we want to transport this algebraic structure to $\mathbb{R}^n$ through $E$, that is, we want to find a monomial product $\bullet^{\mathcal{L}}$ over $\mathcal{L}$ so that $E$ acts as a $(\mathcal{S},\bullet^{\mathcal{S}}) \to (\mathcal{L},\bullet^{\mathcal{L}})$ homomorphism. While finding a product $\ast$ that makes $(\mathcal{S},\bullet^{\mathcal{S}})$ and $(\mathcal{L},\bullet^{\mathcal{L}})$ homomorphic might be easy, there is no guarantee that $E$ is an actual homomorphism with respect to this choice of algebraic structure. \cite{chytas2024poolingimagedatasetsmultiple} solves this problem for unary operators by learning appropriate orthogonal matrices, but it is not clear how this approach could be scaled to operators with arities greater than $1$.  \cite{pfrommer2024transport} suggests an alternative approach consisting in learning a bijection $\phi$ between the latent space and a copy $\mathcal{M} = \mathbb{R}^n$ of this space. Endow $\mathcal{M} = \mathbb{R}^n$ with a product $\bullet^{\mathcal{M}}$ which enjoyes similar properties as $\bullet^{\mathcal{S}}$ (see ADDIM). We will say that $(\mathcal{M},\bullet^{\mathcal{M}})$ is the mirrored algebra of $(\mathcal{S},\bullet^{\mathcal{S}})$. Now train $\phi$ so that $E$ is $(\mathcal{S},\bullet^{\mathcal{S}}) \to (\mathcal{L},\bullet^{\mathcal{L}})$ homomorphism, where $\bullet^{\mathcal{L}}$ is defined by
+\[l_1 \bullet^{\mathcal{L}} l_2 = \phi^{-1}(\phi(l_1) \bullet^{\mathcal{M}} \phi(l_2)).\]
+
+As stated in \cite{pfrommer2024transport}, the bijection $\phi$ can be implemented as an invertible neural network and can be trained using a loss in the form
+\[\mathcal{L} = \frac{1}{N}\sum_{i=1}^N d(D(p_i^{\mathcal{L}}(E(s_1),\dots,E(s_{n_i}))),p_i^{\mathcal{S}}(s_1, \dots, s_{n_i}))\]
+where the $p_i^{\mathcal{S}}$ are algebraic expressions sampled from the set of expressions over $(\mathcal{S},\bullet^{\mathcal{S}})$, the $s_j$ are sampled from $\mathcal{S}$, $p_i^{\mathcal{L}}(t_1,\dots,t_{n_i})$ is defined as $\phi^{-1}(p_i^{\mathcal{M}}(\phi(t_1),\dots,\phi(t_{n_i})))$, $p_i^{\mathcal{M}}$ is the translation of $p_i^{\mathcal{S}}$ in terms of the algebraic structure of $(\mathcal{M},\bullet^{\mathcal{M}})$, and $d$ is an appropriate distance function.
+
+
+We only presented a sketch of the work in \cite{pfrommer2024transport}: the original paper presents the framework in terms of any general algebraic structure, deals with laws that regulate the interaction of different operations, proves theoretical guarantees, and explores limitations of the proposed approach. It is shown in the paper that it is not always possible to find a mirrored algebra whose operations satisfy the same laws of the source algebra, which means that it is not always possible to transport this algebraic structure in its entirely. Nevertheless, the authors carry out experiments that prove that there are tangible advantages even in transporting a subset of the algebraic laws. The experiments support the following conjecture: \dblquote{learned latent space operations will achieve higher performance if they are constructed to satisfy the laws of the underlying source algebra} (\cite{pfrommer2024transport}). 
 
 
 
@@ -1566,7 +1553,7 @@ Conclusions}]{\fancyplain{}{\bfseries\thepage}}
 
 
 
-
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 
 
@@ -1593,7 +1580,7 @@ Conclusions}]{\fancyplain{}{\bfseries\thepage}}
 
 \thispagestyle{empty}
 
-I wish to acknowledge the essential role my advisor Professor F. Zanasi has had in guiding me through the process of writing this thesis. He introduced me to applied category theory, to machine learning, and to the world of academic research, and I will be forever grateful for it. I also wish to thank my family and my friends, who supported my throughout this journey, and without whom all of this would not have been possible. To all of you, my most sincere gratitude.
+I wish to acknowledge the essential role my advisor Professor F. Zanasi has had in guiding me through the process of writing this thesis. He introduced me to applied category theory, to machine learning, and to the world of academic research, and I will be forever grateful for it. I also wish to thank my family and my friends, who supported me throughout this journey, and without whom all of this would not have been possible. To all of you, my most sincere gratitude.
 
 
 
