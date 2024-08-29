@@ -44,6 +44,7 @@
 \newtheorem{proposition}[mycounter]{Proposition}
 \newtheorem{definition}[mycounter]{Definition}
 \newtheorem{conjecture}[mycounter]{Conjecture}
+\newtheorem{principle}[mycounter]{Principle}
 
 \theoremstyle{definition}
 \newtheorem{remark}[mycounter]{Remark}
@@ -1384,7 +1385,7 @@ To the best of our knowledge, no one has ever explicitly described SNN architect
 
 
 
-All categorical machine learning frameworks examined in the previous chapters represent machine learning models, both trained and untrained, as morphisms in some category. Morphisms capture the core idea of compositionality and are thus a very good choice in many context; nevertheless, there are also cases where a simple morphism is unable to capture the structure that one might want preserved. For instance, different datasets might be linked using morphisms in an appropriate category (see e.g. \cite{spivak2012functorial}, \cite{gavranovic2019compositional}) or sets containing machine learning data could be given a categorical structure, where elements are objects and morphisms capture relations between such objects (see e.g. \cite{lambek1999type}). In these and other cases, learning functors instead of morphisms is advantageous as it allows us to preserve the aforementioned structure during the learning process. In this chapter we examine various approaches that testify to the usefulness of this insight: we will see how functors can be used to separate different layers of abstraction in the machine learning process (\cite{gavranovic2019compositional}), to embed data in vector spaces (\cite{sheshmani2021categorical}, \cite{coecke2010mathematical},\cite{lewis2019compositionality}), to carry out unsupervised translation (\cite{sheshmani2021categorical}), and to impose equivariance constraints and pool data effectively (\cite{chytas2024poolingimagedatasetsmultiple}).
+All categorical machine learning frameworks examined in the previous chapters represent machine learning models, both trained and untrained, as morphisms in some category. Morphisms capture the core idea of compositionality and are thus a very good choice in many contexts; nevertheless, there are also cases where a simple morphism is unable to capture the structure that one might want preserved. For instance, different datasets might be linked using morphisms in an appropriate category (see e.g. \cite{spivak2012functorial}, \cite{gavranovic2019compositional}) or sets containing machine learning data could be given a categorical structure, where elements are objects and morphisms capture relations between such objects (see e.g. \cite{lambek1999type}). In these and other cases, learning functors instead of morphisms is advantageous as it allows us to preserve the aforementioned structure during the learning process. In this chapter we examine various approaches that testify to the usefulness of this insight: we will see how functors can be used to separate different layers of abstraction in the machine learning process (\cite{gavranovic2019compositional}), to embed data in vector spaces (\cite{sheshmani2021categorical}, \cite{coecke2010mathematical},\cite{lewis2019compositionality}), to carry out unsupervised translation (\cite{sheshmani2021categorical}), and to impose equivariance constraints and pool data effectively (\cite{chytas2024poolingimagedatasetsmultiple}).
 We will illustrate how functors can be learned by gradient descent, just like morphisms, as long as we have appropriate parametrizations (\cite{gavranovic2019compositional}) or specialized objective functions (\cite{sheshmani2021categorical}, \cite{chytas2024poolingimagedatasetsmultiple}). 
 
 
@@ -1726,13 +1727,208 @@ We only presented a sketch of the work in \cite{pfrommer2024transport}: the orig
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Diagrammatic Representations for Neural Networks}
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
+
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{figures/transformer_original.png}     
+    \caption[Diagram of a transformer]{Schematics for a transformer as they were presented in the original paper \cite{vaswani2017attention}. The annotation are from the author of \cite{abbott2024neural}. (Image taken from \cite{abbott2023robust}.)}
+    \label{fig: transformer}
+  \end{center}
+\end{figure}
+
+
+\section{Neural Circuit Diagrams}
+
+\cite{abbott2023robust} proposes to compensate for the shortcomings of monoidal string diagrams by introducing a novel kind of string diagrams: neural circuits diagrams. neural circuits diagrams are a specialization of a broader class of powerful string diagrams known as functor string diagrams, developed in order to represent objects, morphisms, functors, natural transformations, and products in a single diagram. In this section, we provide a brief description of both classes of diagrams, and we show how neural circuits diagrams can be used to describe the sophisticated transformer architecture.
+
+
+\subsection{Functor string diagrams}
+
+Despite their unquestionable usefulness, monoidal string diagrams have are fundamentally limited by their inability to represent functors and natural transformations. \cite{marsden2014category} and \cite{nakahira2023diagrammatic} solve this relying on colors and symbols, but this only shifts the problem as their diagrams are unable to effectively represent products (\cite{abbott2024functor}). Functor string diagrams follow a different approach: they represent both objects and functors as wires and both morphisms and natural transformations as boxes\footnote{In simple string diagrams, the actual box is often not drawn for the sake of simplicity. In these cases, the box is replaced by a single letter, but we still use the word \dblquote{box} in lack of a better word.}. These diagrams as built around two fundamental principles, which are already observed in traditional string diagrams. Following these principles ensures that the diagrammatic syntax stays consistent and coherent with the underlying categorical structure as notation becomes more complicated and more features as added. 
+
+\begin{principle}[Vertical section decomposition]
+  A string diagram can be divided into vertical columns. A single vertical columns must either contain only objects or only morphisms. Object columns and morphism columns must alternate each other.
+\end{principle}
+
+\begin{principle}[Equivalent expression]
+  Every newly introduced piece of graphical notation must be expressible using the notation already present in a compatible manner.
+\end{principle}
+
+In accordance with the above principles, \cite{abbott2023robust} introduces notation that represents a functors as wires that lie above objects wires and natural transformations as boxes that lie above morphism boxes (see \textit{Fig. \ref{fig: functorstringdiagrams} (a), (b)}). In standard string diagrams, a wire running through a morphism column is interpreted as an identity morphism. Similarly, in the notation of \cite{abbott2023robust}, a wire running where a natural transformation is supposed to be is interpreted as an identical natural transformation. This diagrammatic notation is already effective enough to write a graphical proof of the Yoneda lemma, and can be easily adapted to represent product bifunctors: it suffices to stack two rows, one per category envolved in the product, and seprate them using a double dashed line (as in \textit{Fig. \ref{fig: functorstringdiagrams} (c)}). Finally, monomial products can be represented by using a single dashed separation line or no line at all (as in \textit{Fig. \ref{fig: functorstringdiagrams} (d)}). These piece of diagrammatical notation is also in perfect compliance with the vertical section decompositionl principle and the equivalent expression principle.
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.39\textwidth}
+      \includegraphics[width=\textwidth]{figures/functors.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.6\textwidth}
+      \includegraphics[width=\textwidth]{figures/natural_transformations.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{figures/product_diagram.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.6\textwidth}
+      \includegraphics[width=\textwidth]{figures/monoidal_product_diagram.png}
+      \caption{}
+    \end{subfigure}         
+    \caption[Functor string diagrams]{Functor string diagrams associated with (a) a functor, (b) a natural transformation, (c) a product bifunctor, (d) a monoidal product. (Images and annotations taken from \cite{abbott2024functor}.)}
+    \label{fig: functorstringdiagrams}
+  \end{center}
+\end{figure}
+
+\subsection{Neural circuit diagrams}
+
+Neural circuit diagrams are a specialization of functor string diagrams designed to represent precise schematics for deep neural networks architectures. The idea is to capture all information relevant to implement and analyze the described architecture without using specific programming frameworks. In this sense, neural circuits diagrams can be compared to very detailed pseudocode. Although neural circuit diagrams can be learned and applied without any reference to category theory (this is the perspective adopted in \cite{abbott2024neural}), the fact that these diagrams are just an instance of the wider class of functor string diagrams is not just a curiosity, but proof that they are categorically sound. In other words, every well-formed neural circuit diagrams corresponds to a neural networks and neural circuit diagrams can be composed intuitively.
+
+Differently from the string diagrams seen in e.g. \cite{gavranovic2024fundamental} or \cite{wilson2022categories},neural circuit diagrams explicitly keep track of dimensionality and indexing. This allows them to represent complex architectures that involve convolutions, residuality, and so on. Crucially, neural string diagrams provide convenient notation to represent broadcasting, which is of fundamental importance in deep learning but rarely adequately represented by ad-hoc diagrams often seen in papers. 
+
+
+Neural circuit diagrams represent axes of tensors as parallel wires and decorate each wire with the associated number of dimensions (see \textit{Fig. \ref{fig: neuralstringdiagrams} (d)}). Indexing is implemented by assigning a specific value to the wire representing the axis with respect to which we want to index (see \textit{Fig. \ref{fig: neuralstringdiagrams} (b)}). Finally, broadcasting is represented by running a wire that represents the additional axis over the morphism that is to be broadcasted (see \textit{Fig. \ref{fig: neuralstringdiagrams} (c)}). Mathematically, tensors are constructed as hom-functors over the real line and broadcasting is just the action of such a functor on morphisms (\textit{Fig. \ref{fig: fromfsdtoncd}}). This is all representable using functor string diagram: neural circuit diagrams are just the result of omitting unnecessary detail from the latter. See \cite{abbott2024neural} for more information regarding neural circuit diagrams and see \cite{abbott2023robust} for more information regarding the relationship between neural circuit diagrams and functor string diagrams.
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.7\textwidth}
+      \includegraphics[width=\textwidth]{figures/tensors.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.7\textwidth}
+      \includegraphics[width=\textwidth]{figures/indexing.png}
+      \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.7\textwidth}
+      \includegraphics[width=\textwidth]{figures/broadcasting1.png}
+      \caption{}
+    \end{subfigure}      
+    \caption[Neural string diagrams]{Neural string diagram formalisms for (a) representation of tensors, (b) indexing of tensors, (c) broadcasting. (Images and annotations taken from \cite{abbott2024neural}.)}
+    \label{fig: neuralstringdiagrams}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{figures/from_fsd_to_ncd.png}     
+    \caption[From functor string diagrams to neural circuit diagrams]{From functor string diagrams to neural circuit diagrams. (Image taken from \cite{abbott2024functor}.)}
+    \label{fig: fromfsdtoncd}
+  \end{center}
+\end{figure}
+
+\cite{abbott2024neural} proves the usefulness of neural circuit diagrams by drawing schematics (\textit{Fig. \ref{fig: transformerncd}}) for the powerful transformer architecture proposed by \cite{vaswani2017attention}. Comparing these schematics with the ones in ADDIM presented in the original paper shows the wealth of detail that the former easily encode but are completely absent from the latter. For instance, ADDIM provides no information regarding the dimensions of $Q$, $K$, and $V$, despite the fact that these matrices play a central role in the architecture.  Neural circuit diagrams for additional architectures can be found in \cite{abbott2024neural}.
+
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{figures/transformer_ncd.png}     
+    \caption[Neural string diagram of a transformer]{Neural string diagram of a transformer. (Image taken from \cite{abbott2023robust}.)}
+    \label{fig: transformerncd}
+  \end{center}
+\end{figure}
+
+
+
+
+\section{Conclusions and related work}
+
+
+The amount of implementative details conveyed by neural circuit diagrams suggests that it should be possible to find a 1-to-1 corrispondence between the latter and code. In fact, these diagrams are expressive enough to be considered a high-level language with explicit memory management (\cite{abbott2023robust}). Hopefully, future research will lead to the creations of tools that convert neural circuit diagrams into working models, similarly to the library developed by \cite{cruttwell2022categorical} that allows programmers to code using parametric lenses. 
+
+
+
 \clearpage{\pagestyle{empty}\cleardoublepage}
-
-
-
-
-
-
 
 
 
