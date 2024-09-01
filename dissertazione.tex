@@ -1829,7 +1829,7 @@ We only presented a sketch of the work in \cite{pfrommer2024transport}: the orig
 \end{figure}
 
 
-\section{Neural Circuit Diagrams}
+\section{Neural circuit diagrams}
 
 \cite{abbott2023robust} proposes to compensate for the shortcomings of monoidal string diagrams by introducing a novel kind of string diagrams: neural circuits diagrams. neural circuits diagrams are a specialization of a broader class of powerful string diagrams known as functor string diagrams, developed in order to represent objects, morphisms, functors, natural transformations, and products in a single diagram. In this section, we provide a brief description of both classes of diagrams, and we show how neural circuits diagrams can be used to describe the sophisticated transformer architecture.
 
@@ -1907,18 +1907,102 @@ Neural circuit diagrams represent axes of tensors as parallel wires and decorate
   \end{center}
 \end{figure}
 
-\cite{abbott2024neural} proves the usefulness of neural circuit diagrams by drawing schematics (\textit{Fig. \ref{fig: transformerncd}}) for the powerful transformer architecture proposed by \cite{vaswani2017attention}. Comparing these schematics with the ones in ADDIM presented in the original paper shows the wealth of detail that the former easily encode but are completely absent from the latter. For instance, ADDIM provides no information regarding the dimensions of $Q$, $K$, and $V$, despite the fact that these matrices play a central role in the architecture.  Neural circuit diagrams for additional architectures can be found in \cite{abbott2024neural}.
+\cite{abbott2024neural} proves the usefulness of neural circuit diagrams by drawing schematics (\textit{Fig. \ref{fig: transformerncd}}) for the powerful transformer architecture proposed by \cite{vaswani2017attention}. Comparing these schematics with the ones in \textit{Fig. \ref{fig: transformer}} presented in the original paper shows the wealth of detail that the former easily encode but are completely absent from the latter. For instance, \textit{Fig. \ref{fig: transformer}} provides no information regarding the dimensions of $Q$, $K$, and $V$, despite the fact that these matrices play a central role in the architecture.  Neural circuit diagrams for additional architectures can be found in \cite{abbott2024neural}.
 
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=1\textwidth]{figures/transformer_ncd.png}     
+    \includegraphics[width=0.85\textwidth]{figures/transformer_ncd.png}     
     \caption[Neural string diagram of a transformer]{Neural string diagram of a transformer. (Image taken from \cite{abbott2023robust}.)}
     \label{fig: transformerncd}
   \end{center}
 \end{figure}
 
 
+
+\section{Diagrams with universal approximators}
+
+\cite{khatri2024anatomy} also develops a string-diagrammatic language capable of giving detailed unambiguous descriptions of neural network architectures. It is only natural to compare the approach of \cite{khatri2024anatomy} with the neural circuit diagrams of \cite{abbott2023robust} discussed in the previous section. Despite their unquestionable similarity, the two approaches differ on one key point: while neural circuit diagrams leave no space for abstraction and only allow equational rewrites, \cite{khatri2024anatomy} develops a semantics based on the notion of universal approximator that allows to abstract away details and compare different architectures based on share abstractions. In this section, we give a brief overview of the approach of \cite{khatri2024anatomy} and we discuss interesting experimental results presented by the paper. We do not discuss the precise categorical semantics of the diagrams introduced \cite{khatri2024anatomy} because that would require too much space, but the reader can find a full account of them in the appendices of the original paper. 
+
+
+\subsection{The diagrammatic approach of \cite{khatri2024anatomy}}
+
+
+
+Neural circuit diagrams effectively describe neural network architectures, but the aboundance of detail they convey also means that they can make it challenging to extract the foundamental structure of an architecture from its complete schematics.
+\cite{khatri2024anatomy} attacks this problem by drawing different diagrams for different levels of abstraction so that complete schematics like the ones encoded in neural circuit diagrams become only the end of a spectrum that begins with a purely abstract black box. The same fundamental grammar underpins all these diagrams, and appropriate rewrites can be used to seamlessly move between layers of abstraction. 
+
+Let us being by discussing the most concrete end of the aforementioned specturm. \cite{khatri2024anatomy} describes computation in the Cartesian category $\mathbf{CartSp}$ of Euclidean spaces and continuous functions, and follows the basic conventions of monoidal string diagrams for Cartesian categories. A sketch of the language can be found in \textit{Fig. \ref{fig: khatribasicdiagrams}}. Unlike neural circuit diagrams, the diagrams of \cite{khatri2024anatomy} represent broadcasting using \textit{SIMD (Same Instruction applied to Multiple Data) boxes}, as in \textit{Fig. \ref{fig: khatribasicdiagrams} (b)}, which are also used to represent tensor contractions, as in \textit{Fig. \ref{fig: khatribasicdiagrams} (c)}. Finally, syntactic sugar is offered to represent reshaping operations (see \textit{Fig. \ref{fig: khatribasicdiagrams} (c)}).
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{figures/khatri_diagrams.png}
+    \caption[Diagrammatic syntax of \cite{khatri2024anatomy}]{Basic elements of the diagrammatic syntax proposed by \cite{khatri2024anatomy}. (Image taken from \cite{khatri2024anatomy}.)}
+    \label{fig: khatribasicdiagrams}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{subfigure}{0.7\textwidth}
+      \includegraphics[width=\textwidth]{figures/khatri_labels2.png}
+      \caption{}
+    \end{subfigure}  
+    \begin{subfigure}{0.9\textwidth}
+      \includegraphics[width=\textwidth]{figures/khatri_simd1.png}
+      \caption{}
+    \end{subfigure}    
+    \begin{subfigure}{0.9\textwidth}
+      \includegraphics[width=\textwidth]{figures/khatri_simd2.png}
+      \caption{}
+    \end{subfigure}    
+    \caption[Dimensionality, SIMD boxes, and syntactic sugar]{Syntax proposed by \cite{khatri2024anatomy} for (a) dimensionality, (b) SIMD boxes, (c) copys, reshape operators, and contractions. (Images taken from \cite{khatri2024anatomy}.)}
+    \label{fig: khatridiagrams}
+  \end{center}
+\end{figure}
+
+The reader can compare the upper portion of \textit{Fig. \ref{fig: transformerncd}} against \textit{Fig. \ref{fig: khatritransformer}} to see how both neural circuit diagrams and the approach of \cite{khatri2024anatomy} can be used to describe the same transformer architecture in detail. While both formalisms shine in accuracy of representation, they also both suffer from low readibility: one might ask whether adopting such systems is even worth the trouble given that simpler diagrams such as the one in \textit{Fig. \ref{fig: transformer}} seem to be better at communicating basic ideas despite their lack of detail. 
+While \cite{abbott2023robust} compensates for this by annotating its diagrams and by encapsulating portions of the architectures at hand into dedicated boxes, \cite{khatri2024anatomy} proposes to abstract away detail by replacing portions of the graph representing specific implementations with filled boxes that represent universal approximators with the same inputs and outputs.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{figures/khatri_transformer.png}
+    \caption[Transformer blueprint according to \cite{khatri2024anatomy}]{Blueprint of the encoder part of a transformer according to \cite{khatri2024anatomy}. (Image taken from \cite{khatri2024anatomy}.)}
+    \label{fig: khatritransformer}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{figures/khatri_attention.png}
+    \caption[Abstract blueprint for self-attention]{Abstract blueprint for the self-attention mechanism for the transformer architecture of \cite{vaswani2017attention}. (Image taken from \cite{khatri2024anatomy}.)}
+    \label{fig: khatriattention}
+  \end{center}
+\end{figure}
+
+\begin{definition}[Universal approximators]
+  A universal approximator for a class $\mathcal{C}$ a functions is a neural network architecture able to approximate any element of $\mathcal{C}$ to any desired precision.
+\end{definition}
+
+
+Many well known results concern the existence and characterization of such approximators (see e.g. \cite{cybenko1989approximation}). \cite{khatri2024anatomy} uses universal approximators to rigorously represent \dblquote{typed holes} in a diagram that need to be filled with an appropriate operator. Replacing detailed structures with abstract unversal approximators allows us to climb the ladder of abstraction. This can be combined with the omission of dimensional information that is not necessary to understrand the architecture at hand, but only to implement it. \cite{khatri2024anatomy} showcases this process in the diagram of \textit{Fig. \ref{fig: khatriattention}}, which highlights the fundamental structure of the attention mechanism proposed by \cite{vaswani2017attention}. Notice how colors are used to distringuish between dimensions that are fixed as hyperparameters and dimensions that vary with the length of the sequence that is being processed.
+
+\subsection{Comparing attention mechanisms}
+
+Not only does the abstraction allowed by universal approximators highlight the fundamental structure of architectures, but it also allows comparisons between architectures. Two architectures that only differ at a point can be considered as descendents of a commmon ancestor architecture, and this common link allows us to compare them. For instance, \cite{khatri2024anatomy} derives all known attention mechanisms as descendents of a prototype \dblquote{primordial attention}, forming a sort of evolutionary tree of attention (see \textit{Fig. \ref{fig: attentiontree}}). The process of filling in a universal approximator with a more specialized structure is called by \cite{khatri2024anatomy} an \dblquote{expressivity reduction}, as it reduces number of architectures represented by the given schematics. Expressivity reductions can be formalized as string diagrammatic rewrites. Hence, in the example discussed above, rewrites are employed to derive descendent attention mechanisms from the primordial attention. 
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{figures/attention_tree.png}
+    \caption[Evolutionary tree of attention]{Evolutionary tree of attention mechanisms according to \cite{khatri2024anatomy}. Child nodes are obtained by applying rewrites to parent nodes. (Image taken from \cite{khatri2024anatomy}.)}
+    \label{fig: attentiontree}
+  \end{center}
+\end{figure}
+
+Just like biological taxonomy classifies species based on their evolutionary history, we can use the tree in \textit{Fig. \ref{fig: attentiontree}} as a blueprint for the classification of attention mechanisms. This undertaking is analogous to the one of \cite{gavranovicposition}, where recurrent neural network cells are classified based on the classical data structures and automata they are related to. Both taxonomies serve to systematize the scattered panorama of machine learning research, but may also inspire new architectures. 
+
+
+The authors of \cite{khatri2024anatomy} do pursue this line of thinking but they do explore a space of possible attention mechanisms freely constructed from five generators (represented as abstract diagrams). This large space is reduced in size by rewriting sections that would lead to overparameterization. This results in a selection of eleven possible attention mechanisms , that the authors of \cite{khatri2024anatomy} go on to test: the mechanisms are embedded in a decoder-only transformer and trained on a Penn-Treebank task. Interestingly, all the 11 mechanisms (among which there are known architectures such as the one proposed by \cite{vaswani2017attention}) perform comparably well (with only one having a slightly better performance than the others). The authors entertain the conjecture that the aforementioned results might be a sign that the choice of attention mechanism matters little, as long as data is exchanged between tokens. While there is no uncontrovertible evidence that this is the case, these experiments prove the utility of the approach of \cite{khatri2024anatomy} and, more generally, of the use of diagrams in machine learning.
 
 
 \section{Conclusions and related work}
