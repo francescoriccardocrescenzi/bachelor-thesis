@@ -18,6 +18,7 @@
 \usepackage{latexsym}
 \usepackage{amsthm}
 \usepackage{mathabx}
+\usepackage{namedtensor}
 
 \usepackage{caption}
 \usepackage{subcaption}
@@ -200,8 +201,14 @@ Benedetta
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LIST OF FIGURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\listoffigures  
+\rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}} \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries List of figures}}
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 
+ 
 
 
 
@@ -1816,7 +1823,7 @@ We only presented a sketch of the work in \cite{pfrommer2024transport}: the orig
 
 
 
-\chapter{Diagrammatic Representations for Neural Networks}
+\chapter{Detailed Representations of Neural Networks}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 
 
@@ -1827,6 +1834,21 @@ We only presented a sketch of the work in \cite{pfrommer2024transport}: the orig
     \label{fig: transformer}
   \end{center}
 \end{figure}
+
+
+One of the main concerns arising from machine learning research is low reproducibility. This is not a simple issue and investigation by many authors (see e.g. \cite{raff2019step}, \cite{pineau2021improving}, \cite{gundersen2022sources}) have suggested that many factors might be at play (such as bad incentives, unsatisfying experiment design, incorrect evaluation practices, and so on). Source code availability is a recurring theme in these discussions: for instance \cite{gundersen2022sources} observes that \dblquote{Code describes implementation details perfectly and is required for outcome reproducibility for experiments of some complexity}. Similarly, \cite{pineau2021improving} describes efforts of the NeurIPS19 conference to improve reproducibility by requiring authors to provide source code. The paper justifies this requirement by speculating that the reproducibility issues affecting machine learning research might be partly caused by a reporting problem within the community, as machine learning papers often do not report all the details needed to reimplementing the models they describe. For instance, it is argued that hyperparameters are often missing, together descriptions of entire components of the models at hand and descriptions of the pipeline and external tools employed.
+
+While making code and datasets as available as possible can certainly be considered a good practice for machine learning researchers, it is argued in \cite{abbott2024neural}, \cite{khatri2024anatomy}, and \cite{phuong2022formal} that over-reliance on code is detrimental to research. In fact, while it is tautologically true that code perfectly describes implementation, code is hardly effective at capturing the essential structure of a machine learning model. Even high-level code (like Python or R code) tends to be excessively verbose and drowns important details in a sea of instructions that have little to do with the theory at play. Hence, the question remains: how should machine learning researches represent their models? This question is extremely relevant in deep learning, where the size and complexity of models is ever increasing. For instance, even the ubiquitous transformer introduced by \cite{vaswani2017attention} is a complex piece of machinery with many components, and it is very challenging to provide a satisfying description.
+
+Many authors describe their models through equations, but this becomes more and more difficult as the size of each model grows, especially if complex tensor operations need to be carried out as ordinary tensor notation is not very readable (\cite{xu2023graph}). Interestingly, the number of equations contained in a paper has been found to be negatively correlated to reproducibility (\cite{raff2019step}). Alternatively, it is becoming more and more commond to describe models using specially crafted diagrams. For instance, \textit{Fig. \ref{fig: transformer}} shows the transformer blueprint as provided in the original paper \cite{vaswani2017attention} (the annotations are not from the original authors). These diagrams are intuitive but, as argued in \cite{abbott2024neural} and \cite{khatri2024anatomy}, they suffer from a lack of systematicity: they are usually \textit{ad hoc} and do not have significant mathematical properties.
+Moreover, important information is often omitted from the diagrams and the reader has to carefully parse the text to (hopefully) find or deduce it. For instance, the diagrams in \textit{Fig. \ref{fig: transformer}} do not provide any information concerning the size of the matrices $Q$, $K$, or $V$, nor is it clear from them across which dimension the softmax should be compuited.
+
+The \textit{ad hoc} diagrams often employed by machine learning researchers should be compared with the monoidal string diagrams that are almost standardized across applied category theory research (see e.g. \cite{bonchi2022string}). We have already seen many such diagrams in the previous chapters of this thesis, especially in the description of optics (see e.g. \textit{Fig. \ref{fig: lenses}}). On top of being standardized, monoidal string diagrams have precise categorical semantics and can thus be used to write down rigorous mathematical proofs and computations. Given these good properties and given the promising results described in \textit{Chpt. 1}, it is reasonable to ask whether the systematic use of monoidal string diagrams to represent machine learning models might be helpful. Regrettably monoidal string diagrams are also very inefficient at representing the details of tensor operations. The reader can appreciate this from \textit{Fig. \ref{fig: suplearnlenses}}, where dimensionality is all but hidden. This is the price that needs to be payed for generality, as monoidal string diagrams can represent mathematical objects that go well-beyond tensors. Nevertheless, there have been attempts by \cite{abbott2023robust} and by \cite{khatri2024anatomy} to adapt the box-wire notation of monoidal string diagrams so that it can perfectly represent a neural network architecture without leaving out implementational details. Category theory can then be used to provide rigorous semantics to these diagrams. Hopefully, such diagrams will be able to convey the information that is necessary for implementation and theoretical analysis, leading to improved insight and better reproducibility.
+
+In this chapter, we discuss the two aforementioned categorical diagrammatic approaches and we compare them with other non-categoric and even non-graphical approaches to the problem of representing a neural network. The papers we discuss measure the validity of their approaches against the problem of representing the transformer architecture, which is both well-known and highly non-trivial. We will reproduce some of the diagrams in questions to give an idea of how the different approaches compare. Regrettably, space concerns prevent us from fully describing the categorical mathematics behind the approaches in question, but the reader can find complete accounts of each in the respective papers.
+
+
+
 
 
 \section{Neural circuit diagrams}
@@ -1993,7 +2015,7 @@ Not only does the abstraction allowed by universal approximators highlight the f
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.9\textwidth]{figures/attention_tree.png}
+    \includegraphics[width=0.7\textwidth]{figures/attention_tree.png}
     \caption[Evolutionary tree of attention]{Evolutionary tree of attention mechanisms according to \cite{khatri2024anatomy}. Child nodes are obtained by applying rewrites to parent nodes. (Image taken from \cite{khatri2024anatomy}.)}
     \label{fig: attentiontree}
   \end{center}
@@ -2009,7 +2031,7 @@ The authors of \cite{khatri2024anatomy} do pursue this line of thinking but they
 
 The amount of implementational detail conveyed by neural circuit diagrams and the diagrams in \cite{khatri2024anatomy} suggests that it should be possible to find a 1-to-1 correspondence between these diagrams and code. It is even argued in \cite{abbott2023robust} that neural circuit diagrams are expressive enough to be considered a high-level language with explicit memory management. Hopefully, future research will lead to the creations of tools that convert neural circuit diagrams into working models, not unlike the library developed by \cite{cruttwell2022categorical} that allows programmers to code using parametric lenses. Another interesting direction of research is the application of methods analogous to the ones of \cite{khatri2024anatomy} to explore other classes of architectures.
 
-We conclude the chapter by briefly discussing a few alternative approaches to the problem of unambiguous representation of neural networks. While these approaches are not categorical (yet), we believe there are fruitful comparisons to be drawn between the latter and the categorical approaches discussed in the previous sections.
+We conclude the chapter by briefly discussing a few alternative approaches to the problem of unambiguous representation of neural networks. While these approaches are not categorical (yet), we believe there are fruitful comparisons to be drawn between the latter and the categorical approaches discussed in the previous sections. We also believe that these all these methods can be fruitfully integrated on various level, as discussed below.
 
 \subsection{Tensor networks}
 
@@ -2026,9 +2048,24 @@ The main difference between tensor networks and the diagrams described above is 
   \end{center}
 \end{figure}
 
-Despite their weaknesses, tensor networks networks can be of great utility to deep learning practictioners as they can offer clear insight into tensorization processes. Tensorization is an architecture design patter that aims to reduce the number of parameters of a neural network without compromising its expressivity: this can be done by replacing large matrices with appropriately decomposed low-rank tensors. Thanks to the redundance of ordinary fully connected layers (see e.g. \cite{sainath2013low}), this strategy leads to remarkable levels of compression (\cite{novikov2015tensorizing}, \cite{xu2023graph}). Tensorization yields improved efficiency at the price of human intuition, as it is much more difficult to think in terms of tensor operations across many modes than in terms of matrix-vector multiplication (\cite{xu2023graph}). Tensor networks such as the ones discussed in \cite{xu2023graph} and \cite{taylor2024introduction} can bridge this gap by helping practictioners to visualize tensor-based architectures. We refer to the original papers for examples and further information.
+Despite their weaknesses, tensor networks can be of great utility to deep learning practictioners as they can offer clear insight into tensorization processes. Tensorization is an architecture design patter that aims to reduce the number of parameters of a neural network without compromising its expressivity: this can be done by replacing large matrices with appropriately decomposed low-rank tensors. Thanks to the redundance of ordinary fully connected layers (see e.g. \cite{sainath2013low}), this strategy leads to remarkable levels of compression (\cite{novikov2015tensorizing}, \cite{xu2023graph}). Tensorization yields improved efficiency at the price of human intuition, as it is much more difficult to think in terms of tensor operations across many modes than in terms of matrix-vector multiplication (\cite{xu2023graph}). Tensor networks such as the ones discussed in \cite{xu2023graph} and \cite{taylor2024introduction} can bridge this gap by helping practitioners to visualize tensor-based architectures. We refer to the original papers for examples and further information.
 
 
+\subsection{Non-diagrammatic notations}
+
+An alternative to diagrammatic notation is the enhancement of algebraic notation. For instance, \cite{chiang2021named} proposes to give English labels to tensor axes to make it easier to keep track of them. Following this convention, known as \textit{named tensor notation}, the dot-product self-attention mechanism of \cite{vaswani2017attention} can be represented with the equation (which we lift from \cite{chiang2021named}):
+\begin{equation}
+  \label{eq: attention}
+  \mathrm{Attention(Q,K,V) = \left(\nbin{\name{seq}}{\mathrm{softmax}}\frac{Q \ndot{\name{key}} K}{\sqrt{|\mathsf{key}|}}\right)} \ndot{\name{seq}} V,
+\end{equation}
+where $\mathsf{key}$ represents the axes dedicated to query and key features, and $\mathsf{seq}$ represents the axis of sequence tokens. The authors argue that their named tensor notation is an improvement over the popular Einstein notation for sums as the axes having English names allows the reader to immediately understand what kind of information they encode; moreover, they claim that named tensor notation limits repetition of indices and thus makes equations cleaner.
+
+Another viable alternative approach is described in \cite{phuong2022formal}, where it is suggested that neural network architectures should be represented using pseudocode analogous to the one used in algorithm design and analysis (see e.g. \cite{cormen2022introduction}). The authors claim that writing pseudocode distills each architecture down to its fundamental components and remove incidental distractions, while preserving all the detail necessary for implementation. One disadvantage of using pseudocode is that the structure of the involved tensors and the flow of information are partially obscured, which is detrimental to intuition. More generally, one can argue that pseudocode is readily implementable but hides away mathematics and structure.
+
+
+\subsection{A multifaceted approach}
+
+In our opinion, the problem of representing neural network architectures is best solved by using a combination of methods. For instance, there is no reason (aside maybe from space concerns rendered null by the use of appendices) why the same architecture cannot be described with a string diagram, a tensor network, named tensor equations, pseudocode, and even code in the same paper. One or more string diagrams might be designed using either of the two approaches described in this chapter; tensor networks and named tensor equations might be employed to clarify the dynamics of complex tensor operations\footnote{Since the edges of tensor networks represent axes, we see no reason why they cannot be themselves labelled, effectively integrating the approaches of \cite{xu2023graph} and \cite{chiang2021named}.}; pseudocode could be provided so that practitioners can readily implement the architecture; finally, providing source code might clarify any ambiguity left by the previous representations. It is argued in \cite{phuong2022formal} that writing pseudocode might highlight mistakes in the actual source code that remained unnoticed by coincidence. We believe that the same is true for every other representation discussed in this chapter.
 
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
@@ -2152,7 +2189,7 @@ Conclusions}]{\fancyplain{}{\bfseries\thepage}}
 
 \thispagestyle{empty}
 
-I wish to acknowledge the essential role my advisor Professor F. Zanasi has had in guiding me through the process of writing this thesis. He introduced me to applied category theory, to machine learning, and to the world of academic research, and I will be forever grateful for it. I also wish to thank my family and my friends, who supported me throughout this journey, and without whom all of this would not have been possible. To all of you, my most sincere gratitude.
+I wish to acknowledge the essential role my advisor Professor F. Zanasi had in guiding me through the process of writing this thesis. He introduced me to applied category theory, to machine learning, and to the world of academic research, and I will be forever grateful for it. I also wish to thank my family and my friends, who supported me throughout my academic journey, and without whom I would not have been here writing. To all of you, my most sincere gratitude.
 
 
 
