@@ -93,6 +93,29 @@ Benedetta
 
 
 
+\chapter*{Abstract}   
+\addcontentsline{toc}{chapter}{Abstract}
+\rhead[\fancyplain{}{\bfseries Abstract}]{\fancyplain{}{\bfseries\thepage}}\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Abstract}}
+
+
+\section*{English}
+
+The unprecedented pace of machine learning research has lead to incredible advances in many fields but also poses hard challenges. At present, the field lacks strong theoretical underpinnings, and many important discoveries stem from \textit{ad hoc} design choices which are hard to justify in principle and whose effectiveness often goes unexplained. Research debt is increasing and many papers are discovered not to be reproducible. 
+
+This thesis is a survey that covers some recent work attempting to study machine learning categorically. Category theory is a branch of abstract mathematics that has found successful applications in many fields both inside and outside mathematics. Category theory acts as a commmon language able to connect different areas and transfer knowledge between them. 
+
+We mainly focus on the application of category theory to deep learning, and we discuss how categorical tools can be employed to attack several problems. Namely, we discuss the use of categorical optics to model gradient-based learning, the use of categorical algebras and integral transforms to link classical computer science to deep learning, the use of functors to link different layers of abstract and preserve structure, and, finally, the use of string diagrams to provide detailed representations of neural network architectures.
+
+\section*{Italiano}
+
+La velocità senza precedenti con la quale avanza la ricerca nel campo del machine learning ha portato a eccezionali scoperte in molti ambiti, ma pone anche sfide impegnative per il futuro.
+Al momento, il campo manca di forti basi teoriche, e molte scoperte significative sono frutto di scelte \textit{ad hoc} difficili da giustificare in teoria e la cui efficacia spesso non si riesce a spiegare. Contemporaneamente, il debito di ricerca continua ad aumentare e il problema della scarsa replicabilità che affligge il campo non sta migliorando. 
+
+Questa tesi è una rassegna di alcuni recenti lavori che tentano di analizzare il machine learning dal punto di vista categorico. La teoria delle categorie è una branca della matematica astratta che è stata applicata con successo in molti campi sia dentro che fuori della matematica. La teoria delle categorie può essere interpretata come una lingua franca capace di mettere in comunicazione aree differenti e di trasferire conoscenze tra le stesse.
+
+In queste pagine, ci concentreremo prevalentemente sull'applicazione della teoria delle categorie al campo del deep learning e osserveremo come degli strumenti categorici possano essere usati per attaccare numerosi problemi. In particolare, trattaremo l'uso di ottiche categorie per modellare il gradient-based learning, l'uso di algebre categoriche e integral transforms per collegare informatica classica e deep learning, l'uso di funtori per collegare livelli diversi di astrazione, e, infine, l'uso di diagrammi a stringhe per rappresentare dettagliatamente reti neurali.
+
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 
 
@@ -122,22 +145,48 @@ Benedetta
 
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter*{Introduction}   
 \addcontentsline{toc}{chapter}{Introduction}
 \rhead[\fancyplain{}{\bfseries Introduction}]{\fancyplain{}{\bfseries\thepage}}\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Introduction}}
 
+\subsection*{The scattered state of machine learning research}
+
+In the last seventy years, machine learning has gone from being a curiosity to being one of the the most coveted frontiers of engineering. The ever-increasing amount of research carried out in the field has lead to incredible advancements and, nowadays, machine learning models have a substantial impact many areas of science (\cite{hajkowicz2023artificial}) and society (\cite{khogali2023blended}). Despite its unquestionable successes, the field also faces significant challenges on many level. Setting aside ethical and societal considerations, which are not discussed in this work, there are also significant scientific concerns. First of all, machine learning, and deep learning in particular, lack strong theoretical underpinnings: a the moment there is no general mathematical theory of machine learning, and the field loooks more like alchemy than science (see e.g. \cite{gavranovic2024fundamental}, \cite{rahimi2017machine}). Scientists and engineers discover and optimize models by trial and error with no direction and no frame of reference. This leads to much wasted time and resources and clearly hampers future progress.
 
 
-\section*{English version}
+At the same time, bad incentives in the machine learning community lead to issues with the research process itself (\cite{shiebler2021category}). \cite{olah2017research} points out the chaotic state of research and likens it to technical debt in computer engineering, coining the phrase \dblquote{reasearch debt}: bad notation, unclear explanations, and unproven conjectures clutter the machine learning research panorama and make it difficult to actually produce new research. These factors, together with the errouneus or missing application of statistical analyses also lead to widespread reproducibility issues (\cite{gundersen2022sources}). For instance, \cite{raff2019step} found that more than half of the 255 machine learning papers they considered were not reproducible. 
 
 
+These issues are especially significant in deep learning, where models often reveal themselves to be brittle black boxes: minor changes in hyperparameters or architectures have large effects on the performance of deep neural networks, and it is often impossible to explain their inner working before they have been traind and applied (\cite{gavranovic2024fundamental}).
+Despite this deep learning models are being deployed at scale and have significant impacts on society, making research into them extremely relevant.  
 
-\section*{Italian version}
 
-\textcolor{blue}{Traduzione italiana dell'introduzione.}
+\subsection*{Category theory as a \textit{lingua franca} of science}
+
+In the most general terms possible, category theory is the branch of mathematics that deals with structure. From its start in algebraic topology, category theory has risen to be one of the most foundational areas of mathematics. Category theory can be seen as a lingua franca of mathematics that unites an ever expanding number of mathematical fields under the same conventions and notions. Many have linkened the rise of category theory as an extension of the \textit{Erlangen Programme} that united geometry at the end of the nineteenth century and, from this point of view, categories might be seen as the pulsating heart of mathematics.
+
+More recently, the field of applied category theory has been developed, with the aim to applying category theory more generally as a unifying language of science and even engineering. Category theory has found applications in resource theory (\cite{coecke2016mathematical}), database theory (\cite{spivak2012functorial}), quantum mechanics (\cite{abramsky2009categorical}), and much more. Applied category theory can be seen as the study of compositionality and is thus useful wherever compositional structure arise, regardless of the nature of the objects of phenomenon at hand (\cite{fong2018seven}). Compositionality here is defined as the property of systems that can be merged to form other systems of the same kind. 
+
+Compositionality is a good property that should be striven for because it offers insight into the fundamental structure of the systems at hand: large compositional systems can be broken up into smaller systems that are easier to understand, and, conversely, small systems can be assembled into larger ones without requiring any paradigm shift. Machine learning models such as Bayesian networks and neural networks are inherently compositional, and thus it makes sense to apply category theory to them. More generally, many authors think that category theory could provide a common a unifying structure for machine learning, able to solve or mitigate many of the problems discussed above. Thus, starting the seminal paper \cite{fong2019backprop}, a large amount of research has been dedicated to exploring the intersection between machine learning and category theory. 
+
+\subsection*{General overview}
+
+This thesis was originally meant to be a general survey of the intersection between machine learning and category theory, in the style of \cite{shiebler2021category}. However, we soon realized that the field has grown so much in the last few years that it has become impossible to do justice to every interesting approach in the space and time available to us. Thus we opted to focus on categorical approaches to deep learning and we decided to focus this thesis around four main ideas, described in the same number of chapters. Each capter provides a detailed description of a few relevant approaches, and then compares such approaches with other related works, which are only briefly touched upon. Brief summaries of the chapters are listed below.
+
+\begin{itemize}
+  \item \textbf{Chapter 1: Parametric Optics for Gradient-Based Learning.} \textit{Gradient-based learning can be described and implemented within categories of adequately chosen parametric optics.}
+  \item \textbf{Chapter 2: From Classical Computer Science to Neural Networks.} \textit{Category theory can build a bridge between classical computer science and neural networks, offering insight into currently known neural network architectures and informing the design of novel architectures.}
+  \item \textbf{Chapter 3: Functor Learning.} \textit{Learning functors between categories instead of just morphisms between objects allows the models at hand to preserve structure, which can lead to better learning outcomes.}
+  \item \textbf{Chapter 4: Detailed Representations of Neural Networks.} \textit{Appropriate classes of string diagrams can be used to represent the architecture of a neural network with all the detail necessary to implement it.}
+\end{itemize}
+
+We emphasize that this work only covers a small amount of the research out there: for instance, we do not even touch upon the enormous and enormously relevant field of categorical probabilisti learning, nor do we discuss categorical approaches to explainable artificial intelligence. We do not even cover every categorical approach to neural networks. Nevertheless, we believe that this thesis can offer an interesting taste of the research that is going on in the field. Hoepfully, the readers will find it an interesting starting point for their own reading.
+
+\subsection*{Target audience and introductory readings}
+
+This work is aimed towards people who already know the basics of both category theory and deep learning. The readers are not required to be extremely proficient in neither, but we will assume that they already have some familiarity with neural network architectures, gradient-based learning, basic categorical definitions, and the theory of symmetric monoidal categories. Regrettably, we do not have the time nor the space to provide or own supplementary material on these subjects, but we encourage interested readers to consult the repository \cite{gavranovic2023category}, for an introduction to category theory, and the online textbook \cite{zhang2021dive}, for an introduction to deep learning. \cite{fong2018seven} is a particularly good starting point of applied category theory. We also recommend that the readers consult the repository \cite{gavranovic2023intersection}, which collects numerous papers on the interesection between machine learning and category theory, some of which are described in the following chapters.
+
 
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
@@ -2158,6 +2207,36 @@ In our opinion, the problem of representing neural network architectures is best
 Conclusions}]{\fancyplain{}{\bfseries\thepage}}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Conclusions}}
 \addcontentsline{toc}{chapter}{Conclusions} 
+
+
+When reading about the applications of category theory outside of pure mathematics, one might ask whether formalizing a concept in categorical terms is really worth it. Does a categorical formalization yield any novel insight? Is there something which can be done with category theory but cannot be done (as easily) without? In the light of the many categorical approaches to machine learning we discussed in this thesis, we believe that categorical thinking can indeed be productive even in such an applied field. Experiments confirm that it possible to model gradeint-based learning with parametric lenses, they confirm that thinkin in terms of integral transforms leads to better algorithmic alignment, and they confirm that functor learning techniques preserve expressiveness while reducing the number of parameters. Finally, it appears clear that string diagrams can effectively describe neural network archietctures.  
+
+Category theory is not the only area of mathematics that has been proposed to attack open problems in machine learning. Topology is also a good contender (see e.g. \cite{hensel2021survey}) and even mathematical physics has been successfully applied to these problems (see e.g. \cite{roberts2022principles}). Having no access to magical crystal balls, we cannot be sure of which approach will be more effective in the long term. Nevertheless, even if better non-categorical approaches will be found, we believe research into categorical machine learning will still have yielded at least some insight in a field where insight is often missing. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
