@@ -1,6 +1,13 @@
+% ************* PREAMBLE
+
+% ------------- DOCUMENT CLASS
+
 \documentclass[11pt,a4paper,openright,twoside]{report}
 
-\usepackage[british]{babel}
+
+% ------------- PACKAGES
+
+\usepackage[american]{babel}
 \usepackage[utf8]{inputenc}
 
 \usepackage{fancyhdr}
@@ -20,13 +27,15 @@
 \usepackage{mathabx}
 \usepackage{namedtensor}
 
+\usepackage{hyperref}
+
 \usepackage{caption}
 \usepackage{subcaption}
 
-\usepackage{tikz-cd}
-
 \usepackage[left=2cm,right=2cm,bottom=3cm]{geometry}
 
+
+% ------------- HEADERS
 
 \hyphenation{pa-ra-me-tric}
 \pagestyle{fancy}\addtolength{\headwidth}{20pt}
@@ -34,11 +43,9 @@
 \renewcommand{\sectionmark}[1]{\markright{\thesection \ #1}{}}
 \rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}}
 \cfoot{}
-\linespread{1}
 
 
-
-% Style theorem boxes
+% ------------- THEOREM BOXES
 
 \newcounter{mycounter}
 \theoremstyle{plain}
@@ -53,16 +60,22 @@
 \newtheorem{warning}[mycounter]{Warning}
 
 
-% Quotation marks
+% ------------- QUOTATION MARKS COMMAND
 
 \newcommand\dblquote[1]{\textquotedblleft #1\textquotedblright}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%% DEDICATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ************* DOCUMENT
 
 \begin{document}
+
+
+% ------------- SET ITEMIZE AND ENUMERATE STYLES
+
 \setlist[itemize]{nosep}
 \setlist[enumerate]{nosep}
+
+% ------------- DEDICATION 
 
 \begin{titlepage}
 \thispagestyle{empty}                   
@@ -81,17 +94,7 @@ Benedetta
 \pagenumbering{roman}
 
 
-            
-
-
-
-
-
-
-
-
-
-
+% ------------- ABSTRACT
 
 \chapter*{Abstract}   
 \addcontentsline{toc}{chapter}{Abstract}
@@ -100,51 +103,25 @@ Benedetta
 
 \section*{English}
 
-The unprecedented pace of machine learning research has lead to incredible advances in many fields but also poses hard challenges. At present, the field lacks strong theoretical underpinnings, and many important discoveries stem from \textit{ad hoc} design choices which are hard to justify in principle and whose effectiveness often goes unexplained. Research debt is increasing and many papers are discovered not to be reproducible. 
+The unprecedented pace of machine learning research has lead to incredible advances, but also poses hard challenges. At present, the field lacks strong theoretical underpinnings, and many important achievements stem from \textit{ad hoc} design choices which are hard to justify in principle and whose effectiveness often goes unexplained. Research debt is increasing and many papers are found not to be reproducible. 
 
-This thesis is a survey that covers some recent work attempting to study machine learning categorically. Category theory is a branch of abstract mathematics that has found successful applications in many fields both inside and outside mathematics. Category theory acts as a commmon language able to connect different areas and transfer knowledge between them. 
+This thesis is a survey that covers some recent work attempting to study machine learning categorically. Category theory is a branch of abstract mathematics that has found successful applications in many fields, both inside and outside mathematics. Acting as a \textit{lingua franca} of mathematics and science, category theory might be able to give a unifying structure to the field of machine learning. This could solve some of the aforementioned problems. 
 
-We mainly focus on the application of category theory to deep learning, and we discuss how categorical tools can be employed to attack several problems. Namely, we discuss the use of categorical optics to model gradient-based learning, the use of categorical algebras and integral transforms to link classical computer science to deep learning, the use of functors to link different layers of abstract and preserve structure, and, finally, the use of string diagrams to provide detailed representations of neural network architectures.
+In this work, we mainly focus on the application of category theory to deep learning. Namely, we discuss the use of categorical optics to model gradient-based learning, the use of categorical algebras and integral transforms to link classical computer science to neural networks, the use of functors to link different layers of abstraction and preserve structure, and, finally, the use of string diagrams to provide detailed representations of neural network architectures.
 
 \section*{Italiano}
 
-La velocità senza precedenti con la quale avanza la ricerca nel campo del machine learning ha portato a eccezionali scoperte in molti ambiti, ma pone anche sfide impegnative per il futuro.
-Al momento, il campo manca di forti basi teoriche, e molte scoperte significative sono frutto di scelte \textit{ad hoc} difficili da giustificare in teoria e la cui efficacia spesso non si riesce a spiegare. Contemporaneamente, il debito di ricerca continua ad aumentare e il problema della scarsa replicabilità che affligge il campo non sta migliorando. 
+La velocità senza precedenti con la quale avanza la ricerca nel campo del machine learning ha portato a eccezionali scoperte, ma pone anche sfide impegnative per il futuro.
+Al momento, il campo manca di forti basi teoriche, e molte scoperte significative sono frutto di scelte \textit{ad hoc}, difficili da giustificare in teoria, la cui efficacia spesso non si riesce a spiegare. Contemporaneamente, il debito di ricerca continua ad aumentare e molti tentativi di replicazione si concludono in fallimento. 
 
-Questa tesi è una rassegna di alcuni recenti lavori che tentano di analizzare il machine learning dal punto di vista categorico. La teoria delle categorie è una branca della matematica astratta che è stata applicata con successo in molti campi sia dentro che fuori della matematica. La teoria delle categorie può essere interpretata come una lingua franca capace di mettere in comunicazione aree differenti e di trasferire conoscenze tra le stesse.
+Questa tesi è una rassegna di alcuni recenti lavori che tentano di analizzare il machine learning dal punto di vista categorico. La teoria delle categorie è una branca della matematica astratta che è stata applicata con successo in molti campi sia dentro che fuori della matematica. Agendo come una lingua franca della matematica e delle scienze, la teoria delle categorie potrebbe dare una struttura unificante al campo del machine learning, il che potrebbe risolvere alcuni dei problemi menzionati.
 
-In queste pagine, ci concentreremo prevalentemente sull'applicazione della teoria delle categorie al campo del deep learning e osserveremo come degli strumenti categorici possano essere usati per attaccare numerosi problemi. In particolare, trattaremo l'uso di ottiche categorie per modellare il gradient-based learning, l'uso di algebre categoriche e integral transforms per collegare informatica classica e deep learning, l'uso di funtori per collegare livelli diversi di astrazione, e, infine, l'uso di diagrammi a stringhe per rappresentare dettagliatamente reti neurali.
+In queste pagine, ci concentreremo prevalentemente sull'applicazione della teoria delle categorie al campo del deep learning. In particolare, trattaremo l'uso di ottiche categorie per modellare il gradient-based learning, l'uso di algebre categoriche e integral transforms per collegare informatica classica e reti neurali, l'uso di funtori per collegare livelli diversi di astrazione e preservare struttura, e, infine, l'uso di diagrammi a stringhe per rappresentare dettagliatamente reti neurali.
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% ------------- INTRODUCTION
 
 \chapter*{Introduction}   
 \addcontentsline{toc}{chapter}{Introduction}
@@ -152,189 +129,86 @@ In queste pagine, ci concentreremo prevalentemente sull'applicazione della teori
 
 \subsection*{The scattered state of machine learning research}
 
-In the last seventy years, machine learning has gone from being a curiosity to being one of the the most coveted frontiers of engineering. The ever-increasing amount of research carried out in the field has lead to incredible advancements and, nowadays, machine learning models have a substantial impact many areas of science (\cite{hajkowicz2023artificial}) and society (\cite{khogali2023blended}). Despite its unquestionable successes, the field also faces significant challenges on many level. Setting aside ethical and societal considerations, which are not discussed in this work, there are also significant scientific concerns. First of all, machine learning, and deep learning in particular, lack strong theoretical underpinnings: a the moment there is no general mathematical theory of machine learning, and the field loooks more like alchemy than science (see e.g. \cite{gavranovic2024fundamental}, \cite{rahimi2017machine}). Scientists and engineers discover and optimize models by trial and error with no direction and no frame of reference. This leads to much wasted time and resources and clearly hampers future progress.
+In the last seventy years, machine learning has gone from being a curiosity to being one of the most exciting frontiers of engineering. The ever-increasing amount of research carried out in the field has lead to incredible advancements and, nowadays, machine learning models have a substantial impact many areas of science (\cite{hajkowicz2023artificial}) and society (\cite{khogali2023blended}). Despite its unquestionable successes, the field also faces significant challenges on many levels. Setting aside ethical and societal considerations, which are not discussed in this work, there are also significant scientific concerns. First of all, machine learning, and deep learning in particular, lack strong theoretical underpinnings: at the moment, there is no general mathematical theory of machine learning, and the field looks more like alchemy than science (\cite{gavranovic2024fundamental}, \cite{rahimi2017machine}). Scientists and engineers discover and optimize models by trial and error with no direction and no frame of reference. This leads to a lot wasted time and resources and clearly hampers future progress.
 
 
-At the same time, bad incentives in the machine learning community lead to issues with the research process itself (\cite{shiebler2021category}). \cite{olah2017research} points out the chaotic state of research and likens it to technical debt in computer engineering, coining the phrase \dblquote{reasearch debt}: bad notation, unclear explanations, and unproven conjectures clutter the machine learning research panorama and make it difficult to actually produce new research. These factors, together with the errouneus or missing application of statistical analyses also lead to widespread reproducibility issues (\cite{gundersen2022sources}). For instance, \cite{raff2019step} found that more than half of the 255 machine learning papers they considered were not reproducible. 
+At the same time, bad incentives in the machine learning community lead to issues with the research process itself (\cite{shiebler2021category}). \cite{olah2017research} points out the chaotic state of research and likens it to technical debt in computer engineering, coining the phrase \dblquote{research debt}: bad notation, unclear explanations, and unproven conjectures clutter the machine learning research panorama and make it difficult to actually produce new research. These factors, together with erroneous or missing statistical analysis, also lead to widespread reproducibility issues (\cite{gundersen2022sources}). For instance, \cite{raff2019step} found that more than half of the 255 machine learning papers they considered were not reproducible. 
 
 
-These issues are especially significant in deep learning, where models often reveal themselves to be brittle black boxes: minor changes in hyperparameters or architectures have large effects on the performance of deep neural networks, and it is often impossible to explain their inner working before they have been traind and applied (\cite{gavranovic2024fundamental}).
-Despite this deep learning models are being deployed at scale and have significant impacts on society, making research into them extremely relevant.  
+These issues are especially significant in deep learning, where models often reveal themselves to be brittle black boxes: minor changes in hyperparameters or architectures have large effects on the performance of deep neural networks, and it is often impossible to explain their inner workings proactively (\cite{gavranovic2024fundamental}).
+Despite this, deep learning models are being deployed at scale, with little concern for their flaws.  
 
 
 \subsection*{Category theory as a \textit{lingua franca} of science}
 
-In the most general terms possible, category theory is the branch of mathematics that deals with structure. From its start in algebraic topology, category theory has risen to be one of the most foundational areas of mathematics. Category theory can be seen as a lingua franca of mathematics that unites an ever expanding number of mathematical fields under the same conventions and notions. Many have linkened the rise of category theory as an extension of the \textit{Erlangen Programme} that united geometry at the end of the nineteenth century and, from this point of view, categories might be seen as the pulsating heart of mathematics.
+In the most general terms possible, category theory is the branch of mathematics that deals with structure. From its start in algebraic topology, category theory has risen to be one of the most foundational areas of mathematics. Category theory can be seen as a \textit{lingua franca} of mathematics that unites an ever expanding number of mathematical fields under the same fundamental notions. Many have likened the rise of category theory as an extension of the \textit{Erlangen Programme} that unified geometry at the end of the nineteenth century and, from this point of view, categories might be seen as the pulsating heart of mathematics.
 
-More recently, the field of applied category theory has been developed, with the aim to applying category theory more generally as a unifying language of science and even engineering. Category theory has found applications in resource theory (\cite{coecke2016mathematical}), database theory (\cite{spivak2012functorial}), quantum mechanics (\cite{abramsky2009categorical}), and much more. Applied category theory can be seen as the study of compositionality and is thus useful wherever compositional structure arise, regardless of the nature of the objects of phenomenon at hand (\cite{fong2018seven}). Compositionality here is defined as the property of systems that can be merged to form other systems of the same kind. 
+More recently, the field of applied category theory has developed, with the aim to applying category theory more generally as a unifying language of science and even engineering. Category theory has found applications in resource theory (\cite{coecke2016mathematical}), database theory (\cite{spivak2012functorial}), quantum mechanics (\cite{abramsky2009categorical}), and much more. Applied category theory can be seen as the study of compositionality and is thus useful wherever compositional structure arise, regardless of the nature of the objects or phenomena at hand. Compositionality here is defined as the property of systems and relationships that \dblquote{can be combined to form new systems or relationships} (\cite{fong2018seven}).
 
-Compositionality is a good property that should be striven for because it offers insight into the fundamental structure of the systems at hand: large compositional systems can be broken up into smaller systems that are easier to understand, and, conversely, small systems can be assembled into larger ones without requiring any paradigm shift. Machine learning models such as Bayesian networks and neural networks are inherently compositional, and thus it makes sense to apply category theory to them. More generally, many authors think that category theory could provide a common a unifying structure for machine learning, able to solve or mitigate many of the problems discussed above. Thus, starting the seminal paper \cite{fong2019backprop}, a large amount of research has been dedicated to exploring the intersection between machine learning and category theory. 
+Compositionality is a good property that should be strived for because it offers insight into the fundamental structure of the systems at hand: large compositional systems can be broken up into smaller systems that are easier to understand; conversely, small compositional systems can be assembled into larger systems without requiring any paradigm shift. Machine learning models such as Bayesian networks and neural networks are inherently modular, and so it makes sense to investigate their compositionality using category theory. More generally, many authors think that category theory could provide a unifying structure for machine learning, and thus could help solve or mitigate many of the problems discussed above. Hence, starting from the seminal paper \cite{fong2019backprop}, a large amount of research has explored the intersection between machine learning and category theory. 
 
 \subsection*{General overview}
 
-This thesis was originally meant to be a general survey of the intersection between machine learning and category theory, in the style of \cite{shiebler2021category}. However, we soon realized that the field has grown so much in the last few years that it has become impossible to do justice to every interesting approach in the space and time available to us. Thus we opted to focus on categorical approaches to deep learning and we decided to focus this thesis around four main ideas, described in the same number of chapters. Each capter provides a detailed description of a few relevant approaches, and then compares such approaches with other related works, which are only briefly touched upon. Brief summaries of the chapters are listed below.
+This thesis was originally meant to be a general survey of the intersection between machine learning and category theory, in the style of \cite{shiebler2021category}. However, we soon realized that the field has grown so much in the last few years that it has become impossible to do justice to every interesting approach in the space and time available to us. Thus, we opted to focus on categorical approaches to deep learning and we decided to focus this thesis around four main ideas, described in the same number of chapters. Each chapter provides detailed descriptions of a few relevant approaches, and then compares such approaches with other related works, which are only briefly touched upon. Brief summaries of the chapters are listed below.
 
 \begin{itemize}
   \item \textbf{Chapter 1: Parametric Optics for Gradient-Based Learning.} \textit{Gradient-based learning can be described and implemented within categories of adequately chosen parametric optics.}
-  \item \textbf{Chapter 2: From Classical Computer Science to Neural Networks.} \textit{Category theory can build a bridge between classical computer science and neural networks, offering insight into currently known neural network architectures and informing the design of novel architectures.}
+  \item \textbf{Chapter 2: From Classical Computer Science to Neural Networks.} \textit{Category theory can build a bridge between classical computer science and neural networks, offering insight into currently known neural network architectures and informing the design of novel ones.}
   \item \textbf{Chapter 3: Functor Learning.} \textit{Learning functors between categories instead of just morphisms between objects allows the models at hand to preserve structure, which can lead to better learning outcomes.}
-  \item \textbf{Chapter 4: Detailed Representations of Neural Networks.} \textit{Appropriate classes of string diagrams can be used to represent the architecture of a neural network with all the detail necessary to implement it.}
+  \item \textbf{Chapter 4: Detailed Representations of Neural Networks.} \textit{Appropriate classes of string diagrams can be used to represent neural network architectures with all the detail necessary for implementation.}
 \end{itemize}
 
-We emphasize that this work only covers a small amount of the research out there: for instance, we do not even touch upon the enormous and enormously relevant field of categorical probabilisti learning, nor do we discuss categorical approaches to explainable artificial intelligence. We do not even cover every categorical approach to neural networks. Nevertheless, we believe that this thesis can offer an interesting taste of the research that is going on in the field. Hoepfully, the readers will find it an interesting starting point for their own reading.
+We emphasize that this work only covers a small amount of the available research: for instance, we do not even touch upon the enormous and enormously relevant field of categorical probabilistic learning, nor do we discuss categorical approaches to explainable artificial intelligence. We do not even cover every categorical approach to neural networks. Nevertheless, we believe that this thesis can offer an interesting taste of the research that is going on in the field.
 
 \subsection*{Target audience and introductory readings}
 
-This work is aimed towards people who already know the basics of both category theory and deep learning. The readers are not required to be extremely proficient in neither, but we will assume that they already have some familiarity with neural network architectures, gradient-based learning, basic categorical definitions, and the theory of symmetric monoidal categories. Regrettably, we do not have the time nor the space to provide or own supplementary material on these subjects, but we encourage interested readers to consult the repository \cite{gavranovic2023category}, for an introduction to category theory, and the online textbook \cite{zhang2021dive}, for an introduction to deep learning. \cite{fong2018seven} is a particularly good starting point of applied category theory. We also recommend that the readers consult the repository \cite{gavranovic2023intersection}, which collects numerous papers on the interesection between machine learning and category theory, some of which are described in the following chapters.
+This work is aimed towards people who already know the basics of both category theory and deep learning. The readers are not required to be extremely proficient in neither, but we will assume that they already have some familiarity with neural network architectures, gradient-based learning, basic categorical definitions, and the theory of symmetric monoidal categories. Regrettably, we do not have enough space to provide our own supplementary material on these subjects, but we encourage interested readers to consult the repository \cite{gavranovic2023category}, for an introduction to category theory, and the online textbook \cite{zhang2021dive}, for an introduction to deep learning. \cite{fong2018seven} is a particularly good starting point of applied category theory. We also recommend that the readers consult the repository \cite{gavranovic2023intersection}, which collects numerous papers on the intersection between machine learning and category theory, some of which are discussed in the following chapters.
+
+\begin{remark}
+  For simplicity's sake, we ignore any size concern in our treatment of categorical concepts.
+\end{remark}
 
 
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TABLE OF CONTENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ------------- TABLE OF CONTENTS
 
 \tableofcontents
 \rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}} \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Table of Contents}}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LIST OF FIGURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ------------- LIST OF FIGURES
 
 \listoffigures  
 \rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}} \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries List of figures}}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% ------------- CHAPTER 1
 
 \chapter{Parametric Optics for Gradient-Based Learning}
-
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
-
 \pagenumbering{arabic}
 
+Despite the unquestionable success that gradient-based deep learning has enjoyed in recent years, the field is still both young and poorly understood. As mentioned in the introduction, the lack of theoretical underpinnings means that good performance is highly dependent on \textit{ad hoc} choices and empirical heuristics leading to brittleness and poorly understood phenomena (\cite{shiebler2021category}, \cite{gavranovic2024fundamental}). The ever-growing complexity of deep learning models poses significant challenges both in terms of optimization (\cite{elliott2018simple}) and architectural design (\cite{gavranovicposition}), and, while there are a number of general purpose deep learning libraries that automatically implement backpropagation and provide tools for designing a wide variety of neural networks, these tools often rely on inelegant machinery difficult to parallelize (\cite{elliott2018simple}). Given the ever-increasing role gradient based learning plays in the sciences, in industry, and in everyday life, solving these issues is of the utmost importance. 
 
-
-Despite the unquestionable success that gradient-based deep learning has enjoyed in recent years, the field is still both young and poorly understood. As mentioned in the introduction, the lack of theoretical underpinnings means that good performance is highly dependent on \textit{ad hoc} choices and empirical euristics leading to brittleness and poorly understood phenomena (\cite{cruttwell2022categorical}, \cite{shiebler2021category}, \cite{gavranovic2024fundamental}). The ever-growing complexity of deep learning models poses significant challenges both in terms of optimization (\cite{elliott2018simple}) and architectural design (\cite{gavranovicposition}), and, while there are a number of general purpose deep learning libraries that automatically implement backpropagation and provide tools for designing a wide variety of neural networks, these tools often rely on inelegant machinery difficult to parallelize (\cite{elliott2018simple}). Given the ever-increasing role graident based learning plays in the sciences, in industry, and in every day life, solving these issues is of the outmost importance. 
-
-Hence, it would be auspicable to develop a mathematically structured framework for gradient-based learning able to act as a bridge between low-level automatic differentiation and high level architectural specifications (\cite{gavranovic2024fundamental}). The great number of architectures developed in recent years and the inherently modular structure of deep neural networks call for a model which is general (that is, not dependent on a specific differentiation algorithm or a specific optimizer) and compositional (that is, we should be able to predict the behavior of the entire model if the behavior of each part is known). Among the various attempts (see e.g. \cite{fong2019backprop} or \cite{sennesh2023computing}), a promising combination of differential categories, parametrization and optics has been recently proposed by \cite{cockett2019reverse}, \cite{cruttwell2022categorical}, \cite{gavranovic2024fundamental} and more as full-featured gradient-based framework able to challenge established tools. In this chapter, we illustrate such framework  and part of its mathematical foundations. 
+Hence, it would be desirable to develop a mathematically structured framework for gradient-based learning able to act as a bridge between low-level automatic differentiation and high level architectural specifications (\cite{gavranovic2024fundamental}). The great number of architectures developed in recent years and the inherently modular structure of deep neural networks call for a model which is general (that is, not dependent on a specific differentiation algorithm or a specific optimizer) and compositional (that is, we should be able to predict the behavior of the entire model if the behavior of each part is known). \cite{cruttwell2022categorical} and \cite{gavranovic2024fundamental} propose a promising combination of differential categories, parametrization and optics as a full-featured gradient-based framework able to challenge established tools and attack open problems. In this chapter, we illustrate such framework  and part of its mathematical foundations. 
 
 
 
 \section{Categorical toolkit}
 
-Learning neural networks have two main properties: they depend on parameters and information flows through them bidirectionally (forward propagation and back propagation): any aspiring categorical model of gradient-based learning must take these two aspects into consideration. A number of authors (see e.g. \cite{gavranovic2024fundamental}, and \cite{cruttwell2022categorical}) have proposed the $\mathbf{Para}$ construction as a categorical model of parameter dependence and various categories of optics as the right categorical abstraction for bidirectionality.
+Learning neural networks have two important properties: they depend on parameters and information flows through them bidirectionally (forward propagation and back propagation). Any aspiring categorical model of gradient-based learning must take these two aspects into consideration. A number of authors (among which \cite{cruttwell2022categorical} and \cite{gavranovic2024fundamental}) propose the $\mathbf{Para}$ construction as a categorical model of parameter dependence and various categories of optics as the right categorical abstraction for bidirectionality.
 
 \subsection{Actegories}
 
-Before we can deal with parametric maps, we need to find a way to glue input/output spaces to parameter spaces, so that such maps have well-defined domains. One common strategy is to provide the category at hand with a monoidal structure. However, monoidal products can only combine elements within the same underlying category. Since (co)parameters are often taken from spaces that are different in nature from the input and output spaces, a more general mathematical tool is needed: namely, actegories (see the survey \cite{capucci2022actegories} for a thorough treatment of the subject).  Actegories are actions of symmetric monoidal categories on other categories. For brevity's sake, we will only give an incomplete definition (see \cite{capucci2022actegories} or \cite{gavranovic2024fundamental} for further information).
+Before we can deal with parametric maps, we need to find a way to glue input spaces to parameter spaces, so that such maps have well-defined domains. One common strategy is to provide the category at hand with a monoidal structure. However, monoidal products can only combine elements within the same underlying category. Since (co)parameters are sometimes taken from spaces that are different in nature from the input and output spaces, a more general mathematical tool is needed: namely, actegories (see the survey \cite{capucci2022actegories} for a thorough treatment of the subject).  Actegories are actions of symmetric monoidal categories on other categories. For brevity's sake, we will only give an incomplete definition (see \cite{capucci2022actegories} or \cite{gavranovic2024fundamental} for further information).
 
 \begin{definition}[Actegory]
-  Let $(\mathcal{M},I,\otimes)$ be a strict symmetric monoidal category. A $\mathcal{M}$-actegory is a tuple $(\mathcal{C}, \bullet, \eta, \mu)$, where $\mathcal{C}$ is a category, $\bullet: \mathcal{M} \times \mathcal{C} \to \mathcal{C}$ is a functor, and $\eta$ and $\mu$ are natural isomorphisms enforcing $I \bullet C \stackrel{\eta_C}{\cong}$ and $(M \bullet (N \bullet C)) \stackrel{\mu_{M,N,C}}{\cong} (M \otimes N) \bullet C$.
+  Let $(\mathcal{M},I,\otimes)$ be a strict symmetric monoidal category. A $\mathcal{M}$-actegory is a tuple $(\mathcal{C}, \bullet, \eta, \mu)$, where $\mathcal{C}$ is a category, $\bullet: \mathcal{M} \times \mathcal{C} \to \mathcal{C}$ is a functor, and $\eta$ and $\mu$ are natural isomorphisms enforcing $C \stackrel{\eta_C}{\cong}I \bullet C$ and $(M \otimes N) \bullet C \stackrel{\mu_{M,N,C}}{\cong} (M \bullet (N \bullet C))$.
   The isomorphisms $\eta$ and $\mu$ must also satisfy coherence conditions. If $\eta$ and $\mu$ are identical transformations, we say that the actegory is strict.
 \end{definition}
 
@@ -345,7 +219,7 @@ Before we can deal with parametric maps, we need to find a way to glue input/out
 We will also be interested in actegories that interact with the monoidal structure of the underlying category.
 
 \begin{definition}[Monoidal actegory]
-  Let $(\mathcal{M},I,\otimes)$ be a strict symmetric monoidal category and let $(\mathcal{C}, \bullet, \eta, \mu)$ be a strict actegory. Suppose $\mathcal{C}$ has a monoidal structure $(J,\boxtimes)$. Then we say that $(\mathcal{C}, \bullet)$ is monoidal if the underlying functor $\bullet$ is monoidal.
+  Let $(\mathcal{M},I,\otimes)$ be a strict symmetric monoidal category and let $(\mathcal{C}, \bullet, \eta, \mu)$ be a strict actegory. Suppose $\mathcal{C}$ has a monoidal structure $(J,\boxtimes)$. Then we say that $(\mathcal{C}, \bullet)$ is monoidal if the underlying functor $\bullet$ is monoidal and the underlying natural transformations $\eta$ and $\mu$ are also monoidal.
 \end{definition}
 
 
@@ -361,7 +235,7 @@ We may also be interested in studying the interaction between actegorical struct
 \subsection{The $\mathbf{Para}$ construction}
 
 
-Suppose we have an $\mathcal{M}$-actegory $(\mathcal{C}, \bullet)$. We wish to study maps in $\mathcal{C}$ which are parametrized using objects of $\mathcal{M}$, that is, maps in the form $P \bullet A \to B$. We are not just interested in the maps by themselves, but also in their compositional structure. Thus, we abstract away the details by defining a new category $\mathbf{Para}_{\bullet}(\mathcal{C})$ (first introduced in simplified form in \cite{fong2019backprop}). Since we also want to formalize the role of reparametrization, we actually construct $\mathbf{Para}_{\bullet}(\mathcal{C})$ as a bicategory, so that its $0$-cells $A$ can serve as input/output spaces, its $1$-cells $(P,f)$ can serve as parametric maps, and, finally, its $2$-cells $r$ can serve as reparametrizations.
+Suppose we have an $\mathcal{M}$-actegory $(\mathcal{C}, \bullet)$. We wish to study maps in $\mathcal{C}$ which are parametrized using objects of $\mathcal{M}$, that is, maps in the form $P \bullet A \to B$. We are not just interested in the maps by themselves, but also in their compositional structure. Thus, we abstract away the details by defining a new category $\mathbf{Para}_{\bullet}(\mathcal{C})$ (first introduced in simplified form by \cite{fong2019backprop}). Since we also want to formalize the role of reparametrization, we actually construct $\mathbf{Para}_{\bullet}(\mathcal{C})$ as a bicategory, so that a $0$-cell $A$ can serve as an input/output space, a $1$-cell $(P,f)$ can serve as a parametric map, and, finally, a $2$-cell $r$ can serve as a reparametrization.
 
 \begin{definition}[$\mathbf{Para}_{\bullet}(\mathcal{C})$]
   \label{def: para}
@@ -404,7 +278,7 @@ Both $\mathbf{Para}_{\bullet}(\mathcal{C})$ and $\mathbf{coPara}_{\bullet}(\math
 
 
 \begin{remark}
-  Another way to parametrize morphisms is the coKleinsli construction. As noted by \cite{gavranovic2024fundamental}, the main difference between $\mathbf{coKl}$ and $\mathbf{Para}$ is that the parametrization offered by $\mathbf{coKl}$ is global, while the parametrization offered by $\mathbf{Para}$ is local: all morphisms in $\mathbf{coKl}(X \times -)$ must take a parameter in $X$, while the parameter space of different morphisms of $\mathbf{Para}(\mathcal{C})$ admit different parameter spaces. Nevertheless, the two constructions are related, and the former can be embedded into the latter.
+  Another way to parametrize morphisms is the coKleisli construction. As noted by \cite{gavranovic2024fundamental}, the main difference between $\mathbf{coKl}$ and $\mathbf{Para}$ is that the parametrization offered by $\mathbf{coKl}$ is global, while the parametrization offered by $\mathbf{Para}$ is local: all morphisms in $\mathbf{coKl}(X \times -)$ must take a parameter in $X$, while different morphisms of $\mathbf{Para}(\mathcal{C})$ admit different parameter spaces. Nevertheless, the two constructions are related, and the former can be embedded into the latter.
 \end{remark}
 
 
@@ -420,26 +294,26 @@ If we take a parametrized category $\mathbf{Para}_\bullet(\mathcal{C})$ and we r
 
 \subsection{Optics}
 
-Modelling bidirectional flows of information is not only useful in machine learning, but also in game theory, database theory, and more. As such, categorical tools for bidirectionality have been sought after for a long time: in particular, the greatest deal of efforts has been devoted to developing lens theory. Lenses have then been generalized into optics (see e.g. \cite{riley2018categories}) to subsume other tools such as prisms and traversals into the same framework. Finally, there have also been various attempts to generalize optics (see e.g. \cite{clarke2024profunctor} for a definition of mixed optics). We will introduce lenses and optics, and focus on the generalization of optics that appears (to us) to be the most versatile: weighted optics (first introduced in \cite{gavranovic2024fundamental}). 
+Modelling bidirectional flows of information is not only useful in machine learning, but also in game theory, database theory, and more. As such, categorical tools for bidirectionality have been sought after for a long time: in particular, a great deal of effort has been devoted to the development of lens theory. Lenses have then been generalized into optics (see e.g. \cite{riley2018categories}) to subsume other tools such as prisms and traversals into a single framework. Finally, there have also been various attempts to generalize optics (see e.g. \cite{clarke2024profunctor} for a definition of mixed optics). We will introduce lenses and optics, and focus on the generalization of optics introduced by \cite{gavranovic2024fundamental}: weighted optics. 
 
 
-As stated in \cite{gavranovic2024fundamental}, there is no standard definition of lens, and different authors opt for different \textit{ad hoc} definitions that best suit their purposes. We will borrow the perspective of \cite{cruttwell2022categorical} and give the following definition.
+As stated in \cite{gavranovic2024fundamental}, there is no standard definition of lens, and different authors opt for different \textit{ad hoc} definitions that best suit their purposes. We will borrow the perspective of \cite{cruttwell2022categorical}.
 
 
 \begin{definition}[Lenses]
   \label{def: lenses}
   Let $\mathcal{C}$ be a Cartesian category. Then, $\mathbf{Lens}(\mathcal{C})$ is the category defined by the following data:
   \begin{itemize}
-    \item an object of $\mathbf{Lens}(\mathcal{C})$ is a pair $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right)$ of objects in $\mathcal{C}$; 
+    \item an object of $\mathbf{Lens}(\mathcal{C})$ is a pair $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right)$ of objects of $\mathcal{C}$; 
     
-    \item a $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)$ morphism (or lens) is a pair $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right)$ of morphisms of $\mathcal{C}$ such that $f: A \to B$ and $f': A \times B' \to A'$. $f$ is known as the forward pass of the lens $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right)$, whereas $f'$ is known as the bacward pass;
+    \item a $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)$ morphism (or lens) is a pair $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right)$ of morphisms of $\mathcal{C}$ such that $f: A \to B$ and $f': A \times B' \to A'$; $f$ is known as the forward pass of the lens $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right)$, whereas $f'$ is known as the backward pass;
     
     \item given $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) : \mathbf{Lens}(\mathcal{C})$, the associated identity lens is $\left(\begin{smallmatrix} 1_A \\ \pi_1 \end{smallmatrix}\right)$;
     
     \item the composition of $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right): \left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)$ and $\left(\begin{smallmatrix} g \\ g' \end{smallmatrix}\right): \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} C \\ C' \end{smallmatrix}\right)$ is
     \[\left(\begin{smallmatrix} f \fatsemi g \\ \langle \pi_0, \langle \pi_0 \fatsemi f, \pi_1 \rangle \fatsemi g' \rangle \fatsemi f' \end{smallmatrix}\right).\]
   \end{itemize}
-  Lenses are best thought of in the helpful language of the string diagrams illustrated in \textit{Fig. \ref{fig: lenses}}.
+  Lenses can be represented using the string diagrams illustrated in \textit{Fig. \ref{fig: lenses}}.
 \end{definition}
 
 
@@ -459,24 +333,24 @@ As stated in \cite{gavranovic2024fundamental}, there is no standard definition o
 \end{figure}
 
 
-Lenses are a powerful tool, but they cannot be used to model all situations: for instance, lenses cannot be used if we wish to be able to choose not to interact with the environment depending on the input, or if we wish like to reuse values computed in the forward pass for further computation in the backward pass.
+Lenses are a powerful tool, but they cannot be used to model all situations: for instance, lenses cannot be used if we wish to be able to choose not to interact with the environment depending on the input, or if we would like to reuse values computed in the forward pass for further computation in the backward pass.
 
 
-Optics generalize lenses by weakening the link between forward and bavkward passes, and by replacing the Cartesian structure of the underlying category with a simpler symmetric monoidal structure. In an optic over $\mathcal{C}$, an object $M : \mathcal{C}$ acts as an inaccessible residual space transferring information between the upper components and the lower component.
-We will provide the definition given by \cite{riley2018categories}\footnote{\cite{riley2018categories}also provides a more versatile (but more sophisticated) definition of optics that relies on coends. Under the coend formalism,
-\[\mathbf{Optic}(\mathcal{C})\left(\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right),\left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)\right) = \int^{M : \mathcal{C}}\mathcal{C}(A,M \times B) \times \mathcal{C}(M \otimes B',A').\]}, but we will use the string diagram notation presented by \cite{gavranovic2024fundamental} for the sake of consistency.
+Optics generalize lenses by weakening the link between forward and backward passes, and by replacing the Cartesian structure of the underlying category with a simpler symmetric monoidal structure. In an optic over $\mathcal{C}$, an object $M : \mathcal{C}$ acts as an inaccessible residual space transferring information between the upper components and the lower component.
+We provide the definition given by \cite{riley2018categories}\footnote{\cite{riley2018categories}also provides a more versatile (but more sophisticated) definition of optics that relies on coends. Under the coend formalism,
+\[\mathbf{Optic}(\mathcal{C})\left(\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right),\left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)\right) = \int^{M : \mathcal{C}}\mathcal{C}(A,M \otimes B) \times \mathcal{C}(M \otimes B',A').\]}.
 
 \begin{definition}[Optics]
   Let $(\mathcal{C}, I, \otimes, \lambda, \rho, \alpha)$ be a symmetric monoidal category (we make the unitors and associators explicit for later use). Then, $\mathbf{Optic}(\mathcal{C})$ is the category defined by the following data:
   \begin{itemize}
-    \item an object of $\mathbf{Optic}(\mathcal{C})$ is a pair $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right)$ of objects in $\mathcal{C}$; 
+    \item an object of $\mathbf{Optic}(\mathcal{C})$ is a pair $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right)$ of objects of $\mathcal{C}$; 
     \item a $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right) \to \left(\begin{smallmatrix} B \\ B' \end{smallmatrix}\right)$ morphism (or optic) is a pair $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right)$ of morphisms of $\mathcal{C}$ such that $f: A \to M \otimes B$ and $f': M \otimes B' \to A'$, where $M : \mathcal{C}$ is known as residual space; such pairs $\left(\begin{smallmatrix} f \\ f' \end{smallmatrix}\right)$ are also quotiented by an equivalence relation that allows for reparametrization of the residual space and effectively makes it inaccessible;
-    \item the identity on $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right)$ is the optic represented by $(\lambda_A^{-1}, \lambda_A)$.
+    \item the identity on $\left(\begin{smallmatrix} A \\ A' \end{smallmatrix}\right)$ is the optic represented by $\left(\begin{smallmatrix}\lambda_A^{-1}\\ \lambda_{A'}\end{smallmatrix}\right)$.
   \end{itemize}
-  See \cite{riley2018categories} for the more information about how optics compose and about the associated string diagrams.
+  Refer to \cite{riley2018categories} or \cite{gavranovic2024fundamental} for the more information about the composition of optics and the representation of optics with string diagrams.
 \end{definition}
 
-Lenses come up as a special case of optics (\cite{riley2018categories}), and optics do solve some of the issues we have with lenses. However, optics are not perfect either: for instance, \cite{gavranovic2024fundamental} points out that optics cannot be used in cases where we ask that the forward pass and backward pass are different kind of maps, as they are both forced to live in the same category. Thus, we need a further layer of generalization: namely, weighted optics.
+Lenses come up as a special case of optics (\cite{riley2018categories}), and optics do solve some of the issues we have with lenses. However, optics are not perfect either: for instance, \cite{gavranovic2024fundamental} points out that optics cannot be used in cases where we ask that the forward pass and backward pass are different kind of maps, as they are both forced to live in the same category. Thus, a further layer of generalization is useful: namely, weighted optics.
 
 
 
@@ -495,7 +369,7 @@ We are finally ready to define weighted optics\footnote{Weighted optics also adm
 \begin{definition}[Weighted $\mathbf{coPara}$]
   If $W$ is a weight functor as above and $(\mathcal{C}, \bullet)$ is a $\mathcal{B}$-actegory, we define
   \[\mathbf{coPara}^W_{\bullet}(\mathcal{C}) = \pi_{0*}(\mathbf{coPara}_{\bullet^{\pi_W^{\mathrm{op}}}}(\mathcal{C})),\]
-  where $\pi_{0*}$ is the enrichment base change functor generated by the connected component functor $\pi_{0}: \mathbf{Cat} \to \mathbf{Set}$. More explicitly, $\pi_{0*}$ quotients the connections provided by reparametrizations.
+  where $\pi_{0*}$ is the enrichment base change functor generated by the connected component functor $\pi_{0}: \mathbf{Cat} \to \mathbf{Set}$. More explicitly, $\pi_{0*}$ quotients out the connections provided by reparametrizations.
 \end{definition}
 
 \begin{definition}[Weighted optics]
@@ -696,7 +570,7 @@ Both \cite{cruttwell2022categorical} and \cite{gavranovic2024fundamental} emphas
 \[f^{\Delta_P}: P \times X \stackrel{\Delta_P \times X}{\longrightarrow} P \times P \times X \stackrel{f}{\longrightarrow} Y.\]
 Weight tying can also be used for batching: batching is implemented by instantiating $n$ different copies of our supervised learning lens (comprised of model, loss function, and learning rate) and tying the parameters to a unique value. Then, it suffices to feed the $n$ data points to the $n$ lenses, and we can optimize across a single parameter (see \textit{Fig. \ref{fig: weighttying}} (b)).
 
-\cite{cruttwell2022categorical} introduces a possible representation for the whole learning iteration of a supervised learning model within the parametric lens framework. The paper suggests extracting the bacward pass of the lens in \textit{Fig. \ref{fig: suplearnlenses} (d)} and reframing it as a $P \to P$ parametric map with parameters $A \times B$. Since this is an endomap, it can be composed $n$ times with itself to obtain a $P \to P$ map, which is proposed as a model of the learning iteration. While this approach requires breaking lenses apart, it is markedly simple.
+\cite{cruttwell2022categorical} introduces a possible representation for the whole learning iteration of a supervised learning model within the parametric lens framework. The paper suggests extracting the backward pass of the lens in \textit{Fig. \ref{fig: suplearnlenses} (d)} and reframing it as a $P \to P$ parametric map with parameters $A \times B$. Since this is an endomap, it can be composed $n$ times with itself to obtain a $P \to P$ map, which is proposed as a model of the learning iteration. While this approach requires breaking lenses apart, it is markedly simple.
 
 \begin{figure}[h]
   \begin{center}
@@ -1049,7 +923,7 @@ As seen in \textit{Ex. \ref{ex: translationaction}}, the formalism of CDL subsum
 
 \begin{example}[Unrolling of a folding recurrent neural network]
   \label{ex: frnnunroll}
-  Use \textit{Prop. \ref{prop: embeddingth}} to embed the list algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ from \textit{Ex. \ref{ex: lists}} as an algebra over the endofunctor $\mathbf{Para}(1 + A \times X)$ define in \textit{Def. \ref{ex: frnncell}}. Now consider an algebra homomorphism $(P,f): (\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}]) \to (S,(P,\mathsf{Cell}))$. Since we are working with algebras over a $2$-endofunctor, we also need to specify a $2$-cell that makes the homomorphism diagram (\textit{Fig. \ref{fig: alghom} (c)}) lax-commutative. Using the weight-tying reparameterization $\Delta_P$ yields the lax commutative diagram in \textit{Fig. \ref{fig: foldingrnncommdiag}}, which uniquely identifies $f$ as the fold function which takes a list of inputs in $A$ and unrolls a folding recurrent neural network that reads such inputs. The weight-tying reparametrization makes sure that each cell of the unrolled network uses the same parameters (see \textit{Fig. \ref{fig: foldingrnn} (b)} for a graphical representation). 
+  Use \textit{Prop. \ref{prop: embeddingth}} to embed the list algebra $(\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}])$ from \textit{Ex. \ref{ex: lists}} as an algebra over the endofunctor $\mathbf{Para}(1 + A \times X)$ define in \textit{Def. \ref{ex: frnncell}}. Now consider an algebra homomorphism $(P,f): (\mathsf{List}(A), [\mathsf{Nil}, \mathsf{Cons}]) \to (S,(P,\mathsf{Cell}))$. Since we are working with algebras over a $2$-endofunctor, we also need to specify a $2$-cell that makes the homomorphism diagram (\textit{Fig. \ref{fig: alghom} (c)}) lax-commutative. Using the weight-tying reparametrization $\Delta_P$ yields the lax commutative diagram in \textit{Fig. \ref{fig: foldingrnncommdiag}}, which uniquely identifies $f$ as the fold function which takes a list of inputs in $A$ and unrolls a folding recurrent neural network that reads such inputs. The weight-tying reparametrization makes sure that each cell of the unrolled network uses the same parameters (see \textit{Fig. \ref{fig: foldingrnn} (b)} for a graphical representation). 
 \end{example}
 
 \begin{figure}[h]
@@ -1779,7 +1653,7 @@ where the $p_i^{\mathcal{S}}$ are algebraic expressions sampled from the set of 
 
 We only presented a sketch of the work in \cite{pfrommer2024transport}: the original paper presents the framework in terms of any general algebraic structure, deals with laws that regulate the interaction of different operations, proves theoretical guarantees, and explores limitations of the proposed approach. It is shown in the paper that it is not always possible to find a mirrored algebra whose operations satisfy the same laws of the source algebra, which means that it is not always possible to transport this algebraic structure in its entirely. Nevertheless, the authors carry out experiments that prove that there are tangible advantages even in transporting a subset of the algebraic laws. The experiments support the following conjecture: \dblquote{learned latent space operations will achieve higher performance if they are constructed to satisfy the laws of the underlying source algebra} (\cite{pfrommer2024transport}). 
 
-
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 
 
@@ -2000,7 +1874,7 @@ Neural circuit diagrams represent axes of tensors as parallel wires and decorate
 
 
 
-Neural circuit diagrams effectively describe neural network architectures, but the aboundance of detail they convey also means that they can make it challenging to extract the foundamental structure of an architecture from its complete schematics.
+Neural circuit diagrams effectively describe neural network architectures, but the aboundance of detail they convey also means that they can make it challenging to extract the fundamental structure of an architecture from its complete schematics.
 \cite{khatri2024anatomy} attacks this problem by drawing different diagrams for different levels of abstraction so that complete schematics like the ones encoded in neural circuit diagrams become only the end of a spectrum that begins with a purely abstract black box. The same fundamental grammar underpins all these diagrams, and appropriate rewrites can be used to seamlessly move between layers of abstraction. 
 
 Let us being by discussing the most concrete end of the aforementioned specturm. \cite{khatri2024anatomy} describes computation in the Cartesian category $\mathbf{CartSp}$ of Euclidean spaces and continuous functions, and follows the basic conventions of monoidal string diagrams for Cartesian categories. A sketch of the language can be found in \textit{Fig. \ref{fig: khatribasicdiagrams}}. Unlike neural circuit diagrams, the diagrams of \cite{khatri2024anatomy} represent broadcasting using \textit{SIMD (Same Instruction applied to Multiple Data) boxes}, as in \textit{Fig. \ref{fig: khatribasicdiagrams} (b)}, which are also used to represent tensor contractions, as in \textit{Fig. \ref{fig: khatribasicdiagrams} (c)}. Finally, syntactic sugar is offered to represent reshaping operations (see \textit{Fig. \ref{fig: khatribasicdiagrams} (c)}).
