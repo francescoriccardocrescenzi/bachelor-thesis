@@ -589,7 +589,7 @@ Despite the similarities, there is one fundamental difference between the lens-b
 We have presented the parametric weighted optic approach of \cite{gavranovic2024fundamental} and \cite{cruttwell2022categorical} within the context of neural networks for the sake of simplicity, but the framework has been developed with generality in mind and applies to a much wider range of situations. For instance, we can easily replace $\mathbf{Smooth}$ with any other CRDC $\mathcal{C}$, yielding a full-feature compositional framework for gradient-based learning over $\mathcal{C}$.
 
 Switching to a different CRDC is useful because different differential categories can lead to different learning outcomes, both in terms of accuracy of the model and in terms of computational costs (\cite{wilson2022categories}).
-For instance, is argued in \cite{wilson2022categories} that polynomial circuits can be used to define and train intrinsically discrete machine learning models. Even \lq radical \rq environments such as Boolean circuits - where scalars reside in $\mathbb{Z}_2$ - seem to be conductive to machine learning under the right choice of architecture and optimizer (\cite{wilson2021reverse}). Using such exotic differential categories could be of great advantage because they might be able to better reflect the intrinsic computational limits of computer arithmetic, leading to more efficient learning (\cite{wilson2022categories}). 
+For instance, is argued in \cite{wilson2022categories} that polynomial circuits can be used to define and train intrinsically discrete machine learning models. Even \lq radical\rq environments such as Boolean circuits - where scalars reside in $\mathbb{Z}_2$ - seem to be conductive to machine learning under the right choice of architecture and optimizer (\cite{wilson2021reverse}). Using such exotic differential categories could be of great advantage because they might be able to better reflect the intrinsic computational limits of computer arithmetic, leading to more efficient learning (\cite{wilson2022categories}). 
 
 \subsection{Functional reverse-mode automatic differentiation}
 
@@ -826,23 +826,20 @@ The construction in  \textit{Ex. \ref{ex: frnncell}} and \textit{Ex. \ref{ex: fr
 
 \section{Algorithmic alignment: GNNs and dynamic programming}
 
-
 One of them main tenets of neural algorithmic reasoning is \textit{algorithmic alignment} (\cite{xu2019can}), that is, the presence of structural similarities between the subroutines of a particular algorithm and the architecture of the neural network selected to learn such algorithm.
-Since \cite{xu2019can} has shown that dynamic programming algorithms align very well with GNNs, and since dynamic programming encompasses a wide variety of techniques algorithms to many different domains, GNNs  are at the forefront of neural algorithmic reasoning research (\cite{dudzik2022graph}). However, the exact link between GNNs and dynamic programming has yet to be fully formalized. In this section we present the work of \cite{dudzik2022graph}, which attempts to derive such a formalization, and the work in \cite{dudzik2024asynchronous}, which studies conditions under which GNNs are invariant with respect to various form of asynchrony\footnote{While much of the work described in \cite{dudzik2024asynchronous} does not fall under the umbrella of applied category theory, we still mention it because on its close link with the work of \cite{dudzik2022graph} and with the idea of algorithmic alignment. Hopefully, future work will explore the intersection between this work and category theory.}, which is argued to improve algorithmic alignment in some cases.
+Since \cite{xu2019can} has shown that dynamic programming algorithms align very well with message passing GNNs, and since dynamic programming encompasses a wide variety of techniques used in various domains, these GNNs  are at the forefront of neural algorithmic reasoning research (\cite{dudzik2022graph}). However, the exact link between GNNs and dynamic programming has yet to be fully formalized. In this section we present the work of \cite{dudzik2022graph}, which attempts to derive such a formalization, and the work in \cite{dudzik2024asynchronous}, which studies conditions under which message passing GNNs are invariant with respect to various form of asynchrony\footnote{While much of the work described in \cite{dudzik2024asynchronous} does not fall under the umbrella of applied category theory, we still mention it because on its close link with the work of \cite{dudzik2022graph} and with the idea of algorithmic alignment. Hopefully, future work will explore the intersection between this work and category theory.}, which is argued to improve algorithmic alignment in some cases.
 
 
 \subsection{Integral transforms for GNNs and dynamic programming}
 
-The main link between dynamic programming and GNNs is that dynamic programming itself can be interpreted from a graph-theoretical point of view. Dynamic programming breaks up problems into subproblems recursively until trivial base cases are reached. We can thus consider the graph with nodes corresponding to subproblems and edges $(y,x)$ corresponding to the relationships \lq $y$ is a subproblem of $x$ \rq. Then, the solutions of the subproblems are recusrively recombined to solve the original problem. This dynamic is very similar to message passing: the simpler cases are solved first, and their solutions are passed as messages along the edges so that they can be used to solve more complex cases. The architecture of a graph neural network usually implements such a message passing dynamic. However, rigorously formulating the link between the architecture of GNN and the structure an associated dynamic programming algorithm is not easy, the main obstacle being the difference in data type handled by the two mathematical processes: dynamic programming usually deals with tropical objects such as the semiring $(\mathbb{N} \cup \{\infty\}, \min, +)$, while GNNs usually deal with linear algebra over $\mathbb{R}$ (\cite{dudzik2022graph}).
+The main link between dynamic programming and GNNs is that dynamic programming itself can be interpreted from a graph-theoretical point of view. Dynamic programming breaks up problems into subproblems recursively until trivial base cases are reached. We can thus consider the graph with nodes corresponding to subproblems and edges $(y,x)$ corresponding to the relationships \lq $y$ is a subproblem of $x$\rq. Then, the solutions of the subproblems are recursively recombined to solve the original problem. This dynamic is very similar to message passing: the simpler cases are solved first, and their solutions are passed as messages along the edges so that they can be used to solve more complex cases. More precisely, we can implement a dynamic programming algorithm as a GNN on this subproblem graph, where the feature vector $h_x^{k}$ associated with a node $x$ at the $k$-th message passing iteration represents the state of the solution of the subproblem $x$ at the $k$-th iteration of the algorithm (\cite{xu2019can}). Despite this striking resemblance, rigorously formulating the link between the architecture of GNN and the structure an associated dynamic programming algorithm is not easy, the main obstacle being the difference in data type handled by the two mathematical processes: dynamic programming usually deals with tropical objects such as the semiring $(\mathbb{N} \cup \{\infty\}, \min, +)$, while GNNs usually deal with linear algebra over $\mathbb{R}$ (\cite{dudzik2022graph}).
 
-\cite{dudzik2022graph} proposes the formalism of integral transforms as the common structure behind both GNNs and dynamic programming. While a full formal proof is not given, the idea is illustrated by showing that both the Bellman-Ford algorithm and the message passing neural network (MPNN) architecture can be expressed with the help of integral transforms. The difference in data type is overcome by using the weakest common hypothesis: that the data and associated operations form a semiring.
-
+\cite{dudzik2022graph} proposes the formalism of integral transforms as the common structure behind both message passing GNNs and dynamic programming. While a full formal proof is not given, the idea is illustrated by showing that both the Bellman-Ford algorithm and a message passing GNN can be expressed with the help of integral transforms. The difference in data type is overcome by using the weakest common hypothesis: that the data and associated operations form a semiring.
 
 \subsubsection{Bellman-Ford algorithm}
 
 The Bellman-Ford (BF) algorithm is one of the most popular dynamic programming algorithms and is used to find the shortest paths between a single starting node and every other node in a weighted graph $G = (V, E)$. Since we can see every node of the graph as a subproblem, and since we can see the associated edges as subproblem relationships, the BF algorithm is a very good candidate for a GNN implementation. The algorithm operates within the tropical min-plus semiring $(R = \mathbb{N} \cup \{\infty\}, \oplus = \min, \otimes = +)$, and the data can be provided as a tuple $(d, b, w)$ of three functions into $R$. Here, $d: V \to R$ stores the current best distances of the nodes, $b: V \to R$ stores the weights of the nodes, and $w: E \to R$ stores the weights of the edges. $d$ is initialized as the function that maps the initial node to $0$ and every other node to $\infty$. The values of $d$ are updated at each step of the algorithm according to the following formula, where $\mathcal{N}_u = \{v \text{ s. t. } (v,u) \in E\}$ represent the one-hop neighborhood of a node $u$:
 \[d_u \longleftarrow  \min\left(d_u, \min_{v \in \mathcal{N}_u}(d_v) + w_{v,u}\right).\]
-
 
 \cite{dudzik2022graph} propose the integral transform encoded by the polynomial span in \textit{Fig. \ref{fig: polyspans} (a)} as the supporting structure of the BF algorithm. The functions $i$, $p$, and $o$ are defined as follows:
 \begin{enumerate}
@@ -850,7 +847,7 @@ The Bellman-Ford (BF) algorithm is one of the most popular dynamic programming a
   \item $p: (V + E) + (V + E) \to V + E$ just collapses the two copies of $V + E$;
   \item $o$ acts as the target function on the $E$ and as the identity on $V$.
 \end{enumerate}
-It is argued in the paper that the whole integral transform acts as step of the algorithm, carrying the data in $(d, b, w)$ to the updated function $d$. Let's examine each step: the input pullback extracts the distances the sources of every edge; the argument pushforward computes the lengths of the one-hop extensions of the known shortest paths (the weight of each node is treated as the weight of a self-edge in this case); finally, the message pushforward selects the shortest paths to each node among the ones studied by the argument pushforward. 
+It is argued in the paper that the whole integral transform acts as step of the algorithm, carrying the data in $(d, b, w)$ to the updated function $d$. Let's examine each step: the input pullback extracts the distances of the sources of every edge; the argument pushforward computes the lengths of the one-hop extensions of the known shortest paths (the weight of each node is treated as the weight of a self-edge in this case); finally, the message pushforward selects the shortest paths to each node among the ones studied by the argument pushforward. 
 Hence, the simple polynomial span in \textit{Fig. \ref{fig: polyspans} (a)} successfully encode the whole BP algorithm without any information loss or ad hoc choice. 
 
 \begin{figure}[h]
@@ -863,36 +860,32 @@ Hence, the simple polynomial span in \textit{Fig. \ref{fig: polyspans} (a)} succ
       \includegraphics[width=\textwidth]{figures/poly_span_message_passing.png}
       \caption{}
     \end{subfigure}            
-    \caption[Bellman-Ford algorithm and message passing networks]{Polynomial spans used to by \cite{dudzik2022graph} to model (a) the Bellman-Ford algorithm and (b) a message pasing neural network. (Images taken from \cite{dudzik2022graph}.)}
+    \caption[Bellman-Ford algorithm and message passing GNN]{Polynomial spans used to by \cite{dudzik2022graph} to model (a) the Bellman-Ford algorithm and (b) a message passing GNN. (Images taken from \cite{dudzik2022graph}.)}
     \label{fig: polyspans}
   \end{center}
 \end{figure}
 
 \subsubsection{Message passing neural network}
 
-A message passing neural network (MPNN) is a graph neural network described by the following equations (\cite{pmlr-v70-gilmer17a}):
+Consider the message passing GNN architecture described by the following equations (\cite{pmlr-v70-gilmer17a}):
 \begin{align*}
   m_v^{t+1} &= \sum_{w \in \mathcal{N}_v}M_t(h_v^t,h_w^t,e_{v,w}),\\
   h_v^{t+1} &= U_t(h_v^t,m_v^{t+1}),\\
 \end{align*}
-where $t$ represents the time step, and $M_t$ and $U_t$ are learned differentiable functions.
-
-
-\cite{dudzik2022graph} argues that an MPNN layer can be implemented as the integral transform associated with the polynomial span of \textit{Fig. \ref{fig: polyspans} (b)}, with an extra MLP. Here,
+where $t$ represents the time step, and $M_t$ and $U_t$ are learned differentiable functions.\cite{dudzik2022graph} argues that this GNN layer can be implemented as the integral transform associated with the polynomial span of \textit{Fig. \ref{fig: polyspans} (b)}, with an extra MLP. Here,
 \begin{enumerate}
-  \item $i$ sends the first $E$ to $1$, it acts as source and target on the second $E$ and third $E$ respectively, and it acts as the identity on the fourth $E$;
+  \item $i$ sends the first $E$ to $1$,  acts as the source function on the second $E$, acts  and target function on the third $E$, and acts as the identity on the fourth $E$;
   \item $p$ collapses four $E$'s into one;
   \item $o$ acts as the target function.
 \end{enumerate}
-In the associated integral transform, $i^*$ gathers graph, features, node features and edge features, $p_{\otimes}$ "projects" the such features on the edges, the MLP combines them, and, finally, $o_{\oplus}$ sends them to the right target.
+In the associated integral transform, $i^*$ gathers graph features, node features, and edge features; $p_{\otimes}$ projects such features on the edges, the MLP combines them; finally, $o_{\oplus}$ sends them to the right target.
 
-
-Although not a perfect representation of the target architecture (due to the extra MLP), the polynomial span in \textit{Fig. \ref{fig: polyspans} (b)} can be used to inform the design of new architectures which are obtained by simple manipulations of the arrows or objects in the diagram. For instance, \cite{dudzik2022graph} uses the integral transform formalism to investigate possible performance improvements on CLRS benchmark tasks (\cite{velivckovic2022clrs}). They consider messages that reduce over intermediate nodes they show these architectures lead to better average performance on these tasks, likely a result of better algorithmic alignment.
+Although not a perfect representation of the message passing architecture (due to the extra MLP), the polynomial span in \textit{Fig. \ref{fig: polyspans} (b)} can be used to inform the design of new architectures which are obtained by simple manipulations of the arrows or objects in the diagram. For instance, \cite{dudzik2022graph} uses the integral transform formalism to investigate possible performance improvements on CLRS benchmark tasks (\cite{velivckovic2022clrs}). The authors consider messages that reduce over intermediate nodes, and they show that these architectures lead to better average performance on these tasks, which is likely a result of better algorithmic alignment.
 
 
 \subsection{Asynchronous algorithmic alignment}
 
-\cite{dudzik2024asynchronous} derives conditions under which synchronous GNNs are invariant under asynchronous execution. This is relevant because, as stated in the paper, in many dynamic programming tasks modeled by graphs, only small parts of the aforementioned graphs are changed at each step. A synchronously executed GNN that is trained on these tasks must learn the identity function many times over, which leads to brittleness and wasted computational resources. However, implementing many algorithms that are invariant under asynchronous execution as synchronous GNNs that are also invariant under asynchronous execution leads to better algorithmic alignment and thus more robust and efficient learning.
+The customary assumption behind the message passing GNN architecture requires that all messages are generated, sent, and received at the same time. We call this kind of GNN synchronous. \cite{dudzik2024asynchronous} derives conditions under which synchronous GNNs are invariant under a hypothetical asynchronous execution. This is relevant because, as stated in the paper, in many dynamic programming tasks modeled by graphs, only small parts of the aforementioned graphs are changed at each step. A synchronously executed GNN that is trained on these tasks must learn the identity function many times over, which leads to brittleness and wasted computational resources. On the other hand, an asynchronously executed GNN would be more aligned with these algorithms and thus achieve a better performance. The work in \cite{dudzik2024asynchronous} aims to reproduce these performance improvements on synchronous GNNs by imposing asynchrony invariance constraints. 
 
 The authors of \cite{dudzik2024asynchronous} revise the model explored in \cite{dudzik2022graph} so that it includes a message function $\psi$ that generates messages based on gathered arguments (see \textit{Fig. \ref{fig: messagepassing} (a)} for the update diagram). Moreover, the authors argue that it is best to consider GNNs where every graph component that has a persistent state is elevated to the status of node, whereas transient computations are carried out along edges. The resulting GNN can be described by the diagram in \textit{Fig. \ref{fig: messagepassing} (b)}, where $\phi$ is the transit function that updates the persistent state of each node, and $\delta$ is the function that computes the arguments needed to generate the next messages.
 
@@ -907,7 +900,7 @@ The authors of \cite{dudzik2024asynchronous} revise the model explored in \cite{
       \includegraphics[width=\textwidth]{figures/message_passing_network2.png}
       \caption{}
     \end{subfigure}            
-    \caption[Graph neural network architecture]{Diagrams describing the GNN architecture described in \cite{dudzik2024asynchronous}. (Images taken from \cite{dudzik2024asynchronous}.)}
+    \caption[Persistent and transient features in message passing]{Diagrams describing the message passing GNN architecture discussed in \cite{dudzik2024asynchronous}. (Images taken from \cite{dudzik2024asynchronous}.)}
     \label{fig: messagepassing}
   \end{center}
 \end{figure}
@@ -936,13 +929,11 @@ It is argued in \cite{dudzik2024asynchronous} that invariance under asynchrony c
 We will not describe the whole formalism of \cite{dudzik2024asynchronous}, but we will show (without proof) its implications on GNN architecture design. 
 
 \begin{example}
-  Consider the GNN architecture:
+  Consider the message passing GNN architecture:
   \[x_u' = \phi\left(x_u, \bigoplus_{v \in \mathcal{N}_u}\psi(x_{u},x_{v})\right),\]
-  where $\oplus$ is a message aggregator function. The authors of \cite{dudzik2024asynchronous} derive conditions under which this architecture is invariant under asynchronies in message aggregation, node update, and argument generation: the GNN is trivially invariant under asynchronous message aggregation if messages $(M,0,\oplus)$ are given a commutative monoidal structure; invariance under asynchronies in node updates is obtained by selecting an update function $\phi$ which sastifies the associative law $\phi(s,m \oplus n) = \phi(\phi(s,m),n)$ for all $m,n \in M$ and for all $s \in S$; finally, invariance under argument generation is obtained if $\phi$ satisfies the $1$-cocycle equations (\textit{Def. \ref{def: cocycle}}). \cite{dudzik2024asynchronous} also gives sufficient conditions that ensure that the $1$-cocycle equations as well as the associative law are true: it suffices that $M=A=S$ and that $\phi=\oplus$ is idempotent.
+  where $\oplus$ is a message aggregator. The authors of \cite{dudzik2024asynchronous} derive conditions under which this architecture is invariant under asynchronies in message aggregation, node update, and argument generation: the GNN is trivially invariant under asynchronous message aggregation if messages $(M,0,\oplus)$ are given a commutative monoidal structure; invariance under asynchronies in node updates is obtained by selecting an update function $\phi$ which satisfies the associative law $\phi(s,m \oplus n) = \phi(\phi(s,m),n)$ for all $m,n \in M$ and for all $s \in S$; finally, invariance under argument generation is obtained if $\delta$ satisfies the $1$-cocycle equations (\textit{Def. \ref{def: cocycle}}). 
+  These conditions are all satisfied if $\oplus$ is commutative, $M=A=S$ and $\delta_m(s) = \phi(m,s) = m \cdot s = m \oplus s$.
 \end{example}
-
-
-
 
 \section{Future directions and related work}
 
@@ -950,16 +941,22 @@ In this section we provide a brief introduction to the theory of differentiable 
 
 \subsection{Differentiable causal computations}
 
-\cite{sprunger2019differentiable} studies the differential properties of causal computations offering valuable insight into the formal properties of recurrent neural networks (RNNs). The paper focuses on sequences $\{f_k\}_{k=0,1,\dots}$ of functions $f_k: S_k \times X_k \to S_{k+1} \times Y_k$ which represent computations executed in discrete time $k$, where, at each tick $k$ of the clock, $f_k$ takes an input $x_k$ and the previous state $s_k$, and uses this data to compute an output $y_k$ and a new state $s_{k+1}$. In symbols, $f_k(s_k,x_k) = (s_{k+1},y_k)$. Such sequences are given a nice compositional structure using the formalism of double categories.
+A trained RNN can be seen as a casual function according to the following definition (\cite{sprunger2019differentiable}).
+
+\begin{definition}[Causal function]
+  Let $A$ and $B$ be sets. A function $f: A^{\mathbb{N}} \to B^{\mathbb{N}}$ is causal if and only if, for all sequences $\mathbf{x}, \mathbf{y} \in A^{\mathbb{N}}$ and for all $n \in \mathbb{N}$, if $x_m = y_m$ for all $m = 0,1,\dots,n$, then $f(x_m) = f(y_m)$ for all $m = 0,1,\dots,n$.
+\end{definition}
+
+\cite{sprunger2019differentiable} studies the \textit{differential properties of causal computations}, offering valuable insight into the formal properties of RNNs. The paper focuses on sequences $\{f_k\}_{k=0,1,\dots}$ of functions $f_k: S_k \times X_k \to S_{k+1} \times Y_k$ which represent computations executed in discrete time $k$, where, at each tick $k$ of the clock, $f_k$ takes an input $x_k$ and the current state $s_k$, and uses this data to compute an output $y_k$ and a new state $s_{k+1}$. In symbols, $f_k(s_k,x_k) = (s_{k+1},y_k)$. Such sequences are given a nice compositional structure using the formalism of double categories.
 
 \begin{definition}[Category of tiles]
   Let $\mathcal{C}$ be a Cartesian category. Define $\mathbf{Dbl}(\mathcal{C})$ as the double category with the following data:
   \begin{enumerate}
-    \item there is only on $0$-cell, which we represent with the symbol $\cdot$;
+    \item there is only one $0$-cell, which we represent with the $\cdot$ symbol;
     \item the horizontal and vertical $1$-cells are the objects of $\mathcal{C}$;
     \item a $2$-cell (tile) with horizontal source $S$, horizontal target $S'$, vertical source $X$, and vertical target $Y$ is a morphism $f: S \times X \to S' \times Y$ which we represent with the symbol $f:X \overset{S}{\underset{S'}\longrightarrow} Y$.
   \end{enumerate}
-  It is handy to also represent $2$-cells $f$ as the tile string diagrams in \textit{Fig. \ref{fig: tiles} (a)}. The horizontal and vertical composition laws for $2$-cells are given consistently with the tile diagrams.
+  It is handy to also represent $2$-cells $f$ as the tile string diagrams in \textit{Fig. \ref{fig: tiles} (a)}. The horizontal and vertical composition laws for $2$-cells are consistent with the tile diagrams. Refer to \cite{sprunger2019differentiable} for more information.
 \end{definition}
 
 \begin{definition}[Category of stateful morphism sequences]
@@ -971,8 +968,7 @@ In this section we provide a brief introduction to the theory of differentiable 
   The morphisms of $\mathbf{St}(\mathcal{C})$ are known as stateful morphisms sequences and are represented using string diagrams as in \textit{Fig. \ref{fig: tiles} (b)}.
 \end{definition}
 
-Stateful morphisms sequences can be truncated and unrolled as one would expect, and it is proved in \cite{sprunger2019differentiable} that there is a bijection between stateful morphism sequences in $\mathbf{St}(\mathbf{Set})([A],[B])$ and causal functions $A^{\mathbb{N}} \to B^{\mathbb{N}}$ (here $[A]$ is the constant sequence of objects $\{A,A,A,\dots\}$). More generally, given any $\mathbf{St}(\mathcal{C})$, we can restrict our attention to constant sequences $[A]$ and stateful sequences of morphisms in the form $([f],i)$, where $f:X \overset{S}{\underset{S}\longrightarrow} Y$ is a tile in $\mathbf{Dbl}(\mathcal{C})$. This yields a subcategory $\mathbf{St}_0(\mathcal{C})$ whose morphisms can be thought of as Mealy machines that take in an input and produce an output based on an internal state which is updated after every computation. The new state is in a sense fed back to the machine after the computation so that a new computation can take place. This is represented by the diagram in \textit{Fig. \ref{fig: tiles} (b)}.
-
+Stateful morphisms sequences can be easily truncated and unrolled as one would expect, and it is proved in \cite{sprunger2019differentiable} that there is a bijection between stateful morphism sequences in $\mathbf{St}(\mathbf{Set})([A],[B])$ and causal functions $A^{\mathbb{N}} \to B^{\mathbb{N}}$ (here $[A]$ is the constant sequence of objects $\{A,A,A,\dots\}$). More generally, given any $\mathbf{St}(\mathcal{C})$, we can restrict our attention to constant sequences $[A]$ and stateful sequences of morphisms in the form $([f],i)$, where $f:X \overset{S}{\underset{S}\longrightarrow} Y$ is a tile in $\mathbf{Dbl}(\mathcal{C})$. This yields a subcategory $\mathbf{St}_0(\mathcal{C})$ whose morphisms can be thought of as Mealy machines that take in an input and produce an output based on an internal state which is updated after every computation. The new state is fed back to the machine after the computation, so that a new computation can take place. This is represented by the diagram in \textit{Fig. \ref{fig: tiles} (b)}.
 
 \begin{figure}[h]
   \begin{center}
@@ -989,10 +985,8 @@ Stateful morphisms sequences can be truncated and unrolled as one would expect, 
   \end{center}
 \end{figure}
 
-
-The authors of \cite{sprunger2019differentiable} go on to define a delayed trace operation which provides a rigorous formalization of feedback loops such as the one in \textit{Fig. \ref{fig: differentiationanddelayedtrace} (a)}. As stated in the paper, the delayed trace operator is closely related to the more popular trace operator (\cite{joyal1996traced}) and shares many of the same properties. 
+The authors of \cite{sprunger2019differentiable} go on to define a delayed trace operator, which provides a rigorous formalization for feedback loops such as the one in \textit{Fig. \ref{fig: differentiationanddelayedtrace} (a)}. As stated in the paper, the delayed trace operator is closely related to the more popular trace operator (\cite{joyal1996traced}) and shares many of the same properties. 
 Finally, the authors of \cite{sprunger2019differentiable} show how both $\mathbf{St}(\mathcal{C})$ and $\mathbf{St}_0(\mathcal{C})$ can be given the structure of a CDC (\textit{Def. \ref{def: cdc}}), as long as $\mathcal{C}$ is itself a CDC. This differential structure is conceptually clear, rigorously defined, and compatible with the dealyed trace operator. We do not have space to describe the details of these definitions, but we report the relevant string diagrams in \textit{Fig. \ref{fig: differentiationanddelayedtrace} (b),(c)}.
-
 
 \begin{figure}[h]
   \begin{center}
@@ -1014,16 +1008,13 @@ Finally, the authors of \cite{sprunger2019differentiable} show how both $\mathbf
   \end{center}
 \end{figure}
 
+The work in \cite{sprunger2019differentiable} provides a theoretical foundation for the technique of backpropagation through time (BPTT), which consists in computing the gradient of the $k$-th unrolling of an RNN in place of the gradient of the RNN at discrete time $k$. Despite the alleged ad hoc nature of BPTT, \cite{sprunger2019differentiable} proves that the technique does not just \dblquote{involve differentiation} but is an actual \dblquote{form of differentiation} that can be reasoned about in the formalism of CDCs. Nevertheless, as stated in the paper, the differential operator of $\mathbf{St}(\mathcal{C})$ does not compute explicit gradients, and deriving the latter from the former would be computationally infeasible when there are millions of parameters. 
 
-The work in \cite{sprunger2019differentiable} provides a theoretical foundation for the technique of backpropagation through time (BPTT), which consists in computing the gradient of the $k$-th unrolling of a RNN in place of the gradient of the such RNN at discrete time $k$. Despite the alleged ad hoc nature of BPTT, \cite{sprunger2019differentiable} proves that the technique does not just \dblquote{involve differentiation} but is an actual \dblquote{form of differentiation} that can be reasoned about in the formalism of CDCs. Nevertheless, as stated in the paper, the differential operator of $\mathbf{St}(\mathcal{C})$ does not compute explicit gradients, and deriving the latter would from the former would be computationally intractable when there are millions of parameters. 
-
-
-It is interesting to compare the approach of \cite{sprunger2019differentiable} with the framework of categorical deep learning: both CDL and the work in \cite{sprunger2019differentiable} synthetically describe RNN architectures, but, while CDL focuses on weight sharing mechanics and the coinductive nature of the definition, \cite{sprunger2019differentiable} focuses the differential properties of these architectures. However, neither categorical framework deals with the problems that come up when computing gradients of unrolled RNNs, such as vanishing or exploding gradients (see e.g. \cite{hanin2018neural}). 
-
+It is interesting to compare the approach of \cite{sprunger2019differentiable} with the framework of categorical deep learning: both CDL and the work in \cite{sprunger2019differentiable} synthetically describe RNN architectures, but, while CDL focuses on weight sharing mechanics and the (co)inductive nature of the definition, \cite{sprunger2019differentiable} focuses on the differential properties of these architectures. However, neither categorical framework deals with the problems that come up when computing gradients of unrolled RNNs, such as the presence of vanishing or exploding gradients (see e.g. \cite{hanin2018neural}). 
 
 \subsection{Sheaf neural networks}
 
-The theory of sheaf neural networks (\cite{hansen2020sheaf}, \cite{bodnar2022neural}, \cite{zaghen2024nonlinear}), or SNNs, is informed by both topology and category theory and aims to improve the GNN architecture by endowing graphs with cellular sheaf structures. In particular, SNNs are designed to solve two main issues that are encountered when training GNNs: oversmoothing, which is the tendency of deep GNNs to spread information too far in the graph to be able to effectively classify nodes, and poor performance on heterophilic graphs, that is graphs where the nodes features are diverse in structure and attributes.
+The theory of \textit{sheaf neural networks} (\cite{hansen2020sheaf}, \cite{bodnar2022neural}, \cite{zaghen2024nonlinear}), or SNNs, is informed by both topology and category theory, and aims to improve the GNN architecture by endowing graphs with cellular sheaf structures. In particular, SNNs are designed to solve two main issues that are encountered when training GNNs: oversmoothing, which is the tendency of deep GNNs to spread information too far in the graph to be able to effectively classify nodes, and the poor performance characteristic of GNNs when applied on heterophilic input graphs, i.e., input graphs where the nodes features are diverse in structure and attributes.
 
 \begin{definition}[Cellular sheaf]
   A cellular sheaf $\mathcal{F}$ associated with a graph $G = (E,V)$ consists of the following data:
@@ -1035,7 +1026,7 @@ The theory of sheaf neural networks (\cite{hansen2020sheaf}, \cite{bodnar2022neu
   The vector spaces associated to nodes and edges are known as stalks. The linear maps associated to incident node-edge pairs are known as restriction maps. The direct sum $C^0(G, \mathcal{F})$ of all node stalks is known as space of $0$-cochains, and the direct sum $C^1(G, \mathcal{F})$ of all edge stalks is known as space of $1$-cochains.
 \end{definition}
 
-As stated in \cite{zaghen2024nonlinear}, the  node stalks assigned by $\mathcal{F}$ serve as spaces for node features, while the restriction maps allow the data that resides on adjacent nodes to interact on edge stalks. Given a cellular sheaf $\mathcal{F}$, we can define a coboundary map $\delta$ which measures the amount \lq disagreement \rq\footnote{There is a close link between the theory of SNNs and the theory of opinion dynamics. See \cite{zaghen2024nonlinear} for further information.} between nodes. The coboundary map can then be used to define a sheaf Laplacian which can be used to propagate information in the graph.
+As stated in \cite{zaghen2024nonlinear}, the  node stalks assigned by $\mathcal{F}$ serve as spaces for node features, while the restriction maps allow the data that resides on adjacent nodes to interact on edge stalks. Given a cellular sheaf $\mathcal{F}$, we can define a coboundary map $\delta$ which measures the amount \lq disagreement\rq\footnote{There is a close link between SNNs and the theory of opinion dynamics. See \cite{zaghen2024nonlinear} for further information.} between nodes. The coboundary map can then be used to define a sheaf Laplacian which can be used to propagate information in the graph (\cite{hansen2020sheaf}).
 
 \begin{definition}[Coboundary map]
   Let $\mathcal{F}$ be a cellular sheaf on a directed graph $G = (E,V)$. The coboundary map associated with $\mathcal{F}$ is the linear map $\delta: C^0(G, \mathcal{F}) \to C^1(G, \mathcal{F})$ that maps $\delta(\mathbf{x})_{e} = \mathcal{F}_{v \trianglelefteq e}(x_v) - \mathcal{F}_{u \trianglelefteq e}(x_u)$ for each edge $e: u \to v$.
@@ -1049,133 +1040,34 @@ As stated in \cite{zaghen2024nonlinear}, the  node stalks assigned by $\mathcal{
   The coboundary map and the sheaf Laplacian associated with a cellular sheaf $\mathcal{F}$ are generalizations of the more commonly known incidence matrix and Laplacian associated to a graph (see e.g. \cite{ward2022practical}).
 \end{remark}
 
-There are many kinds of SNN architectures (\cite{hansen2020sheaf}, \cite{bodnar2022neural}, \cite{zaghen2024nonlinear}). Due to space constraints, we only give a short description of the first one to appear in the literature: the Hansen-Gebhart SNN proposed by \cite{hansen2020sheaf}.
+There are many kinds of SNN architectures (\cite{hansen2020sheaf}, \cite{bodnar2022neural}, \cite{zaghen2024nonlinear}). Due to space constraints, we only give a short description of the first one to appear in the literature: the Hansen-Gebhart SNN proposed by \cite{hansen2020sheaf}, as described by \cite{zaghen2024nonlinear}.
 
 \begin{definition}[Sheaf neural network]
   \label{def: sheafnn}
-  Suppose $G = (E,V)$ is a directed graph and $\mathcal{F}$ is a cellular sheaf on it. Suppose the stalks of $\mathcal{F}$ are all equal to $\mathbb{R}^{f \times d}$, where $f$ is the number of channels and $d$ is the dimension of each feature. Then, $C^0(G, \mathcal{F})$ is isomorphic to $\mathbb{R}^{nd \times f}$, where $n$ is the number of nodes, and its elements can be represented as matrices $\mathbf{X}$. The sheaf neural network proposed by \cite{hansen2020sheaf} uses the following transition function to update this features:
+  Suppose $G = (E,V)$ is a directed graph and $\mathcal{F}$ is a cellular sheaf on it. Suppose the stalks of $\mathcal{F}$ are all equal to $\mathbb{R}^{d \times f}$, where $d$ is the dimension of each feature vector and $f$ is the number of channels. Then, $C^0(G, \mathcal{F})$ is isomorphic to $\mathbb{R}^{nd \times f}$, where $n$ is the number of nodes, and its elements can be represented as matrices $\mathbf{X}$. The sheaf neural network proposed by \cite{hansen2020sheaf} uses the following transition function to update this features:
   \[\mathbf{Y} = \sigma((I_{nd} - \Delta_{\mathcal{F}})(I_{n} \otimes W_1)\mathbf{X}W_2),\]
-  where $\sigma$ is a non-linearity, $\otimes$ is the Kronecker product, $W_1 \in \mathbb{R}^{d \times d}$ and $W_2 \in \mathbb{R}^{f \times f}$ are weight matrices.
+  where $\sigma$ is a non-linearity, $I$ refers to identity matrices, $\Delta_{\mathcal{F}}$ is the normalized sheaf Laplacian, $\otimes$ is the Kronecker product, and, finally, $W_1 \in \mathbb{R}^{d \times d}$ and $W_2 \in \mathbb{R}^{f \times f}$ are weight matrices.
 \end{definition}
 
 \begin{remark}
-  The values of $f_1$, $f_2$, $n$, $d$, and the restriction maps are all hyperparameters
+  The values of $f$, $n$, $d$, and the restriction maps are all hyperparameters.
   Choosing $W_2 \in \mathbb{R}^{f_1 \times f_2}$ allows the SNN layer described above to change the number of features from $f_1$ to $f_2$.  
 \end{remark}
 
 As observed by \cite{bodnar2022neural}, the SNN architecture proposed by \cite{hansen2020sheaf} can be seen as a discretization of the differential equation 
 \[\dot{\mathbf{X}}(t) = -\Delta_{\mathcal{F}}\mathbf{X}(t),\]
-which is known as sheaf diffusion equation and is analogous to the heat diffusion equation used in graph convolutional networks (\cite{bodnar2022neural}). Studying the time limit of the sheaf diffusion equation yields important results about the diffusion of information through the graph after repeated application of the transformation in \textit{Def. \ref{def: sheafnn}}. In particular, \cite{bodnar2022neural} argues that, in the time limit, node feature tend to values that \lq agree \rq on the edges. Hence, \dblquote{sheaf diffusion can be seen a synchronization process over the graph}. \cite{bodnar2022neural} goes on to study the deiscriminative power of different classes of cellular sheaves and proposes strategies to learn the restriction maps themselves. \cite{zaghen2024nonlinear} extends the work of \cite{bodnar2022neural} by analyzing non-linear sheaf Laplacians and the associated sheaf diffusion process.
+which is known as sheaf diffusion equation and is analogous to the heat diffusion equation used in graph convolutional networks (\cite{bodnar2022neural}). Studying the time limit of the sheaf diffusion equation yields important results about the diffusion of information through the graph after repeated application of the transformation in \textit{Def. \ref{def: sheafnn}}. In particular, \cite{bodnar2022neural} argues that, in the time limit, node feature tend to values that \lq agree\rq on the edges. Hence, \dblquote{sheaf diffusion can be seen a synchronization process over the graph}. \cite{bodnar2022neural} goes on to study the discriminative power of different classes of cellular sheaves and proposes strategies to learn the restriction maps themselves. \cite{zaghen2024nonlinear} extends the work of \cite{bodnar2022neural} by analyzing non-linear sheaf Laplacians and the associated sheaf diffusion process.
 
-It is important to notice that SNNs can be considered a strict generalization of GNNs  since the latter are nothing but instances of the former where the sheaf structure is trivial (\cite{bodnar2022neural}). Thus, although we are not aware of any work applying SNNs to neural algorithmic reasoning, given the success enjoyed by GNNs in this area of research, we can only image that SNNs would be even more effective at executing algorithms. 
+It is important to notice that SNNs can be considered a strict generalization of GNNs  since the latter are nothing but instances of the former where the sheaf structure is trivial (\cite{bodnar2022neural}). Thus, although we are not aware of any work applying SNNs to neural algorithmic reasoning, given the success enjoyed by GNNs in this area of research, we hypothesize that SNNs are be even more effective at executing algorithms. 
 To the best of our knowledge, no one has ever explicitly described SNN architectures using integral transforms either. However, a passing remark in \cite{dudzik2024asynchronous} hints that the message passing dynamic of GNNs is very similar to sheaf diffusion and thus such a generalization should be all but impossible. Hopefully, future research will shed light on these conjectures.
-
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \chapter{Functor Learning}
-
-
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 
-
-
-All categorical machine learning frameworks examined in the previous chapters represent machine learning models, both trained and untrained, as morphisms in some category. Morphisms capture the core idea of compositionality and are thus a very good choice in many contexts; nevertheless, there are also cases where a simple morphism is unable to capture the structure that one might want preserved. For instance, different datasets might be linked using morphisms in an appropriate category (see e.g. \cite{spivak2012functorial}, \cite{gavranovic2019compositional}) or sets containing machine learning data could be given a categorical structure, where elements are objects and morphisms capture relations between such objects (see e.g. \cite{lambek1999type}). In these and other cases, learning functors instead of morphisms is advantageous as it allows us to preserve the aforementioned structure during the learning process. In this chapter we examine various approaches that testify to the usefulness of this insight: we will see how functors can be used to separate different layers of abstraction in the machine learning process (\cite{gavranovic2019compositional}), to embed data in vector spaces (\cite{sheshmani2021categorical}, \cite{coecke2010mathematical},\cite{lewis2019compositionality}), to carry out unsupervised translation (\cite{sheshmani2021categorical}), and to impose equivariance constraints and pool data effectively (\cite{chytas2024poolingimagedatasetsmultiple}).
-We will illustrate how functors can be learned by gradient descent, just like morphisms, as long as we have appropriate parametrizations (\cite{gavranovic2019compositional}) or specialized objective functions (\cite{sheshmani2021categorical}, \cite{chytas2024poolingimagedatasetsmultiple}). 
-
+All categorical machine learning frameworks examined in the previous chapters represent machine learning models, both trained and untrained, as morphisms in some category. Morphisms capture the core idea of compositionality and are thus a very good choice in many contexts; nevertheless, there are also cases where a simple morphism is unable to interface with the structure that one might want preserved. For instance, different datasets might be linked using morphisms in an appropriate category (see e.g. \cite{spivak2012functorial}, \cite{gavranovic2019compositional}) or sets containing machine learning data could be given a categorical structure, where elements are objects and morphisms capture relations between such objects (see e.g. \cite{lambek1999type}). In these and other cases, \textit{learning functors} instead of morphisms is advantageous as it allows us to preserve the aforementioned structure during the learning process. In this chapter we examine various approaches that testify to the usefulness of this insight: we will see how functors can be used to separate different layers of abstraction in the machine learning process (\cite{gavranovic2019compositional}), to embed data in vector spaces (\cite{sheshmani2021categorical}, \cite{coecke2010mathematical},\cite{lewis2019compositionality}), to carry out unsupervised translation (\cite{sheshmani2021categorical}), and to impose equivariance constraints and pool data effectively (\cite{chytas2024poolingimagedatasetsmultiple}).
+As we will illustrate, functors can be learned by gradient descent, just like morphisms, as long as we have appropriate parametrizations (\cite{gavranovic2019compositional}) or specialized objective functions (\cite{sheshmani2021categorical}, \cite{chytas2024poolingimagedatasetsmultiple}). 
 
 \section{Using functors to separate layers of abstraction}
 
@@ -1193,12 +1085,11 @@ The first step in the learning pipeline proposed by \cite{gavranovic2019composit
   \end{center}
 \end{figure}
 
-
 \begin{definition}[Model schema]
   The schema of a model represented by a multigraph $G$ is the freely generated category $\mathbf{Free}(G)$.
 \end{definition}
 
-The schema of a model does not contain any data nor does it do any computation, but it encodes the bare-bones structure of such model. If ${\sim}$ is the path congruence relation induced by the equations in $\mathcal{X}$, we can take the module $\mathbf{Free}(G)/{\sim}$ to impose the constraints represented by $\mathcal{X}$. Depending on the context, the word schema will refer either to $\mathbf{Free}(G)$ or to $\mathbf{Free}(G)/{\sim}$. We will see later that each equation in $\mathcal{X}$ can be associated with a specific loss function and these losses are used to teach models to abide by ${\sim}$.
+The schema of a model does not contain any data nor does it do any computation, but it encodes the bare-bones structure of such model. If ${\sim}$ is the path congruence relation induced by the equations in $\mathcal{X}$, we can take the module $\mathbf{Free}(G)/{\sim}$ to impose the constraints represented by $\mathcal{X}$. Depending on the context, the word schema will refer either to $\mathbf{Free}(G)$ or to $\mathbf{Free}(G)/{\sim}$. As we will discuss later, each equation in $\mathcal{X}$ can be associated with a specific loss function and these losses can be used to teach models to abide by ${\sim}$.
 
 Given a schema $\mathbf{Free}(G)$, we can choose an architecture for the model, that is, we can assign to each node a Euclidean space and to each morphism a parametric map. This procedure yields an untrained neural network.
 
@@ -1206,8 +1097,7 @@ Given a schema $\mathbf{Free}(G)$, we can choose an architecture for the model, 
   Let $\mathrm{Free}(G)$ be a model schema. An architecture for such schema is a functor $\mathsf{Arch}: \mathrm{Free}(G) \to \mathbf{Para}_{\times}(\mathbf{Smooth})$ (see \textit{Def. \ref{def: para}} and see \textit{Ex. \ref{ex: smooth}}).
 \end{definition}
 
-The Euclidean spaces $\mathsf{Arch}$ maps objects to might be intuitively interpreted as the spaces the data will live in, but it is wiser to put data outside the $\mathbf{Para}$ machinery and in the simpler $\mathbf{Set}$ category, as this allows for better compartmentalisation. Thus, \cite{gavranovic2019compositional} also defines an embedding functor, which agrees with $\mathsf{Arch}$ on objects but exists independently of it.
-
+$\mathsf{Arch}$ maps objects to Euclidean spaces. These might be interpreted as the spaces data will live in, but it is wiser to put data outside the $\mathbf{Para}$ machinery and in the simpler $\mathbf{Set}$ category, as this allows for better compartmentalisation. Thus, \cite{gavranovic2019compositional} also defines an embedding functor, which agrees with $\mathsf{Arch}$ on objects but exists independently of it.
 
 \begin{definition}[Model embedding]
   Let $\mathrm{Free}(G)$ be a model schema and let $\mathsf{Arch}$ be a chosen architecture. An embedding for such schema is a functor $E: |\mathrm{Free}(G)| \to \mathbf{Set}$ which agrees with $\mathsf{Arch}$ on objects\footnote{The reason why the domain $E$ is the discretized schema $|\mathrm{Free}(G)|$ instead of the original schema $\mathrm{Free}(G)$ is clarified in \textit{Rem. \ref{rem: discretized}}.}.
@@ -1221,12 +1111,12 @@ where $\mathsf{Gen}_{\mathbf{Free}(G)}$ is the set of generating morphisms of th
   Let $\mathrm{Free}(G)$ be a model schema and let $\mathsf{Arch}$ be a chosen architecture. A parameter specification function is a function $\mathsf{PSpec}$ which maps a pair $(\mathsf{Arch}, p)$ - comprised of an architecture $\mathsf{Arch}$ and some $p \in \mathfrak{P}(\mathsf{Arch})$ - to a functor $\mathsf{Model}_p: \mathbf{Free}(G) \to \mathbf{Smooth}$. The functor $\mathsf{Model}_p$ takes the model schema and returns its implementation according to $\mathsf{Arch}$, partially applying $p_f$ to each $\mathsf{Arch}(f)$, so that we obtain an actual smooth map. 
 \end{definition}
 
-The functor $\mathsf{Model}_p$ takes a schema and implements it replacing nodes with Euclidean spaces and arrows with appropriate smooth functions. Notice that, although we need to choose an architecture and specific values for its parameter in order to define $\mathsf{Model}_p$, the latter acts on the schema directly and does not pass through the architecture. See \textit{Fig. \ref{fig: layers}} for a srting diagram that depicts the relationship between $\mathsf{Arch}$ and $\mathsf{Model}_p$.
+The functor $\mathsf{Model}_p$ takes a schema and implements it replacing nodes with Euclidean spaces and arrows with appropriate smooth functions. Although we need to choose an architecture and specific values for its parameter in order to define $\mathsf{Model}_p$, the latter directly acts on the schema and does not pass through the architecture. See \textit{Fig. \ref{fig: layers}} for a srting diagram that depicts the relationship between $\mathsf{Arch}$ and $\mathsf{Model}_p$.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.35\textwidth]{figures/layers_of_abstraction.png}     
-    \caption[CycleGAN schema]{Functors are used to link different layers of abstraction in the framework of \cite{gavranovic2019compositional}. (Image taken from \cite{gavranovic2019compositional}.)}
+    \caption[Layers of abstraction]{Functors are used to link different layers of abstraction in the framework of \cite{gavranovic2019compositional}. (Image taken from \cite{gavranovic2019compositional}.)}
     \label{fig: layers}
   \end{center}
 \end{figure}
@@ -1242,14 +1132,14 @@ Now, if we hope to train the model we have defined, we will need a dataset. \cit
   The reason why \cite{gavranovic2019compositional} defines $E$ and $D_E$ on discretized categories is because it often happens in practical machine learning that the available data is not paired. In these cases, it would be meaningless to provide an action on morphisms because they would end up being incomplete maps.
 \end{remark}
 
-Given a node $A$ of $G$, we have associated to $A$ a Euclidean space $E(A)$ and a dataset $D_E(A)$. A dataset may be considered a collection of instances of something more specific than just vectors; for instance, if we have a finite dataset of pictures of horses, we are clearly interested in the concept of horse, that is in the set of all possible pictures of horses, which is much larger than our dataset but still much smaller than the vector space used to host such pictures. It makes thus sense to define another set $\mathfrak{C}(A)$ representing such concept: this set will satisfy the inclusion relations $D_E(A) \subseteq \mathfrak{C}(A) \subseteq E(A)$. Moreover, since concepts are assumed to be complete, we can extend $\mathcal{C}$ to a functor.
+Given a node $A$ of $G$, we have associated to $A$ a Euclidean space $E(A)$ and a dataset $D_E(A)$. A dataset may be considered a collection of instances of something more specific than just vectors; for instance, if we have a finite dataset of pictures of horses, we are clearly interested in the concept of horse, that is in the set of all possible pictures of horses, which is much larger than our dataset but still much smaller than the vector space used to host such pictures. It makes thus sense to define another set $\mathfrak{C}(A)$ representing such concept: this set will satisfy the inclusion relations $D_E(A) \subseteq \mathfrak{C}(A) \subseteq E(A)$. Moreover, since concepts are assumed to be complete, we can extend $\mathfrak{C}$ to a functor.
 
 \begin{definition}[Concept functor]
   Given a schema $\mathbf{Free}(G)/{\sim}$, an embedding $E$ and a dataset $D_E$, a concept associated with this information is a functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$ such that, if $I: |\mathbf{Free}(G)| \to \mathbf{Free}(G)/{\sim}$ is the inclusion functor, $D_E \subseteq I \fatsemi \mathfrak{C} \subseteq E$.
 \end{definition}
 
 As \cite{gavranovic2019compositional} states, $\mathfrak{C}$ is an idealization, but it is a useful idealization as it represent the goal of the optimization process: given a dataset $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$, we wish to learn the concept functor $\mathfrak{C}: \mathbf{Free}(G)/{\sim} \to \mathbf{Set}$. More concretely, we want to train a model $\mathsf{Model}_p$ which is as close of an approximation of $\mathfrak{C}$ as possible\footnote{Notice that $\mathsf{Model}_p$ and $\mathfrak{C}$ have different domains and codomains. The difference of codomains is not an issue: we can just forget the differential structure of the codomain of $\mathsf{Model}_p$, which yields a functor $H_p$ with image in $\mathbf{Set}$ (see \textit{Fig. \ref{fig: layers}}). The difference of domains, on the other hand, is by design as $\mathsf{Model}_p$ can only approximate the constraints imposed by $\sim$. This is not an issue in practice as we are only interested in the performance of the image of the trained model $\mathsf{Model}_p$.}. Total achievement of such goal is clearly impossible as, even in the simplest of cases (such as linear regression on synthetic linearly generated data), finite arithmetics and the finite nature of the learning iteration prevent us from obtaining a perfect copy of the generating function.
-Nevertheless, we will hopefully design an optimization process which makes the learning iteration converge towards the ideal goal.
+Nevertheless, it is often possible to design an optimization process which makes the model converge towards the ideal goal.
 
 Now that we know what the optimization goal is, we can define tasks. The task formalism brings together what has been defined in this section in an integrated fashion.
 
@@ -1257,7 +1147,7 @@ Now that we know what the optimization goal is, we can define tasks. The task fo
   Let $G$ be a directed multigraph, let ${\sim}$ be a congruence relation on $\mathbf{Free}(G)$ and let $D_E: |\mathbf{Free}(G)| \to \mathbf{Set}$ be a dataset. Then, we call the triple $(G,{\sim},D_E)$ a task.
 \end{definition}
 
-Once we are assigned a machine learning task $(G,{\sim},D_E)$, we have to choose an architecture, an embedding and a concept compatible with the given multigraph, equations and dataset. Then, we specify a random initial parameter with an appropriate parameter specification function. Now we can choose and optimizer, but we must be careful to choose an appropriate loss function. The loss function should incorporate both an architecture specific loss and a path equivalence loss. The former penalizes wrong predictions while the latter penalizes violations of the constraints embodied by ${\sim}$.
+Once we are assigned a machine learning task $(G,{\sim},D_E)$, we have to choose an architecture, an embedding and a concept compatible with the given multigraph, equations and dataset. Then, we specify a random initial parameter with an appropriate parameter specification function. Now we can choose an optimizer, but we must be careful to design an appropriate loss function. The loss function should incorporate both an architecture specific loss and a path equivalence loss. The former penalizes wrong predictions while the latter penalizes violations of the constraints embodied by ${\sim}$.
 
 \begin{definition}[Path equivalence loss]
   Let $(G,{\sim},D_E)$ be a task. Let $\mathsf{Model}_p$ be an associated model. Then, if $f \sim g: A \to B$ in $G$, we define the path equivalence loss associated with $f$, $g$ and $\mathsf{Model}_p$ as 
@@ -1268,31 +1158,23 @@ Once we are assigned a machine learning task $(G,{\sim},D_E)$, we have to choose
   Let $(G,{\sim},D_E)$ be a task. Let $\mathsf{Arch}$ be an associated architecture, let $\mathsf{Model}_p$ be an associated model, and let $\mathcal{L}'$ be an architecture specific loss. Suppose $\gamma$ is a non-negative hyperparameter. Then, we define the total loss associated with the task, the architecture, the model, and the hyperparameter as
   \begin{equation}
     \label{eq: sumoflosses}
-    \mathcal{L} = \mathcal{L}' + \gamma\sum_{f \sim g}\mathcal{L}_{\sim}^{f,g}
+    \mathcal{L} = \mathcal{L}' + \gamma\sum_{f \sim g}\mathcal{L}_{\sim}^{f,g}.
   \end{equation}
 \end{definition}
 
-We can now proceed as usual, computing the loss on the dataset for a number of epochs and updating the parameter $p$ each time. Notice that $\mathcal{L}$ implicitly depends on $p$ because each $\mathcal{L}_{\sim}^{f,g}$ does.
+We can now proceed as usual, computing the loss on the dataset for a number of epochs and updating the parameter $p$ each time.
 
-It is important to notice that, while the learning iteration employed by \cite{gavranovic2019compositional} is nothing new, the functor approach is actually novel, in that the usual optimization process is used to explore a functor space instead of a simple morphism space. This point of view offers two main advantages: on one hand, it separates different layers of abstraction are separated providing much needed conceptual clarity; on the other hand, it offers an explicit treatment of constraints, which are often only described implicitly and hidden away in the architecture of the model or in the loss function. 
+It is important to notice that, while the learning iteration employed by \cite{gavranovic2019compositional} is nothing new, the functor approach is actually novel, in that the usual optimization process is used to explore a functor space instead of a simple morphism space. This point of view offers two main advantages: on one hand, it separates different layers of abstraction are separated, which provides much needed conceptual clarity; on the other hand, it offers an explicit treatment of constraints, which are often only described implicitly and hidden away in the architecture of the model or in the loss function. 
 
 \subsection{Datasets influence the semantics of tasks}
 
 \cite{gavranovic2019compositional} centers its investigation around the powerful cycleGAN architecture (\cite{zhu2017unpaired}), which is described using an appropriate task consisting of the cycleGAN schema (see \textit{Fig. \ref{fig: cyclegan}}), the cycle consistency equations, and a cycleGAN dataset, that is, a dataset with two sets $A$ and $B$ containing data which is essentially isomorphic, such as pictures of horses and zebras. This description is particularly insightful because it can be used to prove a very important point: the choice of dataset influences the semantics of the learned task in non-trivial ways. In other words, changing the dataset functor can result in semantically different tasks even if the same schema and equations are retained. 
 
+For instance, combining the cycleGAN schema with the cycleGAN equations and a cycleGAN dataset yields a task whose semantics can be described as \textit{learn maps that turn horses into zebras and vice versa}. Now consider replacing the cycleGAN dataset with a new dataset consisting of two sets $A$ and $B$, where $A$ contains pictures depicting two elements $X$ and $Y$ together, and $B$ contains separate images of $X$ and $Y$. The resulting task has very different semantics: \textit{learn how to separate $X$ from $Y$}. \cite{gavranovic2019compositional} follows this paradigm and shows how the CelebA dataset can be used to train a neural network able to remove glasses from pictures of faces, and one able to insert them.
 
-The example shown in the paper is the \cite{gavranovic2019compositional}: combining the cycleGAN schema with the cycleGAN equations and a cycleGAN dataset yields a task whose semantics can be described as \textit{learn maps that turn horses into zebras and vice versa}. Now replace the cycleGAN dataset with a new dataset consisting of two sets $A$ and $B$, where $A$ contains pictures depicting two elements $X$ and $Y$ together, and $B$ contains separate images of $X$ and $Y$. The resulting task has very different semantics: \textit{learn how to separate $X$ from $Y$}. For instance, \cite{gavranovic2019compositional} shows how to use the CelebA dataset to train a neural network able to remove glasses from pictures of faces, or even insert them.
-
-
-This example is especially relevant to the present discussion because it shows how important the categorical structure of $\mathbf{Set}$ can be to machine learning. We can interpret pairs \textit{(face, glasses)} as elements of the Cartesian product of the set of faces and the set of glasses. On the other hand, the set of pictures of faces with glasses can instead be considered another categorical product of the aforementioned sets. Since categorical products are unique, we know that there must be a unique isomorphism between the two products. Then, one interpretation of the task becomes: \textit{find the canonical isomorphism}. \cite{gavranovic2019compositional} labels this task as the product task and shows empirical evidence of the validity of the approach.
-
-
-
-
+This example is especially relevant to the present discussion because it shows how important the categorical structure of $\mathbf{Set}$ can be to machine learning. We can interpret pairs \textit{(face, glasses)} as elements of the Cartesian product of the set of faces and the set of glasses. On the other hand, the set of pictures of faces with glasses can instead be considered another categorical product of the aforementioned sets. Since categorical products are unique, we know that there must be a unique isomorphism between the two products. The task at hand can thus be interpreted as \textit{find the canonical isomorphism}. \cite{gavranovic2019compositional} labels this task as \textit{product task}.
 
 \section{Categorical representation learning}
-
-
 
 We now discuss frameworks where the categorical structure of data is not only used to integrate data distributed among different sets (as in \cite{gavranovic2019compositional}) but also to model relationships within the data. Preserving and exploiting this structure functorially can lead to marked improvements in effectiveness and efficiency of the models in question  because the structure of data is often closely linked with its semantics (see e.g. \cite{sheshmani2021categorical}), especially in the field of natural language processing, or NLP (see e.g. \cite{coecke2010mathematical}, \cite{lewis2019compositionality}). 
 
