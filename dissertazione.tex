@@ -412,7 +412,7 @@ Then, we can define the category of lenses with backward passes additive in the 
   \[\mathbf{Lens}_A(\mathcal{C}) = \mathbf{Optic}_{\left(\begin{smallmatrix}\times \\ \otimes\end{smallmatrix}\right)}^{\mathcal{C}(-,\iota(-))}.\]
 \end{definition}
 
-As argued in \cite{gavranovic2024fundamental}, the symbol $\mathbf{Lens}_A$ is justified because one such optic of type $\left(\begin{smallmatrix}X \\ X'\end{smallmatrix}\right) \to \left(\begin{smallmatrix}Y \\ Y'\end{smallmatrix}\right)$ can be concretely represented as a lens with forward pass $f : \mathcal{C}(X,Y)$ and backward pass $f' : \mathcal{C}(X \times Y',X')$, which is the approach we illustrate in this thesis.  Nevertheless, some potential expressiveness is lost when passing from weighted optic composition to concrete lens composition. In particular, if we operated with optics, we would be able to implement backpropagation without resorting to gradient checkpointing, which is not possible if we use lenses (\cite{gavranovic2024fundamental}). 
+As argued in \cite{gavranovic2024fundamental}, the symbol $\mathbf{Lens}_A$ is justified because one such optic of type $\left(\begin{smallmatrix}X \\ X'\end{smallmatrix}\right) \to \left(\begin{smallmatrix}Y \\ Y'\end{smallmatrix}\right)$ can be concretely represented as a lens with forward pass $f : \mathcal{C}(X,Y)$ and backward pass $f' : \mathcal{C}(X \times Y',X')$, which is the approach we illustrate in this thesis.  Nevertheless, some potential expressivity is lost when passing from weighted optic composition to concrete lens composition. In particular, if we operated with optics, we would be able to implement backpropagation without resorting to gradient checkpointing, which is not possible if we use lenses (\cite{gavranovic2024fundamental}). 
 
 The generalization mentioned above is possible because $\mathbf{Lens}_A$ is an endofunctor.
 
@@ -1063,6 +1063,8 @@ To the best of our knowledge, no one has ever explicitly described SNN architect
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
+% ------------- CHAPTER 3
+
 \chapter{Functor Learning}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 
@@ -1176,19 +1178,13 @@ This example is especially relevant to the present discussion because it shows h
 
 \section{Categorical representation learning}
 
-We now discuss frameworks where the categorical structure of data is not only used to integrate data distributed among different sets (as in \cite{gavranovic2019compositional}) but also to model relationships within the data. Preserving and exploiting this structure functorially can lead to marked improvements in effectiveness and efficiency of the models in question  because the structure of data is often closely linked with its semantics (see e.g. \cite{sheshmani2021categorical}), especially in the field of natural language processing, or NLP (see e.g. \cite{coecke2010mathematical}, \cite{lewis2019compositionality}). 
+We now discuss frameworks where the categorical structure of data is not only used to integrate data distributed among different sets (as in \cite{gavranovic2019compositional}) but also to model relationships within the data. Functorially preserving and exploiting this structure can lead to marked improvements in effectiveness and efficiency of the models in question  because the structure of data is often closely linked with its semantics (see e.g. \cite{sheshmani2021categorical}), especially in the field of natural language processing, or NLP (see e.g. \cite{coecke2010mathematical}, \cite{lewis2019compositionality}). 
 
-
-The field of \textit{categorical representation learning} (\cite{coecke2010mathematical}, \cite{lewis2019compositionality}, \cite{sheshmani2021categorical}) aims to learn vectorial representations of data endowed with a categorical structure mirroring the one of the original data, so that models tranined on these representations can use the structure efficiently. This is often a symbolic-to-vectorial transformation, which poses conceptual and computational challenges (see e.g. \cite{coecke2010mathematical}). We will examine two examples of categorical representation learning: the approach of \cite{sheshmani2021categorical}, which uses the obtained representations to carry out (partially) unsupervised translation, and the approaches of \cite{coecke2010mathematical} and \cite{lewis2019compositionality}, which develop a compositional distributional model of meaning for NLP.
-
-
-
+The field of \textit{categorical representation learning} (\cite{coecke2010mathematical}, \cite{lewis2019compositionality}, \cite{sheshmani2021categorical}) aims to learn vectorial representations endowed with a categorical structure mirroring the one of the original data, so that models trained on these representations can use the structure efficiently. This is often a symbol-to-vector transformation, which poses conceptual and computational challenges (see e.g. \cite{coecke2010mathematical}). We will examine two examples of categorical representation learning: the approach of \cite{sheshmani2021categorical}, which uses the obtained representations to carry out (partially) unsupervised translation, and the approaches of \cite{coecke2010mathematical} and \cite{lewis2019compositionality}, which develop a compositional distributional model of meaning for NLP.
 
 \subsection{Unsupervised functorial translation}
 
-
-We now illustrate the approach of \cite{sheshmani2021categorical} showing how it is applied to the same example described in the original paper: unsupervised translation of the names of chemical elements from English to Chinese. The authors are tasked with converting between two identical chemical compound datasets, one labeled in English and the other in Chinese. Both datasets can be given a categorical structure by considering elements as objects and chemical bonds as morphisms. Suppose $\mathcal{C}$ and $\mathcal{D}$ are the resulting categories. The authors of \cite{sheshmani2021categorical} leverage the share structure by training a model to learn a translation functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$. To this aim, they then functorially embed these categories into the vector space category defined below, which will contain representations as objects.
-
+We now illustrate the approach of \cite{sheshmani2021categorical} showing how it is applied to the same example described in the original paper: unsupervised translation of the names of chemical elements from English to Chinese. The authors are tasked with converting between two identical chemical compound datasets, one labeled in English and the other in Chinese. Both datasets can be given a categorical structure by considering elements as objects and chemical bonds as morphisms. Suppose $\mathcal{C}$ and $\mathcal{D}$ are the resulting categories. The authors of \cite{sheshmani2021categorical} leverage the shared structure by training a model to learn a translation functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$. To this aim, they functorially embed these categories into the vector space category defined below, which contains representations as objects.
 
 \begin{definition}[Vector space category]
   \label{def: vecspacecat}
@@ -1197,19 +1193,17 @@ We now illustrate the approach of \cite{sheshmani2021categorical} showing how it
   Composition is ordinary matrix multiplication and the identity on $v$ is $\mathrm{id}_v = \frac{vv^T}{|v|^2}$.
 \end{definition}
 
-
-
-The embedding of $\mathcal{C}$ into $\mathcal{R}$ is   $\mathcal{C} \to \mathcal{R}$ functor which maps each object $a$ to a vector $v_a$ and each morphism $f$ to a matrix $M_f$. The actual mapping can be learned with a neural network consisting of two separate embedding layers: one mapping objects to vectors and one mapping relations to matrices. The authors of \cite{sheshmani2021categorical} train the embedding layers using co-occurrence statistics and negative sampling to make sure that the embedded morphisms actually represent the same relations as the original morphisms. Here, the authors of \cite{sheshmani2021categorical} take on a distributional point of view, positing that co-occurrence must encode such relations. In the authors' words, \dblquote{co-occurrence does not happen for no reason}. The training strategy used in the paper is the following: given two embedded words $a$ and $b$, model the probability of co-occurrence as $P(a \to b) = \mathsf{sigmoid}(z(a \to b))$, where the logit $z(a \to b)$ is defined as
+The embedding of $\mathcal{C}$ into $\mathcal{R}$ is a $\mathcal{C} \to \mathcal{R}$ functor which maps each object $a$ to a vector $v_a$ and each morphism $f$ to a matrix $M_f$. The actual mapping can be learned with a neural network consisting of two separate embedding layers: one mapping objects to vectors and one mapping relations to matrices. The authors of \cite{sheshmani2021categorical} train the embedding layers using co-occurrence statistics and negative sampling to make sure that the embedded morphisms actually represent the same relations as the original morphisms. Here, the authors of \cite{sheshmani2021categorical} take on a distributional point of view, positing that co-occurrence must encode such relations. In the authors' words, \dblquote{co-occurrence does not happen for no reason}. The training strategy used in the paper is the following: given two embedded words $a$ and $b$, model the probability of co-occurrence as $P(a \to b) = \mathsf{sigmoid}(z(a \to b))$, where the logit $z(a \to b)$ is defined as
 \[z(a \to b) = F\left(\bigoplus_f v_a^TM_fv_b \right).\]
 Here, $F$ is non-linear and $\oplus_f$ represents concatenation (or more sophisticated forms of aggregation) over all morphisms in $\mathcal{C}$. Taking on a probabilistic perspective allows us to represent non-strict relations, which is often necessary in machine learning. From this point of view, the likelihood of $f: a \to b$ is proportional to the degree of alignment between $v_b$ and $M_fv_a$ are closely aligned. The latter can be computed as $v_a^TM_fv_b$, and the non-linearity $F$ reads out these measurements into a single value. Now, the actual co-occurrence probability $p(a,b)$ of two objects $a,b : \mathcal{C}$ can be approximated directly from the dataset. Given a negative sampling distribution $p_N$ on objects unrelated to $a$, we can implement the negative sampling objective
 \[\mathcal{L} = \mathbb{E}_{(a,b) \sim p(a,b)}\left(\log P(a \to b) + \mathbb{E}_{b' \sim p(b')}\log (1-P(a \to b'))\right).\]
 The embedding network can then be trained by maximizing this objective function. The embedding of $\mathcal{D}$ into $\mathcal{R}$ can be defined and trained in the same way.
 
 \begin{remark}
-  Strictly speaking, morphisms in category should have a specific domain and a specific codomain but, in the case of the vector space category of \textit{Def. \ref{def: vecspacecat}}, a single matrix $M$ can be in many hom-sets of $\mathcal{R}$. This is mirrored by $\mathcal{C}$ and $\mathcal{D}$, where morphisms correspond to classes of chemical bond and the same morphism can link different objects. From this point of view, morphisms in $\mathcal{R}$, in $\mathcal{C}$, and in $\mathcal{D}$ behave more similarly to relations on sets than to morphisms in categories.  Although this line of thinking does not strictly adhere to the definition of category, it helps our intuition and greatly reduces the size of the model by limiting the number of parameters that need to be learned. We will see a possible formal solution to this problem later on in this section, when we discuss the approach of \cite{coecke2010mathematical} and \cite{lewis2019compositionality}.
+  Strictly speaking, morphisms in category should have a specific domain and a specific codomain but, in the case of the vector space category of \textit{Def. \ref{def: vecspacecat}}, a single matrix $M$ can be in many hom-sets of $\mathcal{R}$. This is mirrored by $\mathcal{C}$ and $\mathcal{D}$, where morphisms correspond to classes of chemical bond and the same morphism can link different objects. From this point of view, morphisms in $\mathcal{R}$, in $\mathcal{C}$, and in $\mathcal{D}$ behave more similarly to relations on sets than to morphisms in categories.  Although this line of thinking does not strictly adhere to the definition of category, it helps our intuition and greatly reduces the size of the model. We will see a possible formal solution to this problem later on in this section, when we discuss the approach of \cite{coecke2010mathematical} and \cite{lewis2019compositionality}.
 \end{remark}
 
-The procedure described above can be been applied to both $\mathcal{C}$ and $\mathcal{D}$ to obtain meaningful vectorial representations of both datasets. An English to Chinese translation functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$ can be similarly embedded as a $\mathcal{R} \to \mathcal{R}$ functor by precomposition with the $\mathcal{C} \to \mathcal{R}$ embedding and postcomposition with the inverse of the $\mathcal{D} \to \mathcal{R}$ embedding. Such functor must equate chemical bonds of the same kind, for example, if $f$ is a covalent bond so is $\mathcal{F}(f)$. It is argued in \cite{sheshmani2021categorical} that this functor can be represented by a matrix $V_\mathcal{F}$ so that $v_{\mathcal{F}(a)} =  V_\mathcal{F}v_a$ and $M_{\mathcal{F}(f)} = V_\mathcal{F}M_f$. This representation is only meaningful if (i) $V_{\mathcal{F}}M_f = M_{\mathcal{F}}V_{\mathcal{F}}$ for all $f$, (ii) $V_{\mathcal{F}}M_{\mathrm{id}_a} = M_{\mathrm{id}_{\mathcal{F}(a)}}$ for all $a$, and (iii) $V_{\mathcal{F}}M_{f \circ g} = V_{\mathcal{F}}M_fV_{\mathcal{F}}M_g$ for all $f,g$. This is not true for all choices of  $V_\mathcal{F}$ but, if we choose every $v_a$ to be a unit vector, and if we constrain $V_{\mathcal{F}}$ to be orthogonal, (ii) and (iii) are trivially satisfied. Requirement (i), on the other hand, can be learned by minimizing the following structure loss:
+The procedure described above can be been applied to both $\mathcal{C}$ and $\mathcal{D}$ to obtain meaningful vectorial representations of both datasets. An English to Chinese translation functor $\mathcal{F}: \mathcal{C} \to \mathcal{D}$ can be similarly embedded as an $\mathcal{R} \to \mathcal{R}$ functor by precomposition with the $\mathcal{C} \to \mathcal{R}$ embedding and postcomposition with the inverse of the $\mathcal{D} \to \mathcal{R}$ embedding. Such functor must equate chemical bonds of the same kind, for example, if $f$ is a covalent bond so is $\mathcal{F}(f)$. It is argued in \cite{sheshmani2021categorical} that this functor can be represented by a matrix $V_\mathcal{F}$ so that $v_{\mathcal{F}(a)} =  V_\mathcal{F}v_a$ and $M_{\mathcal{F}(f)} = V_\mathcal{F}M_f$. This representation is only meaningful if (i) $V_{\mathcal{F}}M_f = M_{\mathcal{F}}V_{\mathcal{F}}$ for all $f$, (ii) $V_{\mathcal{F}}M_{\mathrm{id}_a} = M_{\mathrm{id}_{\mathcal{F}(a)}}$ for all $a$, and (iii) $V_{\mathcal{F}}M_{f \circ g} = V_{\mathcal{F}}M_fV_{\mathcal{F}}M_g$ for all $f,g$. This is not true for all choices of  $V_\mathcal{F}$ but, if we choose every $v_a$ to be a unit vector, and if we constrain $V_{\mathcal{F}}$ to be orthogonal, (ii) and (iii) are trivially satisfied. Requirement (i), on the other hand, can be learned by minimizing the following structure loss:
 \[\mathcal{L}_{\mathrm{struc}} = \sum_{f}\|V_{\mathcal{F}}M_f - M_{\mathcal{F}(f)}V_{\mathcal{F}}\|^2.\]
 As the authors of \cite{sheshmani2021categorical} remark, this loss is universal, in the sense that it does not depend on any specific object, but acts on the morphisms themselves. While this approach is very elegant and does indeed return a functor, it might not produce the functor we expect because $V_{\mathcal{F}}$ is not unique if the $M_f$ happen to be singular. Thus, it is better to integrate the structure loss with a second alignment loss that introduces some supervision to the unsupervised translation task. For instance, if the value of $\mathcal{F}(a)$ is known for a set $A$ for objects, we can define
 \[\mathcal{L}_{\mathrm{align}} = \sum_{a \in A}\|V_{\mathcal{F}}v_a - v_{\mathcal{F}(a)}\|.\]
@@ -1221,28 +1215,23 @@ Then, the total loss can be written as a weighted sum
 where $\lambda$ is a hyperparameter that regulates the relative importance of the two losses.
 
 \begin{remark}
-  It is interesting to compare the total loss in \textit{Eq. \ref{eq: sumoflosses2}} to the one in \textit{Eq. \ref{eq: sumoflosses}}. In both cases, the total loss is obtained as a linear combination of a model specific loss and a second more abstract loss. Both abstract losses enforce equality between morphisms but the abstract loss in \textit{Eq. \ref{eq: sumoflosses2}} does not enforce functoriality because $\mathsf{Model}_p$ is already a functor by definition in the framework of \cite{gavranovic2019compositional}. This highlights the main difference between the approach of \cite{gavranovic2019compositional} and the approach of \cite{sheshmani2021categorical}: the latter requires functoriality to be learned from structure of data, while the former takes functoriality as a given.
+  It is interesting to compare the total loss in \textit{Eq. \ref{eq: sumoflosses2}} to the one in \textit{Eq. \ref{eq: sumoflosses}}. In both cases, the total loss is obtained as a linear combination of a model specific loss and a second more abstract loss. Both abstract losses enforce equality between morphisms but the abstract loss in \textit{Eq. \ref{eq: sumoflosses2}} does not enforce functoriality because $\mathsf{Model}_p$ is already a functor by definition in the framework of \cite{gavranovic2019compositional}. This highlights the main difference between the approach of \cite{gavranovic2019compositional} and the approach of \cite{sheshmani2021categorical}: the latter requires functoriality to be learned from the structure of data, while the former takes functoriality as a given.
 \end{remark}
 
-
-According to \cite{sheshmani2021categorical}, the categorical approach described above can also be strengthened by endowing the categories $\mathcal{C}$, $\mathcal{D}$, and $\mathcal{R}$ with monomial products that make combining objects into higher-level structures possible. In particular, the monomial structure $\otimes'$ of $\mathcal{R}$ can be given as
+According to \cite{sheshmani2021categorical}, the categorical approach described above can also be strengthened by endowing the categories $\mathcal{C}$, $\mathcal{D}$, and $\mathcal{R}$ with monoidal products that make combining objects into higher-level structures possible. In particular, the monoidal structure $\otimes'$ of $\mathcal{R}$ can be given as
 \begin{align*}
   v_a \otimes' v_b &= \Theta(v_a \otimes v_b),\\
   M_f \otimes' M_f &= \Theta(M_f \otimes M_g),\\
 \end{align*}
-where $\otimes$ is the Kronecker tensor product and $\Theta$ is a learned operator that sends the products back into the original spaces. This monomial structure can then be used to mine categorical structure on multiple levels: for instance, in the running example of unsupervised translation of chemicals, it can be used to derive vectorial representations for functional groups or even whole compounds. If the data has a non-obvious high-level structure, \cite{sheshmani2021categorical} suggests a bootstrap approach where different possible links are randomly tested and the stronger ones are selected.
+where $\otimes$ is the Kronecker tensor product and $\Theta$ is a learned operator that sends the products back into the original spaces. This monoidal structure can then be used to mine categorical structure on multiple levels: for instance, in the running example of unsupervised translation of chemicals, it can be used to derive vectorial representations for functional groups or even whole compounds. If the data has a non-obvious high-level structure, \cite{sheshmani2021categorical} suggests a bootstrap approach where different possible links are randomly tested and the stronger ones are selected.
 
-
-It is shown in \cite{sheshmani2021categorical} that the categorical representation learning framework described in the paper and the associated functor learning architecture for unsupervised translation can be successfully implemented. Benchmark tests against traditional sequence-to-sequence models show that the functorial paradigm leads to marked improvements in efficiency of learning. In particular, the authors compare a GRU cell model of similar performance as the functorial model described in the paper, noting that the former needs 17 times more parameters than the latter to learn to translate element names with a similar accuracy. The authors also compare their approach with the multi-head attention approach first introduced by \cite{vaswani2017attention}, arguing that their categorical approach is an improvement over multi-head attention as the matrices $M_f$ are essentially equivalent to the products $Q_f^TK_f$, where $Q_f$ is the query matrix associated to $f$ and $K_f$ is the key matrix associated to $f$. Keeping $M_f$ united emphasizes the important role of functoriality and provides intuition concerning the nature of the vectorial representations of objects: in fact, it makes sense to interpret each $M_f$ as a metric that distorts the space $\mathbb{R}^n$ and makes two vectors $v_a$ and $v_b$ closer if and only if there is a high likelihood that $a \stackrel{f}{\longrightarrow} b$.
-
-
+It is shown in \cite{sheshmani2021categorical} that the categorical representation learning framework described in the paper and the associated functor learning architecture for unsupervised translation can be successfully implemented. Benchmark tests against traditional sequence-to-sequence models show that the functorial paradigm leads to marked improvements in efficiency of learning. In particular, the authors compare the functorial model described in the paper with a GRU cell model of similar performance, noting that the former needs 17 times more parameters than the latter to learn to translate element names with a similar accuracy. The authors also compare their approach with the multi-head attention mechanism of \cite{vaswani2017attention}, arguing that the matrices $M_f$ are essentially equivalent to the products $Q_f^TK_f$, where $Q_f$ is a query matrix and $K_f$ is a key matrix. Keeping $M_f$ united emphasizes the important role of functoriality and provides intuition concerning the nature of the vectorial representations of objects: in fact, it makes sense to interpret each $M_f$ as a metric that distorts the space $\mathbb{R}^n$ and makes two vectors $v_a$ and $v_b$ closer if and only if there is a high likelihood that $a \stackrel{f}{\longrightarrow} b$.
 
 \subsection{Compositional distributional model for NLP}
 
-There are two general approaches to natural language processing (NLP): the \textit{compositional} approach and the \textit{contextual} approach. The former aims to exploit the symbolic structure of grammar to understand text, while the latter posits that many aspects of text can be understood from distributional properties of the words (\cite{amigo2022information}). While compositionality has been very popular with theoreticians due to its elegance and its abstract structure, contextuality has been successfully applied by practitioners, yielding remarkably effective NLP models that learn the meaning of words and utterances by embedding them in vector spaces. These embeddings are mostly based on contextual information. The fact that both compositionality and contextuality are successful in their domains hints that the two approaches should be seen as complementary and that it would be auspicable to integrate them both in a single \textit{compositional distributional framework}\footnote{Cognitive science faces a similar challenge in integrating the competing connectionists and symbolic models of the human mind. This is the central theme of \cite{smolensky2006harmonic}, whose approach inspired \cite{clark2007combining} (discussed in this section). The important role of language in cognition suggests that advances in the development of a compositional distributional model of language may yield advances in cognitive science and vice versa.} (see e.g. \cite{amigo2022information}, \cite{maruyama2019compositionality}). 
+There are two general approaches to natural language processing (NLP): the \textit{compositional} (also known as \textit{distributional}) approach and the \textit{contextual} approach. The former aims to exploit the symbolic structure of grammar to understand text, while the latter posits that many aspects of text can be understood from distributional properties of the words (\cite{amigo2022information}). While compositionality has been very popular with theoreticians due to its elegance and its abstract structure, contextuality has been successfully applied by practitioners, yielding remarkably effective NLP models that learn the meaning of words and utterances by embedding them in vector spaces based on contextual information. The fact that both compositionality and contextuality are successful in their domains hints that the two approaches should be seen as complementary and that it would be desirable to integrate them both in a single \textit{compositional distributional framework}\footnote{Cognitive science faces a similar challenge in integrating the competing connectionists and symbolic models of the human mind. This is the central theme of \cite{smolensky2006harmonic}, whose approach inspired \cite{clark2007combining} (discussed in this section). The important role of language in cognition suggests that advances in the development of a compositional distributional model of language may yield advances in cognitive science and vice versa.} (see e.g. \cite{amigo2022information}, \cite{maruyama2019compositionality}). 
 
-
-There have been numerous attempts to develop such a framework in the last few decades. For instance, \cite{clark2007combining} proposes to represent both text and the structural roles of its constituents as vectors, which can then be combines using sums and tensor products. We will focus on the approach of \cite{coecke2010mathematical}, whose authors take inspiration from the ideas in \cite{clark2007combining} and propose a framework that uses the language of compact closed categories to unite symbolic grammar rules with concrete representation vectors. Grammar is represented as a pregroup category, whereas vectorial representations are learned on vector spaces which are then organized within $\mathbf{FVect}$, the category of finite dimensional real vector spaces. We start by defining pregroup categories\footnote{We work under the same assumption as \cite{coecke2010mathematical}, namely, that each vector space in $\mathbf{FVect}$ is endowed with a scalar product $\langle-,-\rangle$.}.
+There have been numerous attempts to develop such a framework in the last few decades. For instance, \cite{clark2007combining} proposes to represent both text and the structural roles of its constituents as vectors, which can then be combined using sums and tensor products. We will focus on the approach of \cite{coecke2010mathematical}, whose authors take inspiration from the ideas in \cite{clark2007combining} and propose a framework that uses the language of compact closed categories to unite symbolic grammar rules with concrete representation vectors. Grammar is represented as a pregroup category, whereas vectorial representations are learned on vector spaces which are then organized within $\mathbf{FVect}$, the category of finite dimensional real vector spaces\footnote{We work under the same assumption as \cite{coecke2010mathematical}, namely, that each vector space in $\mathbf{FVect}$ is endowed with a scalar product $\langle-,-\rangle$.}. We start by defining pregroup categories.
 
 \begin{definition}[Pregroup]
   A pregroup is a monoidal poset category $P$ where each object $a$ has a left adjoint $a^l$ and a right adjoint $a^r$. The adjoints must be such that the following are true:
@@ -1253,16 +1242,15 @@ There have been numerous attempts to develop such a framework in the last few de
   where $1$ is the monoidal unit of $P$.
 \end{definition}
 
-The use of pregroups to model grammatical structures dates back to \cite{lambek1999type}. The key idea is that we can define a grammar category as the free pregroup $P$ generated by an initial set of basic grammatical roles. Then, we can represent various parts of speech using basic objects, their adjoints, and their monomial products. The poset structure of the pregroup serves as a system of reduction rules which can be used to prove if a sentence is grammatical. Consider the following example (taken from \cite{lewis2019compositionality}).
-
+The use of pregroups to model grammatical structures dates back to \cite{lambek1999type}. The key idea is that we can define a grammar category as the free pregroup $P$ generated by an initial set of basic grammatical roles. Then, we can represent various parts of speech using basic objects, their adjoints, and their monoidal products. The poset structure of the pregroup serves as a system of reduction rules which can be used to prove if a sentence is grammatical. Consider the following example (taken from \cite{lewis2019compositionality}).
 
 \begin{example}
-  Suppose $n$ represents the role of a noun and $s$ represents the role of a sentence. Then, an English transitive verb can be represented by the product $n^rsn^l$ in the pregroup $P$ generated by $s$ and $n$. Thus, the grammatical structure of the sentence \dblquote{Dragons breathe fire.} is
+  Suppose $n$ represents the role of a noun and $s$ represents the role of a sentence. Then, an English transitive verb can be represented by the product $n^rsn^l$ in the free pregroup $P$ generated by $s$ and $n$. Thus, the grammatical structure of the sentence \dblquote{Dragons breathe fire.} is
   \begin{equation}\
     \label{eq: grammreduction}
     n(n^rsn^l)n = nn^rsn^ln = (nn^r)s(n^ln) \leq 1s1 \leq s.
   \end{equation}
-  The pregroup axioms show that the structure of  \dblquote{Dragons breathe fire.} can be reduced to the sentence type $s$. This is proof that the sentence is grammatical. More complex patter can be modeled by adding more grammatical types or by combining types in other ways. These kinds of computations have a nice representation in the form of string diagrams such as the ones of \textit{Fig. \ref{fig: pregroup}}.
+  The pregroup axioms show that the structure of  \dblquote{Dragons breathe fire.} can be reduced to the sentence type $s$. This is proof that the sentence is grammatical. More complex patter can be modeled by adding more grammatical types or by combining types in other ways. These kinds of computations have a nice representation in the form of diagrams such as the ones of \textit{Fig. \ref{fig: pregroup}}.
 \end{example}
 
 \begin{figure}[h]
@@ -1275,7 +1263,7 @@ The use of pregroups to model grammatical structures dates back to \cite{lambek1
       \includegraphics[width=\textwidth]{figures/pregroup2.png}
       \caption{}
     \end{subfigure}         
-    \caption[Pregroup representation of grammar]{Two string diagram representations of the grammatical structure of the sentence \dblquote{Dragons breathe fire.} (Images taken from \cite{lewis2019compositionality}.)}
+    \caption[Pregroup representation of grammar]{Two diagrammatic representations of the grammatical structure of the sentence \dblquote{Dragons breathe fire.} (Images taken from \cite{lewis2019compositionality}.)}
     \label{fig: pregroup}
   \end{center}
 \end{figure}
@@ -1286,10 +1274,10 @@ The pregroup grammar framework is useful to analyze the basic structure of langu
   Consider the category $\mathbf{FVect}$ of finite-dimensional real vector spaces. Suppose $\otimes$ is the tensor product of vector spaces. Then, $(\mathbf{FVect}, \mathbb{R}, \otimes)$ is a monoidal category.  
   For all $V: \mathbf{FVect}$, define $V^l = V^r = V$ and consider the (co)unit linear maps:
   \begin{align*}
-    \eta_V^l = \eta_V^r: \mathbb{R} \to V \otimes V, \,\,\, &1 \mapsto \sum_i e_1 \otimes e_1,\\
+    \eta_V^l = \eta_V^r: \mathbb{R} \to V \otimes V, \,\,\, &1 \mapsto \sum_i e_i \otimes e_i,\\
     \epsilon_V^l = \epsilon_V^r: V \otimes V \to \mathbb{R}, \,\,\, &\sum_{i,j} c_{ij} e_i \otimes e_j \mapsto \sum_{i,j} c_{ij} \langle e_i, e_j \rangle,
   \end{align*}
-  where $e_1, \dots, e_n$ is a basis for $V$. Then, $(\mathbf{FVect}, \mathbb{R}, \otimes, (-)^l, (-)^r, \eta^l, \eta^r, \epsilon^l, \epsilon^r)$ is a compact closed monoidal category.
+  where $e_1, \dots, e_n$ is a basis for $V$. Then, $(\mathbf{FVect}, \mathbb{R}, \otimes, (-)^l, (-)^r, \eta^l, \eta^r, \epsilon^l, \epsilon^r)$ is a compact closed category.
 \end{proposition}
 
 Now, pregroups have a trivial compact-closed structure as well. Thus, the functor $\Phi$ can be defined so that it preserves the shared compact-closed structure just by mapping the poset relatioins of $P$ to the appropriate linear maps of $\mathbf{FVect}$. In practice, $\Phi$ can be used to take a formal reduction in $P$ and implement it in $\mathbf{FVect}$ as a series of operations on vectorial representations. The goal of this process is to take vectorial representations of single words in a sentence and obtain the vectorial representation of the meaning of the sentence. The compositional distributional model is thus compositional because it is build around the compositional structure of grammar and distributional because it allows us to encode distributional information in vectorial representations of words and sentences.
@@ -1300,16 +1288,11 @@ Now, pregroups have a trivial compact-closed structure as well. Thus, the functo
 \end{example}
 
 \begin{remark}
-  Differently from \cite{sheshmani2021categorical}, \cite{coecke2010mathematical} does not prescribe a specific method for learning the representations of individual words (some possible strategies are listed in the original paper), but specifies a strategy to combine existing representations to generate representations of more complex utterances up to the level of whole sentences. It is interesting to notice that both papers suggest using tensor products in order to combine representations of lower-level structures into representations of higher-level structures.
+  Differently from \cite{sheshmani2021categorical}, \cite{coecke2010mathematical} does not prescribe a specific method for learning the representations of individual words (some possible strategies are listed in the original paper), but it specifies a strategy to combine existing representations to generate representations of more complex utterances up to the level of whole sentences. It is interesting to notice that both papers suggest using tensor products in order to combine representations of lower-level structures into representations of higher-level structures.
 \end{remark}
 
-
-String diagrams such as the ones in \textit{Fig. \ref{fig: pregroup}} can be written down as binary trees thanks to the associativity of the monomial product of $P$ and the associativity of the tensor product of $\mathbf{FVect}$. 
-\cite{lewis2019compositionality} proposes to exploit this fact and augment the compositional distributional model of \cite{coecke2010mathematical} by implementing the (co)unit maps of $\mathbf{FVect}$ as one or more recursive neural network (TreeRNN) cells. The paper argues that the use of TreeRNN cells should make the model easier to train and more robust. To our knowledge, such proposal has not yet been implemented, although the use of TreeRNNs in NLP has already been applied in practice (see e.g. \cite{ahmed2019improving}).
-
-
-
-
+String diagrams such as the ones in \textit{Fig. \ref{fig: pregroup}} can be written down as binary trees thanks to the associativity of the monoidal products of $P$ and $\mathbf{FVect}$. 
+\cite{lewis2019compositionality} proposes to exploit this fact and augment the compositional distributional model of \cite{coecke2010mathematical} by implementing the (co)unit maps of $\mathbf{FVect}$ as one or more recursive neural network (TreeRNN) cells. The paper argues that the use of TreeRNN cells should make the model easier to train and more robust. To our knowledge, such proposal has not yet been implemented, although TreeRNNs have already been applied to NLP many times (see e.g. \cite{ahmed2019improving}).
 
 \section{Equivariant neural networks as functors}
 
@@ -1317,14 +1300,14 @@ String diagrams such as the ones in \textit{Fig. \ref{fig: pregroup}} can be wri
   We warn the reader that the paper \cite{chytas2024poolingimagedatasetsmultiple}, whose contents are discussed in this section, has been \textit{withdrawn by the authors} citing issues with the references. We decided against omitting the paper from this thesis because we think its research direction is intriguing and potentially highly valuable. Hopefully, future research will soon clarify the epistemological status of the ideas hereby discussed.
 \end{warning}
 
-\cite{chytas2024poolingimagedatasetsmultiple} presents a categorical framework that describes neural network layers as functors and uses their functorial nature to impose invariance and equivariance constraints. In particular, equivariance constraints are used to effectively transport the unary operators from the dataset into a latent embedding layer. It is shown that this enables the creation of models that account for shifts and imbalance in covariates when being trained on pooled medical image datasets. In this section, we describe the framework of \cite{chytas2024poolingimagedatasetsmultiple} and we draw a short comparison with the work of \cite{pfrommer2024transport}, which also deals with the transport of algebraic structure into embedding layers.
+\cite{chytas2024poolingimagedatasetsmultiple} presents a categorical framework that describes neural network layers as functors and uses their functorial nature to impose invariance and equivariance constraints. In particular, equivariance constraints are used to effectively transport unary operators from the dataset into a latent embedding layer. It is shown that this enables the creation of models that account for shift and imbalance in covariates when training on pooled medical image datasets. In this section, we describe the framework of \cite{chytas2024poolingimagedatasetsmultiple} and we draw a short comparison with the work of \cite{pfrommer2024transport}, which also deals with the transport of algebraic structure into embedding layers.
 
 
 \subsection{An equivariant classifier to diagnose Alzheimer's disease}
 
-The authors of \cite{chytas2024poolingimagedatasetsmultiple} consider a data category $\mathcal{S}$ whose objects $s$ are data points and whose morphisms $f: s_1 \to s_2$ represent differences in covariates. An example considered in the paper is the following: suppose the objects $s$ are comprised of brain scans and associated information concerning patient age and other covariates. The goal is to develop a model trained to diagnose Alzheimer's disease from the scans. An example of morphism in such data category is $f_x: s_1 \to s_2$, which indicates a difference of $x$ years in age\footnote{Notice that this kind of operator clearly possesses an algebraic structure as $f_x \fatsemi f_y = f_{x+y}$.}: $s_2.\mathrm{age} = s_1.\mathrm{age} + x$. Since we are dealing with a classification task, the dataset here has labels. It is important not to include the labels in the data category, else any classifier model would just read such labels instead of learning to predict them. Use the notation $\mathbf{y}_s$ to represent the label associated to $s$. Since the dataset has labels while the data category must not have them, we feel justified in using the phrase data category in place of the phrase dataset category employed above.
+The authors of \cite{chytas2024poolingimagedatasetsmultiple} consider a data category $\mathcal{S}$ whose objects $s$ are data points and whose morphisms $f: s_1 \to s_2$ represent differences in covariates. An example considered in the paper is the following: suppose the objects $s$ are comprised of brain scans and associated information concerning patient age and other covariates. The goal is to develop a model trained to diagnose Alzheimer's disease from the scans. An example of morphism in such a data category is $f_x: s_1 \to s_2$, which indicates a difference of $x$ years in age: $s_2.\mathrm{age} = s_1.\mathrm{age} + x$. Notice that this kind of operator is clearly endowed with an algebraic structure as $f_x \fatsemi f_y = f_{x+y}$. Since we are dealing with a classification task, the dataset at hand has labels. It is important not to include the labels in the data category, else any classifier model would just read such labels instead of learning to predict them. Use the notation $\mathbf{y}_s$ to represent the label associated to $s$. 
 
-Now, if we consider another category $\mathcal{T}$, we can use a functor $F: \mathcal{S} \to \mathcal{T}$ to project $\mathcal{S}$ onto $\mathcal{T}$. Learning such functor instead of a simple map between objects is advantageous because the functoriality axioms imply that $F$ automatically satisfies equivariance constraints: if $g: s_1 \to s_2$,
+Now, if we consider another category $\mathcal{T}$, we can use a functor $F: \mathcal{S} \to \mathcal{T}$ to project $\mathcal{S}$ onto $\mathcal{T}$. Learning this functor instead of a simple map between objects is advantageous because the functoriality axioms imply that $F$ automatically satisfies equivariance constraints. This is trivial: if $g: s_1 \to s_2$, then
 \begin{equation}
   \label{eq: categorical_equivariance}
   F(g): F(s_1) \to F(s_2).
@@ -1335,7 +1318,6 @@ Invariance with respect to $g$ is not much harder to define: it suffices to impo
   \textit{Eq. \ref{eq: categorical_equivariance}} is a categorical generalization of the more usual group-theoretical notion of invariance, as defined in \textit{Def. \ref{def: equivariance}}. To be precise, \textit{Def. \ref{def: equivariance}} is equivalent to \textit{Eq. \ref{eq: categorical_equivariance}} if $\mathcal{S}$, $\mathcal{T}$ are Borel spaces and $g$, $F(g)$ are group actions, as highlighted in \cite{chytas2024poolingimagedatasetsmultiple}.
 \end{remark}
 
-
 The authors of \cite{chytas2024poolingimagedatasetsmultiple} solve the Alzheimer's disease diagnosis task using a classifier that actively exploits the equivariant nature of functors. The proposed architecture consists of two modules: an invertible functor $F: \mathcal{S} \to \mathcal{T}$ that embeds the data into a latent space, and a functor $C: \mathcal{T} \to \mathbf{Free}(\mathbb{N})$ that does the actual classification (see \textit{Fig. \ref{fig: classifier}} for a diagrammatic representation). Here, $\mathcal{T}$ acts as a latent space and the equivariance of $F$ forces the representations in $\mathcal{T}$ to be robust with respect to covariate shifts and imbalances, so that the actual classification operated by $\mathcal{C}$ can be more effective at diagnosing the disease. The whole model can be compactly represented as $F \fatsemi C: \mathcal{S} \to \mathbf{Free}(\mathbb{N})$. Although the inverse of $F$ does not appear in the formula, its existence is needed to ensure that the latent space accurately represents the data.
 
 \begin{figure}[h]
@@ -1345,8 +1327,6 @@ The authors of \cite{chytas2024poolingimagedatasetsmultiple} solve the Alzheimer
     \label{fig: classifier}
   \end{center}
 \end{figure}
-
-
 
 The classifier described above is implemented using similar tools as the ones employed by \cite{sheshmani2021categorical}. The latent space $\mathcal{T}$ can be defined as a vector space category as in \textit{Def. \ref{def: vecspacecat}}. The functor $F$ is realized as the encoder of an appropriate autoencoder, and the decoder portion of this autoencoder acts as the inverse $F^{-1}$. The maps $f: \mathcal{S}(s_1,s_2)$ can be embedded as matrices as described in the previous section. In particular, \cite{chytas2024poolingimagedatasetsmultiple}  suggests using orthogonal matrices $F(f) = W_f$ so that the resulting transformations can be efficiently inverted.
 Finally, $C$ can be implemented as a MLP classifier.
@@ -1365,17 +1345,16 @@ The authors of \cite{chytas2024poolingimagedatasetsmultiple} test the validity o
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.7\textwidth]{figures/rotations_and_scaling.png}     
-    \caption[Classifier]{The authors of \cite{chytas2024poolingimagedatasetsmultiple} applied rotations and scaling on MNIST images using the operators learned in the latent space. Despite being learned separately, the two transformations were successfully combined. (Image taken from \cite{chytas2024poolingimagedatasetsmultiple}.)}
+    \caption[Scaling and rotations of MNIST images]{The authors of \cite{chytas2024poolingimagedatasetsmultiple} applied rotations and scaling on MNIST images using the operators learned in the latent space. Despite being learned separately, the two transformations were successfully combined. (Image taken from \cite{chytas2024poolingimagedatasetsmultiple}.)}
     \label{fig: rotationsscaling}
   \end{center}
 \end{figure}
 
 \subsection{Transporting algebraic structure into embedding spaces}
 
-Although stated in terms of equivariance conditions, the work of \cite{chytas2024poolingimagedatasetsmultiple} can be seen from an algebraic point of view as a framework that allows to transport unary operators from a space of data to an embedding space. This line of thinking has also been explored by \cite{pfrommer2024transport}. While \cite{pfrommer2024transport} deos not use category theory, the authors themselves state that their approach could be easily categorified using the language of categorical algebras (see \textit{Def. \ref{def: endalg}}). The main innovation of \cite{pfrommer2024transport} is the use of \textit{mirrored algebras} to fill the gaps between original data and the embeddings.
+Although stated in terms of equivariance conditions, the work of \cite{chytas2024poolingimagedatasetsmultiple} can be seen from an algebraic point of view as a framework that allows to transport unary operators from a space of data to an embedding space. This line of thinking has also been explored by \cite{pfrommer2024transport}. While \cite{pfrommer2024transport} deos not use category theory, the authors themselves state that their approach could be easily categorified using the language of categorical algebras (\textit{Def. \ref{def: endalg}}). The main innovation of \cite{pfrommer2024transport} is the use of \textit{mirrored algebras} to fill the gaps between original data and the embeddings.
 
-
-Consider a pre-trained autoencoder consisting of an encoder $E: \mathcal{S} \to \mathcal{L}$ and a decoder $D: \mathcal{L} \to \mathcal{S}$, where $\mathcal{S}$ is a data space endowed with an algebraic structure, such as a monomial product $\bullet^{\mathcal{S}}$, and where $\mathcal{L}=\mathbb{R}^n$ is a latent space. Suppose we want to transport this algebraic structure to $\mathbb{R}^n$ through $E$, that is, we want to find a monomial product $\bullet^{\mathcal{L}}$ over $\mathcal{L}$ so that $E$ acts as a $(\mathcal{S},\bullet^{\mathcal{S}}) \to (\mathcal{L},\bullet^{\mathcal{L}})$ homomorphism. While finding a product $\ast$ that makes $(\mathcal{S},\bullet^{\mathcal{S}})$ and $(\mathcal{L},\bullet^{\mathcal{L}})$ homomorphic might be easy, there is no guarantee that $E$ is an actual homomorphism with respect to this choice of algebraic structure. \cite{chytas2024poolingimagedatasetsmultiple} solves this problem for unary operators by learning appropriate orthogonal matrices, but it is not clear how this approach could be scaled to operators with arities greater than $1$.  \cite{pfrommer2024transport} suggests an alternative approach consisting in learning a bijection $\phi$ between the latent space and a copy $\mathcal{M} = \mathbb{R}^n$ of this space. Endow $\mathcal{M} = \mathbb{R}^n$ with a product $\bullet^{\mathcal{M}}$ which enjoyes similar properties as $\bullet^{\mathcal{S}}$ (see \textit{Fig. \ref{fig: algtranspor}}). We will say that $(\mathcal{M},\bullet^{\mathcal{M}})$ is the mirrored algebra of $(\mathcal{S},\bullet^{\mathcal{S}})$. Now train $\phi$ so that $E$ is $(\mathcal{S},\bullet^{\mathcal{S}}) \to (\mathcal{L},\bullet^{\mathcal{L}})$ homomorphism, where $\bullet^{\mathcal{L}}$ is defined by
+Consider a pre-trained autoencoder consisting of an encoder $E: \mathcal{S} \to \mathcal{L}$ and a decoder $D: \mathcal{L} \to \mathcal{S}$, where $\mathcal{S}$ is a data space endowed with an algebraic structure, such as a monoidal product $\bullet^{\mathcal{S}}$, and where $\mathcal{L}=\mathbb{R}^n$ is a latent space. Suppose we want to transport this algebraic structure to $\mathbb{R}^n$ through $E$, that is, we want to find a monoidal product $\bullet^{\mathcal{L}}$ over $\mathcal{L}$ so that $E$ acts as a $(\mathcal{S},\bullet^{\mathcal{S}}) \to (\mathcal{L},\bullet^{\mathcal{L}})$ homomorphism. While finding a product $\bullet^{\mathcal{L}}$ that makes $(\mathcal{S},\bullet^{\mathcal{S}})$ and $(\mathcal{L},\bullet^{\mathcal{L}})$ homomorphic might be easy, there is no guarantee that $E$ is an actual homomorphism with respect to this choice of algebraic structure. \cite{chytas2024poolingimagedatasetsmultiple} solves this problem for unary operators by learning appropriate orthogonal matrices, but it is not clear how this approach could be scaled to operators with arities greater than $1$.  \cite{pfrommer2024transport} suggests an alternative approach consisting in learning a bijection $\phi$ between the latent space and a copy $\mathcal{M} = \mathbb{R}^n$ of this space. Endow $\mathcal{M} = \mathbb{R}^n$ with a product $\bullet^{\mathcal{M}}$ which enjoyes similar properties as $\bullet^{\mathcal{S}}$ (see \textit{Fig. \ref{fig: algtransport}}). We will say that $(\mathcal{M},\bullet^{\mathcal{M}})$ is the mirrored algebra of $(\mathcal{S},\bullet^{\mathcal{S}})$. Now train $\phi$ so that $E$ is $(\mathcal{S},\bullet^{\mathcal{S}}) \to (\mathcal{L},\bullet^{\mathcal{L}})$ homomorphism, where $\bullet^{\mathcal{L}}$ is defined by
 \[l_1 \bullet^{\mathcal{L}} l_2 = \phi^{-1}(\phi(l_1) \bullet^{\mathcal{M}} \phi(l_2)).\]
 
 \begin{figure}[h]
@@ -1388,107 +1367,16 @@ Consider a pre-trained autoencoder consisting of an encoder $E: \mathcal{S} \to 
 
 As stated in \cite{pfrommer2024transport}, the bijection $\phi$ can be implemented as an invertible neural network and can be trained using a loss in the form
 \[\mathcal{L} = \frac{1}{N}\sum_{i=1}^N d(D(p_i^{\mathcal{L}}(E(s_1),\dots,E(s_{n_i}))),p_i^{\mathcal{S}}(s_1, \dots, s_{n_i}))\]
-where the $p_i^{\mathcal{S}}$ are algebraic expressions sampled from the set of expressions over $(\mathcal{S},\bullet^{\mathcal{S}})$, the $s_j$ are sampled from $\mathcal{S}$, $p_i^{\mathcal{L}}(t_1,\dots,t_{n_i})$ is defined as $\phi^{-1}(p_i^{\mathcal{M}}(\phi(t_1),\dots,\phi(t_{n_i})))$, $p_i^{\mathcal{M}}$ is the translation of $p_i^{\mathcal{S}}$ in terms of the algebraic structure of $(\mathcal{M},\bullet^{\mathcal{M}})$, and $d$ is an appropriate distance function.
+where the $p_i^{\mathcal{S}}$ are algebraic expressions sampled from the set of expressions over $(\mathcal{S},\bullet^{\mathcal{S}})$, the $s_j$ are sampled from $\mathcal{S}$, $p_i^{\mathcal{L}}(l_1,\dots,l_{n_i})$ is defined as $\phi^{-1}(p_i^{\mathcal{M}}(\phi(l_1),\dots,\phi(l_{n_i})))$, $p_i^{\mathcal{M}}$ is the translation of $p_i^{\mathcal{S}}$ in terms of the algebraic structure of $(\mathcal{M},\bullet^{\mathcal{M}})$, and $d$ is an appropriate distance function.
 
-
-We only presented a sketch of the work in \cite{pfrommer2024transport}: the original paper presents the framework in terms of any general algebraic structure, deals with laws that regulate the interaction of different operations, proves theoretical guarantees, and explores limitations of the proposed approach. It is shown in the paper that it is not always possible to find a mirrored algebra whose operations satisfy the same laws of the source algebra, which means that it is not always possible to transport this algebraic structure in its entirely. Nevertheless, the authors carry out experiments that prove that there are tangible advantages even in transporting a subset of the algebraic laws. The experiments support the following conjecture: \dblquote{learned latent space operations will achieve higher performance if they are constructed to satisfy the laws of the underlying source algebra} (\cite{pfrommer2024transport}). 
+We only presented a sketch of the work in \cite{pfrommer2024transport}: the original paper presents the framework in terms of any general algebraic structure, deals with laws that regulate the interaction of different operations, proves theoretical guarantees, and explores the limitations of the proposed approach. It is shown in the paper that it is not always possible to find a mirrored algebra whose operations satisfy the same laws of the source algebra, which means that it is not always possible to transport this algebraic structure in its entirely. Nevertheless, the authors carry out experiments that prove that there are tangible advantages even in transporting a subset of the algebraic laws. The experiments support the following conjecture: \dblquote{learned latent space operations will achieve higher performance if they are constructed to satisfy the laws of the underlying source algebra} (\cite{pfrommer2024transport}). 
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% ------------- CHAPTER 4
 
 \chapter{Detailed Representations of Neural Networks}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
-
 
 \begin{figure}[h]
   \begin{center}
@@ -1498,30 +1386,24 @@ We only presented a sketch of the work in \cite{pfrommer2024transport}: the orig
   \end{center}
 \end{figure}
 
+One of the main concerns arising from machine learning research is low reproducibility. This is not a simple issue and investigation by many authors (see e.g. \cite{raff2019step}, \cite{pineau2021improving}, \cite{gundersen2022sources}) has suggested that many factors might be at play (e.g., bad incentives, unsatisfying experiment design, incorrect evaluation practices, and so on). Source code availability is a recurring theme in these discussions: for instance \cite{gundersen2022sources} observes that \dblquote{code describes implementation details perfectly and is required for outcome reproducibility for experiments of some complexity}. Similarly, \cite{pineau2021improving} describes efforts of the NeurIPS19 conference to improve reproducibility by requiring authors to provide source code. The paper justifies this requirement by speculating that the reproducibility issues affecting machine learning research might be partly caused by a reporting problem within the community, as machine learning papers often do not report all the details needed to reimplement the models they describe. For instance, it is argued that hyperparameters are often missing, together descriptions of entire components of the models at hand and descriptions of the pipeline and external tools employed.
 
-One of the main concerns arising from machine learning research is low reproducibility. This is not a simple issue and investigation by many authors (see e.g. \cite{raff2019step}, \cite{pineau2021improving}, \cite{gundersen2022sources}) have suggested that many factors might be at play (such as bad incentives, unsatisfying experiment design, incorrect evaluation practices, and so on). Source code availability is a recurring theme in these discussions: for instance \cite{gundersen2022sources} observes that \dblquote{Code describes implementation details perfectly and is required for outcome reproducibility for experiments of some complexity}. Similarly, \cite{pineau2021improving} describes efforts of the NeurIPS19 conference to improve reproducibility by requiring authors to provide source code. The paper justifies this requirement by speculating that the reproducibility issues affecting machine learning research might be partly caused by a reporting problem within the community, as machine learning papers often do not report all the details needed to reimplementing the models they describe. For instance, it is argued that hyperparameters are often missing, together descriptions of entire components of the models at hand and descriptions of the pipeline and external tools employed.
+While making code and datasets as available as possible can certainly be considered a good practice, it is argued in \cite{abbott2024neural}, \cite{khatri2024anatomy}, and \cite{phuong2022formal} that over-reliance on code is detrimental to research. In fact, while it is tautologically true that code perfectly describes implementation, code is hardly effective at capturing the essential structure of a machine learning model. Even high-level code (like Python or R code) tends to be excessively verbose and drowns important details in a sea of instructions that have little to do with the theory at play. Hence, the question remains: how should machine learning researches represent their models? This question is extremely relevant in deep learning, where the size and complexity of models is ever increasing. For instance, even the ubiquitous transformer introduced by \cite{vaswani2017attention} is a complex piece of machinery with many components, and it is very challenging to provide a satisfying description.
 
-While making code and datasets as available as possible can certainly be considered a good practice for machine learning researchers, it is argued in \cite{abbott2024neural}, \cite{khatri2024anatomy}, and \cite{phuong2022formal} that over-reliance on code is detrimental to research. In fact, while it is tautologically true that code perfectly describes implementation, code is hardly effective at capturing the essential structure of a machine learning model. Even high-level code (like Python or R code) tends to be excessively verbose and drowns important details in a sea of instructions that have little to do with the theory at play. Hence, the question remains: how should machine learning researches represent their models? This question is extremely relevant in deep learning, where the size and complexity of models is ever increasing. For instance, even the ubiquitous transformer introduced by \cite{vaswani2017attention} is a complex piece of machinery with many components, and it is very challenging to provide a satisfying description.
+Many authors describe their models through equations, but this becomes more and more difficult as the size of the models grows. This is especially true especially if complex tensor operations need to be carried out as ordinary tensor notation is not very readable (\cite{xu2023graph}). Interestingly, the number of equations contained in a paper has been found to be negatively correlated to reproducibility (\cite{raff2019step}). An alternative approach that is becoming increasingly common is the use of specially crafted diagrams. For instance, \textit{Fig. \ref{fig: transformer}} shows the transformer blueprint as provided in the original paper \cite{vaswani2017attention} (the annotations are not from the original authors). \textit{Ad hoc} diagrams are intuitive but, as argued in \cite{abbott2024neural} and \cite{khatri2024anatomy}, they suffer from a lack of systematicity and do not usually have significant mathematical properties.
+Moreover, important information is often omitted from the diagrams and the reader has to carefully parse the text to (hopefully) find or deduce it. For instance, the diagrams in \textit{Fig. \ref{fig: transformer}} do not provide any information concerning the size of the matrices $Q$, $K$, and $V$, nor is it clear across which dimension the softmax should be computed.
 
-Many authors describe their models through equations, but this becomes more and more difficult as the size of each model grows, especially if complex tensor operations need to be carried out as ordinary tensor notation is not very readable (\cite{xu2023graph}). Interestingly, the number of equations contained in a paper has been found to be negatively correlated to reproducibility (\cite{raff2019step}). Alternatively, it is becoming more and more commond to describe models using specially crafted diagrams. For instance, \textit{Fig. \ref{fig: transformer}} shows the transformer blueprint as provided in the original paper \cite{vaswani2017attention} (the annotations are not from the original authors). These diagrams are intuitive but, as argued in \cite{abbott2024neural} and \cite{khatri2024anatomy}, they suffer from a lack of systematicity: they are usually \textit{ad hoc} and do not have significant mathematical properties.
-Moreover, important information is often omitted from the diagrams and the reader has to carefully parse the text to (hopefully) find or deduce it. For instance, the diagrams in \textit{Fig. \ref{fig: transformer}} do not provide any information concerning the size of the matrices $Q$, $K$, or $V$, nor is it clear from them across which dimension the softmax should be compuited.
+The \textit{ad hoc} diagrams often employed by machine learning researchers should be compared with the monoidal string diagrams that are almost standardized across applied category theory (see e.g. \cite{bonchi2022string}). We have already seen many such diagrams in the previous chapters, especially when describing optics (see e.g. \textit{Fig. \ref{fig: lenses}}). On top of being standardized, monoidal string diagrams have precise categorical semantics and can thus be used to write down rigorous mathematical proofs and computations. Given these good properties, it is reasonable to ask whether the systematic use of monoidal string diagrams to represent machine learning models might be helpful. Regrettably monoidal string diagrams are also very inefficient at representing the details of tensor operations. The reader can appreciate this from \textit{Fig. \ref{fig: suplearnlenses}}, where dimensionality is all but hidden. This is the price that needs to be paid for generality, as monoidal string diagrams can represent mathematical objects that go well-beyond tensors. Nevertheless, there have been attempts by \cite{abbott2023robust} and by \cite{khatri2024anatomy} to adapt the box-wire notation of monoidal string diagrams so that it can perfectly represent a neural network architecture without leaving out important details. Category theory can then be used to provide rigorous semantics to these diagrams. Hopefully, such diagrams will be able to convey the information that is necessary for implementation and theoretical analysis, leading to improved insight and better reproducibility.
 
-The \textit{ad hoc} diagrams often employed by machine learning researchers should be compared with the monoidal string diagrams that are almost standardized across applied category theory research (see e.g. \cite{bonchi2022string}). We have already seen many such diagrams in the previous chapters of this thesis, especially in the description of optics (see e.g. \textit{Fig. \ref{fig: lenses}}). On top of being standardized, monoidal string diagrams have precise categorical semantics and can thus be used to write down rigorous mathematical proofs and computations. Given these good properties and given the promising results described in \textit{Chpt. 1}, it is reasonable to ask whether the systematic use of monoidal string diagrams to represent machine learning models might be helpful. Regrettably monoidal string diagrams are also very inefficient at representing the details of tensor operations. The reader can appreciate this from \textit{Fig. \ref{fig: suplearnlenses}}, where dimensionality is all but hidden. This is the price that needs to be payed for generality, as monoidal string diagrams can represent mathematical objects that go well-beyond tensors. Nevertheless, there have been attempts by \cite{abbott2023robust} and by \cite{khatri2024anatomy} to adapt the box-wire notation of monoidal string diagrams so that it can perfectly represent a neural network architecture without leaving out implementational details. Category theory can then be used to provide rigorous semantics to these diagrams. Hopefully, such diagrams will be able to convey the information that is necessary for implementation and theoretical analysis, leading to improved insight and better reproducibility.
-
-In this chapter, we discuss the two aforementioned categorical diagrammatic approaches and we compare them with other non-categoric and even non-graphical approaches to the problem of representing a neural network. The papers we discuss measure the validity of their approaches against the problem of representing the transformer architecture, which is both well-known and highly non-trivial. We will reproduce some of the diagrams in questions to give an idea of how the different approaches compare. Regrettably, space concerns prevent us from fully describing the categorical mathematics behind the approaches in question, but the reader can find complete accounts of each in the respective papers.
-
-
-
-
+In this chapter, we discuss the two aforementioned categorical diagrammatic approaches and we compare them with other non-categoric and even non-graphical approaches to the problem of representing a neural network. The papers we discuss measure the validity of their approaches against the problem of representing the transformer architecture, which is both well-known and highly non-trivial. We will reproduce some of the diagrams in questions to give an idea of how the approaches compare. Regrettably, we lack the necessary space to fully describe the categorical semantics of the diagrams in question, but the reader can find complete accounts of each approach in the respective papers.
 
 \section{Neural circuit diagrams}
 
-\cite{abbott2023robust} proposes to compensate for the shortcomings of monoidal string diagrams by introducing a novel kind of string diagrams: neural circuits diagrams. neural circuits diagrams are a specialization of a broader class of powerful string diagrams known as functor string diagrams, developed in order to represent objects, morphisms, functors, natural transformations, and products in a single diagram. In this section, we provide a brief description of both classes of diagrams, and we show how neural circuits diagrams can be used to describe the sophisticated transformer architecture.
-
+\cite{abbott2023robust} proposes to compensate for the shortcomings of monoidal string diagrams by introducing a novel kind of string diagrams: neural circuits diagrams. neural circuits diagrams are a specialization of a broader class of powerful string diagrams known as functor string diagrams, developed in order to represent objects, morphisms, functors, natural transformations, and products in a single diagram. In this section, we provide a brief description of both classes of diagrams, and we show how neural circuits diagrams can be used to describe the transformer architecture.
 
 \subsection{Functor string diagrams}
 
-Despite their unquestionable usefulness, monoidal string diagrams have are fundamentally limited by their inability to represent functors and natural transformations. \cite{marsden2014category} and \cite{nakahira2023diagrammatic} solve this relying on colors and symbols, but this only shifts the problem as their diagrams are unable to effectively represent products (\cite{abbott2024functor}). Functor string diagrams follow a different approach: they represent both objects and functors as wires and both morphisms and natural transformations as boxes\footnote{In simple string diagrams, the actual box is often not drawn for the sake of simplicity. In these cases, the box is replaced by a single letter, but we still use the word \dblquote{box} in lack of a better word.}. These diagrams as built around two fundamental principles, which are already observed in traditional string diagrams. Following these principles ensures that the diagrammatic syntax stays consistent and coherent with the underlying categorical structure as notation becomes more complicated and more features as added. 
+Despite their unquestionable usefulness, monoidal string diagrams have are fundamentally limited by their inability to represent functors and natural transformations. \cite{marsden2014category} and \cite{nakahira2023diagrammatic} solve this issue by relying on colors and symbols, but this only shifts the problem as their diagrams are unable to effectively represent products (\cite{abbott2024functor}). Functor string diagrams follow a different approach: they represent both objects and functors as wires and both morphisms and natural transformations as boxes\footnote{In functor string diagrams, the actual box is often not drawn for the sake of simplicity. In these cases, the box is replaced by a single letter, but we still use the word \dblquote{box} for lack of better terminology.}. These diagrams are built on two fundamental principles, which are already observed in traditional string diagrams. Following these principles ensures that the diagrammatic syntax stays consistent with the underlying categorical structure as it becomes more expressive. 
 
 \begin{principle}[Vertical section decomposition]
   A string diagram can be divided into vertical columns. A single vertical columns must either contain only objects or only morphisms. Object columns and morphism columns must alternate each other.
@@ -1531,7 +1413,7 @@ Despite their unquestionable usefulness, monoidal string diagrams have are funda
   Every newly introduced piece of graphical notation must be expressible using the notation already present in a compatible manner.
 \end{principle}
 
-In accordance with the above principles, \cite{abbott2023robust} introduces notation that represents a functors as wires that lie above objects wires and natural transformations as boxes that lie above morphism boxes (see \textit{Fig. \ref{fig: functorstringdiagrams} (a), (b)}). In standard string diagrams, a wire running through a morphism column is interpreted as an identity morphism. Similarly, in the notation of \cite{abbott2023robust}, a wire running where a natural transformation is supposed to be is interpreted as an identical natural transformation. This diagrammatic notation is already effective enough to write a graphical proof of the Yoneda lemma, and can be easily adapted to represent product bifunctors: it suffices to stack two rows, one per category envolved in the product, and seprate them using a double dashed line (as in \textit{Fig. \ref{fig: functorstringdiagrams} (c)}). Finally, monomial products can be represented by using a single dashed separation line or no line at all (as in \textit{Fig. \ref{fig: functorstringdiagrams} (d)}). These piece of diagrammatical notation is also in perfect compliance with the vertical section decompositionl principle and the equivalent expression principle.
+In accordance with these principles, \cite{abbott2023robust} introduces notation that represents a functors as wires that lie above objects wires and natural transformations as boxes that lie above morphism boxes, as in \textit{Fig. \ref{fig: functorstringdiagrams} (a), (b)}. In standard string diagrams, a wire running through a morphism column is interpreted as an identity morphism. Similarly, in the notation of \cite{abbott2023robust}, a wire running where a natural transformation is supposed to be is interpreted as an identical natural transformation. This diagrammatic notation is already effective enough to write a graphical proof of the Yoneda lemma, and can be easily adapted to represent product bifunctors: it suffices to stack two rows (one per category envolved) and to seprate them using a double dashed line, as in \textit{Fig. \ref{fig: functorstringdiagrams} (c)}. Finally, monoidal products can be represented by using a single dashed separation line or no line at all (as in \textit{Fig. \ref{fig: functorstringdiagrams} (d)}). These pieces of diagrammatic notation are also in perfect compliance with the vertical section decompositionl principle and the equivalent expression principle.
 
 \begin{figure}[h]
   \begin{center}
@@ -1558,12 +1440,11 @@ In accordance with the above principles, \cite{abbott2023robust} introduces nota
 
 \subsection{Neural circuit diagrams}
 
-Neural circuit diagrams are a specialization of functor string diagrams designed to represent precise schematics for deep neural networks architectures. The idea is to capture all information relevant to implement and analyze the described architecture without using specific programming frameworks. In this sense, neural circuits diagrams can be compared to very detailed pseudocode. Although neural circuit diagrams can be learned and applied without any reference to category theory (this is the perspective adopted in \cite{abbott2024neural}), the fact that these diagrams are just an instance of the wider class of functor string diagrams is not just a curiosity, but proof that they are categorically sound. In other words, every well-formed neural circuit diagrams corresponds to a neural networks and neural circuit diagrams can be composed intuitively.
+Neural circuit diagrams are a specialization of functor string diagrams designed to represent precise schematics for deep neural network architectures. The idea is to capture all information relevant to the implementation and analysis of the aforementioned architecture without using any specific programming framework. In this sense, neural circuits diagrams can be compared to pseudocode. Although neural circuit diagrams can be learned and applied without any reference to category theory (this is the perspective adopted in \cite{abbott2024neural}), the fact that these diagrams are just an instance of the wider class of functor string diagrams is not just a curiosity, but proof that they have rigorous categorical semantics. In other words, every well-formed neural circuit diagrams corresponds to a well-defined neural network, and neural circuit diagrams can be composed intuitively.
 
-Differently from the string diagrams seen in e.g. \cite{gavranovic2024fundamental} or \cite{wilson2022categories},neural circuit diagrams explicitly keep track of dimensionality and indexing. This allows them to represent complex architectures that involve convolutions, residuality, and so on. Crucially, neural string diagrams provide convenient notation to represent broadcasting, which is of fundamental importance in deep learning but rarely adequately represented by ad-hoc diagrams often seen in papers. 
+Differently from the string diagrams seen in e.g. \cite{gavranovic2024fundamental} or \cite{wilson2022categories}, neural circuit diagrams explicitly keep track of dimensionality and indexing. This allows them to represent complex architectures that involve convolutions, residuality, and so on. Crucially, neural string diagrams provide convenient notation to represent broadcasting, which is of fundamental importance in deep learning but is rarely adequately represented by ad-hoc diagrams. 
 
-
-Neural circuit diagrams represent axes of tensors as parallel wires and decorate each wire with the associated number of dimensions (see \textit{Fig. \ref{fig: neuralstringdiagrams} (d)}). Indexing is implemented by assigning a specific value to the wire representing the axis with respect to which we want to index (see \textit{Fig. \ref{fig: neuralstringdiagrams} (b)}). Finally, broadcasting is represented by running a wire that represents the additional axis over the morphism that is to be broadcasted (see \textit{Fig. \ref{fig: neuralstringdiagrams} (c)}). Mathematically, tensors are constructed as hom-functors over the real line and broadcasting is just the action of such a functor on morphisms (\textit{Fig. \ref{fig: fromfsdtoncd}}). This is all representable using functor string diagram: neural circuit diagrams are just the result of omitting unnecessary detail from the latter. See \cite{abbott2024neural} for more information regarding neural circuit diagrams and see \cite{abbott2023robust} for more information regarding the relationship between neural circuit diagrams and functor string diagrams.
+Neural circuit diagrams represent tensor axes as parallel wires and decorate each wire with the associated number of dimensions (see \textit{Fig. \ref{fig: neuralstringdiagrams} (d)}). Indexing is implemented by assigning a specific value to the wire representing the axis in question (see \textit{Fig. \ref{fig: neuralstringdiagrams} (b)}). Finally, broadcasting is represented by running a wire that represents the additional axis over the morphism that is to be broadcasted (see \textit{Fig. \ref{fig: neuralstringdiagrams} (c)}). Mathematically, tensors are constructed as hom-functors over the real line and broadcasting is just the action of these functors on morphisms (\textit{Fig. \ref{fig: fromfsdtoncd}}). This is all representable using functor string diagrams: neural circuit diagrams are just the result of omitting unnecessary detail from the latter. See \cite{abbott2024neural} for more information regarding neural circuit diagrams and see \cite{abbott2023robust} for more information regarding the relationship between neural circuit diagrams and functor string diagrams.
 
 \begin{figure}[h]
   \begin{center}
@@ -1579,7 +1460,7 @@ Neural circuit diagrams represent axes of tensors as parallel wires and decorate
       \includegraphics[width=\textwidth]{figures/broadcasting1.png}
       \caption{}
     \end{subfigure}      
-    \caption[Neural string diagrams]{Neural string diagram formalisms for (a) representation of tensors, (b) indexing of tensors, (c) broadcasting. (Images and annotations taken from \cite{abbott2024neural}.)}
+    \caption[Neural circuit diagrams]{Neural circuit diagram formalisms for (a) representation of tensors, (b) indexing of tensors, (c) broadcasting. (Images and annotations taken from \cite{abbott2024neural}.)}
     \label{fig: neuralstringdiagrams}
   \end{center}
 \end{figure}
@@ -1592,32 +1473,26 @@ Neural circuit diagrams represent axes of tensors as parallel wires and decorate
   \end{center}
 \end{figure}
 
-\cite{abbott2024neural} proves the usefulness of neural circuit diagrams by drawing schematics (\textit{Fig. \ref{fig: transformerncd}}) for the powerful transformer architecture proposed by \cite{vaswani2017attention}. Comparing these schematics with the ones in \textit{Fig. \ref{fig: transformer}} presented in the original paper shows the wealth of detail that the former easily encode but are completely absent from the latter. For instance, \textit{Fig. \ref{fig: transformer}} provides no information regarding the dimensions of $Q$, $K$, and $V$, despite the fact that these matrices play a central role in the architecture.  Neural circuit diagrams for additional architectures can be found in \cite{abbott2024neural}.
-
+\cite{abbott2024neural} proves the usefulness of neural circuit diagrams by drawing schematics (\textit{Fig. \ref{fig: transformerncd}}) for the powerful transformer architecture proposed by \cite{vaswani2017attention}. Comparing these schematics with the ones presented in the original paper (\textit{Fig. \ref{fig: transformer}}) shows the wealth of detail that is easily encoded by the former but is completely absent from the latter. Neural circuit diagrams for additional architectures can be found in \cite{abbott2024neural}.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.85\textwidth]{figures/transformer_ncd.png}     
-    \caption[Neural string diagram of a transformer]{Neural string diagram of a transformer. (Image taken from \cite{abbott2023robust}.)}
+    \caption[Neural circuit diagram of a transformer]{Neural circuit diagram of a transformer. (Image taken from \cite{abbott2023robust}.)}
     \label{fig: transformerncd}
   \end{center}
 \end{figure}
 
-
-
 \section{Diagrams with universal approximators}
 
-\cite{khatri2024anatomy} also develops a string-diagrammatic language capable of giving detailed unambiguous descriptions of neural network architectures. It is only natural to compare the approach of \cite{khatri2024anatomy} with the neural circuit diagrams of \cite{abbott2023robust} discussed in the previous section. Despite their unquestionable similarity, the two approaches differ on one key point: while neural circuit diagrams leave no space for abstraction and only allow equational rewrites, \cite{khatri2024anatomy} develops a semantics based on the notion of universal approximator that allows to abstract away details and compare different architectures based on share abstractions. In this section, we give a brief overview of the approach of \cite{khatri2024anatomy} and we discuss interesting experimental results presented by the paper. We do not discuss the precise categorical semantics of the diagrams introduced \cite{khatri2024anatomy} because that would require too much space, but the reader can find a full account of them in the appendices of the original paper. 
-
+\cite{khatri2024anatomy} also develops a string-diagrammatic language capable of giving detailed unambiguous descriptions of neural network architectures. It is only natural to compare the approach of \cite{khatri2024anatomy} with the neural circuit diagrams of \cite{abbott2023robust} discussed in the previous section. Despite their unquestionable similarity, the two approaches differ on one key point: while neural circuit diagrams leave little space for abstraction and only allow equational rewrites, \cite{khatri2024anatomy} develops a semantics based on the notion of universal approximator that allows to abstract away details and compare different architectures based on shared abstractions. In this section, we give a brief overview of the approach of \cite{khatri2024anatomy} and we discuss interesting experimental results presented by the paper. We do not discuss the precise categorical semantics of the diagrams introduced \cite{khatri2024anatomy} because we lack the space necessary to do so, but the reader can find a full account of them in the appendices of the original paper. 
 
 \subsection{The diagrammatic approach of \cite{khatri2024anatomy}}
 
+Neural circuit diagrams effectively describe neural network architectures, but the aboundance of detail they convey also means that it can be challenging to extract the fundamental structure of an architecture from its complete schematics.
+\cite{khatri2024anatomy} attacks this problem by drawing different diagrams for different levels of abstraction so that complete schematics (like the ones encoded in neural circuit diagrams) become only the end of a spectrum that begins with a purely abstract black box. The same fundamental grammar underpins all these diagrams, and appropriate rewrites can be used to seamlessly move between layers of abstraction. 
 
-
-Neural circuit diagrams effectively describe neural network architectures, but the aboundance of detail they convey also means that they can make it challenging to extract the fundamental structure of an architecture from its complete schematics.
-\cite{khatri2024anatomy} attacks this problem by drawing different diagrams for different levels of abstraction so that complete schematics like the ones encoded in neural circuit diagrams become only the end of a spectrum that begins with a purely abstract black box. The same fundamental grammar underpins all these diagrams, and appropriate rewrites can be used to seamlessly move between layers of abstraction. 
-
-Let us being by discussing the most concrete end of the aforementioned specturm. \cite{khatri2024anatomy} describes computation in the Cartesian category $\mathbf{CartSp}$ of Euclidean spaces and continuous functions, and follows the basic conventions of monoidal string diagrams for Cartesian categories. A sketch of the language can be found in \textit{Fig. \ref{fig: khatribasicdiagrams}}. Unlike neural circuit diagrams, the diagrams of \cite{khatri2024anatomy} represent broadcasting using \textit{SIMD (Same Instruction applied to Multiple Data) boxes}, as in \textit{Fig. \ref{fig: khatribasicdiagrams} (b)}, which are also used to represent tensor contractions, as in \textit{Fig. \ref{fig: khatribasicdiagrams} (c)}. Finally, syntactic sugar is offered to represent reshaping operations (see \textit{Fig. \ref{fig: khatribasicdiagrams} (c)}).
+Let us begin by discussing the most concrete end of the aforementioned specturm. \cite{khatri2024anatomy} describes computations in the Cartesian category $\mathbf{CartSp}$ of Euclidean spaces and continuous functions, and follows the basic conventions of Cartesian monoidal string diagrams. A sketch of the language can be found in \textit{Fig. \ref{fig: khatribasicdiagrams}}. Unlike neural circuit diagrams, the diagrams of \cite{khatri2024anatomy} represent broadcasting using \textit{SIMD boxes (Same Instruction applied to Multiple Data)}, (\textit{Fig. \ref{fig: khatribasicdiagrams} (b)}), which are also used to represent tensor contractions (\textit{Fig. \ref{fig: khatribasicdiagrams} (c)}). Finally, syntactic sugar is offered to represent reshaping operations (\textit{Fig. \ref{fig: khatribasicdiagrams} (c)}).
 
 \begin{figure}[h]
   \begin{center}
@@ -1646,8 +1521,7 @@ Let us being by discussing the most concrete end of the aforementioned specturm.
   \end{center}
 \end{figure}
 
-The reader can compare the upper portion of \textit{Fig. \ref{fig: transformerncd}} against \textit{Fig. \ref{fig: khatritransformer}} to see how both neural circuit diagrams and the approach of \cite{khatri2024anatomy} can be used to describe the same transformer architecture in detail. While both formalisms shine in accuracy of representation, they also both suffer from low readibility: one might ask whether adopting such systems is even worth the trouble given that simpler diagrams such as the one in \textit{Fig. \ref{fig: transformer}} seem to be better at communicating basic ideas despite their lack of detail. 
-While \cite{abbott2023robust} compensates for this by annotating its diagrams and by encapsulating portions of the architectures at hand into dedicated boxes, \cite{khatri2024anatomy} proposes to abstract away detail by replacing portions of the graph representing specific implementations with filled boxes that represent universal approximators with the same inputs and outputs.
+The reader can compare \textit{Fig. \ref{fig: transformerncd}} against \textit{Fig. \ref{fig: khatritransformer}} to see how both neural circuit diagrams and the approach of \cite{khatri2024anatomy} can be used to describe the transformer architecture in detail. While both formalisms shine in accuracy of representation, they also both suffer from low readibility: one might ask whether adopting such systems is even worth the trouble given that simpler diagrams such as the one in \textit{Fig. \ref{fig: transformer}} seem to be better at communicating basic ideas despite their lack of detail. \cite{abbott2023robust} compensates for this by annotating its diagrams and by encapsulating portions of the architectures at hand into dedicated boxes. On the other hand, \cite{khatri2024anatomy} proposes to abstract away detail by replacing portions of the graph representing specific implementations with filled boxes that represent universal approximators with the same inputs and outputs.
 
 \begin{figure}[h]
   \begin{center}
@@ -1666,42 +1540,36 @@ While \cite{abbott2023robust} compensates for this by annotating its diagrams an
 \end{figure}
 
 \begin{definition}[Universal approximators]
-  A universal approximator for a class $\mathcal{C}$ a functions is a neural network architecture able to approximate any element of $\mathcal{C}$ to any desired precision.
+  A universal approximator for a class $\mathcal{C}$ of functions is a neural network architecture able to approximate any element of $\mathcal{C}$ to any desired precision.
 \end{definition}
 
-
-Many well known results concern the existence and characterization of such approximators (see e.g. \cite{cybenko1989approximation}). \cite{khatri2024anatomy} uses universal approximators to rigorously represent \dblquote{typed holes} in a diagram that need to be filled with an appropriate operator. Replacing detailed structures with abstract unversal approximators allows us to climb the ladder of abstraction. This can be combined with the omission of dimensional information that is not necessary to understrand the architecture at hand, but only to implement it. \cite{khatri2024anatomy} showcases this process in the diagram of \textit{Fig. \ref{fig: khatriattention}}, which highlights the fundamental structure of the attention mechanism proposed by \cite{vaswani2017attention}. Notice how colors are used to distringuish between dimensions that are fixed as hyperparameters and dimensions that vary with the length of the sequence that is being processed.
+Many well known results concern the existence and characterization of such approximators (see e.g. \cite{cybenko1989approximation}). \cite{khatri2024anatomy} uses universal approximators to rigorously represent \dblquote{typed holes} that need to be filled with an appropriate operator. Replacing detailed structures with these holes allows us to climb the ladder of abstraction. This can be combined with the omission of dimensional information that is not necessary to understrand the architecture at hand, but only to implement it. \cite{khatri2024anatomy} showcases this process in the diagram of \textit{Fig. \ref{fig: khatriattention}}, which highlights the fundamental structure of the attention mechanism proposed by \cite{vaswani2017attention}. Notice how colors are used to distringuish between dimensions that are fixed as hyperparameters and dimensions that vary with the length of the sequence that is being processed.
 
 \subsection{Comparing attention mechanisms}
 
-Not only does the abstraction allowed by universal approximators highlight the fundamental structure of architectures, but it also allows comparisons between architectures. Two architectures that only differ at a point can be considered as descendents of a commmon ancestor architecture, and this common link allows us to compare them. For instance, \cite{khatri2024anatomy} derives all known attention mechanisms as descendents of a prototype \dblquote{primordial attention}, forming a sort of evolutionary tree of attention (see \textit{Fig. \ref{fig: attentiontree}}). The process of filling in a universal approximator with a more specialized structure is called by \cite{khatri2024anatomy} an \dblquote{expressivity reduction}, as it reduces number of architectures represented by the given schematics. Expressivity reductions can be formalized as string diagrammatic rewrites. Hence, in the example discussed above, rewrites are employed to derive descendent attention mechanisms from the primordial attention. 
+The universal approximator abstraction can also be used to compare different architectures. Two architectures that only differ at a point can be considered as descendents of a commmon ancestor architecture, and this common link allows us to compare them. For instance, \cite{khatri2024anatomy} derives all known attention mechanisms as descendents of a prototype \dblquote{primordial attention}, forming a sort of evolutionary tree of attention (see \textit{Fig. \ref{fig: attentiontree}}). The process of filling in a universal approximator with a more specialized structure is called by \cite{khatri2024anatomy} an \dblquote{expressivity reduction}, as it reduces number of architectures represented by the given schematics. Expressivity reductions can be formalized as string diagrammatic rewrites, which implies that the categorical semantics of these diagrams have a central role in the comparative analysis of architectures.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.7\textwidth]{figures/attention_tree.png}
-    \caption[Evolutionary tree of attention]{Evolutionary tree of attention mechanisms according to \cite{khatri2024anatomy}. Child nodes are obtained by applying rewrites to parent nodes. (Image taken from \cite{khatri2024anatomy}.)}
+    \caption[Tree of attention]{Evolutionary tree of attention mechanisms according to \cite{khatri2024anatomy}. Child nodes are obtained by applying rewrites to parent nodes. (Image taken from \cite{khatri2024anatomy}.)}
     \label{fig: attentiontree}
   \end{center}
 \end{figure}
 
-Just like biological taxonomy classifies species based on their evolutionary history, we can use the tree in \textit{Fig. \ref{fig: attentiontree}} as a blueprint for the classification of attention mechanisms. This undertaking is analogous to the one of \cite{gavranovicposition}, where recurrent neural network cells are classified based on the classical data structures and automata they are related to. Both taxonomies serve to systematize the scattered panorama of machine learning research, but may also inspire new architectures. 
-
-
-The authors of \cite{khatri2024anatomy} do pursue this line of thinking but they do explore a space of possible attention mechanisms freely constructed from five generators (represented as abstract diagrams). This large space is reduced in size by rewriting sections that would lead to overparameterization. This results in a selection of eleven possible attention mechanisms , that the authors of \cite{khatri2024anatomy} go on to test: the mechanisms are embedded in a decoder-only transformer and trained on a Penn-Treebank task. Interestingly, all the 11 mechanisms (among which there are known architectures such as the one proposed by \cite{vaswani2017attention}) perform comparably well (with only one having a slightly better performance than the others). The authors entertain the conjecture that the aforementioned results might be a sign that the choice of attention mechanism matters little, as long as data is exchanged between tokens. While there is no uncontrovertible evidence that this is the case, these experiments prove the utility of the approach of \cite{khatri2024anatomy} and, more generally, of the use of diagrams in machine learning.
-
+Just like biological taxonomy classifies species based on their evolutionary history, we can use the tree in \textit{Fig. \ref{fig: attentiontree}} as a blueprint for the classification of attention mechanisms. This undertaking is analogous to the one of \cite{gavranovicposition}, where recurrent neural network cells are classified based on the classical data structures and automata they are related to. Both taxonomies serve to systematize the scattered panorama of machine learning research, but may also inspire new architectures. The authors of \cite{khatri2024anatomy} pursue this line of thinking and explore a space of possible attention mechanisms freely constructed from five generators (represented as abstract diagrams). This large space is reduced in size by rewriting sections that would lead to overparameterization. This results in a selection of eleven possible attention mechanisms, which the authors of \cite{khatri2024anatomy} go on to test: the mechanisms are embedded in a decoder-only transformer and trained on a Penn-Treebank task. Interestingly, the 11 mechanisms (among which there are known architectures such as the one proposed by \cite{vaswani2017attention}) all perform comparably well, with only one having a slightly better performance than the others. The authors entertain the conjecture that the aforementioned results might be a sign that the choice of attention mechanism matters little, as long as data is exchanged between tokens. While there is no uncontrovertible evidence that this is the case, these experiments prove the usefulness of the approach of \cite{khatri2024anatomy} and, more generally, of the usefulness of string diagrams in machine learning.
 
 \section{Future directions and related work}
 
-The amount of implementational detail conveyed by neural circuit diagrams and the diagrams in \cite{khatri2024anatomy} suggests that it should be possible to find a 1-to-1 correspondence between these diagrams and code. It is even argued in \cite{abbott2023robust} that neural circuit diagrams are expressive enough to be considered a high-level language with explicit memory management. Hopefully, future research will lead to the creations of tools that convert neural circuit diagrams into working models, not unlike the library developed by \cite{cruttwell2022categorical} that allows programmers to code using parametric lenses. Another interesting direction of research is the application of methods analogous to the ones of \cite{khatri2024anatomy} to explore other classes of architectures.
+The amount of implementational detail conveyed by neural circuit diagrams and the diagrams in \cite{khatri2024anatomy} suggests that it should be possible to find a 1-to-1 correspondence between these diagrams and code. It is even argued in \cite{abbott2023robust} that neural circuit diagrams are expressive enough to be considered a high-level language with explicit memory management. Hopefully, future research will lead to the creations of tools that convert neural circuit diagrams into working models, not unlike the library developed by \cite{cruttwell2022categorical} that allows programmers to code using parametric lenses. Another interesting direction of research is the application of methods analogous to the ones of \cite{khatri2024anatomy} to the exploration of other classes of architectures.
 
 We conclude the chapter by briefly discussing a few alternative approaches to the problem of unambiguous representation of neural networks. While these approaches are not categorical (yet), we believe there are fruitful comparisons to be drawn between the latter and the categorical approaches discussed in the previous sections. We also believe that these all these methods can be fruitfully integrated on various level, as discussed below.
 
 \subsection{Tensor networks}
 
-The enormous importance of tensors in quantum physics lead to the development of tensor networks (pioneered by \cite{penrose1971applications}), in which tensor operations are represented as graphs, where tensors are nodes and modes are represented as edges coming out of the nodes. Since tensors are the main data structure used in deep learning, it makes sense to try to adapt tensor networks to represent neural networks. This is done in \cite{xu2023graph} and \cite{taylor2024introduction}: the two papers introduce similar conventions that endow tensor networks with dedicated notation for non-linear activation functions and copy maps, which are not present in ordinary tensor networks. 
+The enormous importance of tensors in quantum physics lead to the development of tensor networks (pioneered by \cite{penrose1971applications}), in which tensor operations are represented as graphs, where tensors are nodes and modes are represented as edges coming out of the nodes. Given the importance of tensors in deep learning, it makes sense to try to adapt tensor networks to represent neural networks. This is done in \cite{xu2023graph} and \cite{taylor2024introduction}: the two papers introduce similar conventions that endow tensor networks with dedicated notation for non-linear activation functions and copy maps, which are not present in ordinary tensor networks. 
 
-The main difference between tensor networks and the diagrams described above is that the latter represente data as boxes and processes as wires, whereas the former do the opposite. In tensor network an edge linking two tensors represents a tensor contradction: this choice yields intuitive representations for sophisticated tensor operations such as the Tucker product (\cite{xu2023graph}) and tensor decompositions tecniques (\cite{taylor2024introduction}), but it also makes it much more difficult to conceptualize how data moves through a model. For instance, the reader can observe \textit{Fig. \ref{fig: gpt2}} to understand how much more difficult it is to represent copy maps in the notation of \cite{taylor2024introduction}. Moreover, while the diagrams of \cite{abbott2023robust} and \cite{khatri2024anatomy} have sophisticated categorical semantics, the notation of \cite{xu2023graph} and \cite{taylor2024introduction} mainly relies on human intuition\footnote{We see no reason why the diagrams in \cite{xu2023graph} and \cite{taylor2024introduction} should not be interpreted under the lens of category theory. Refer to \cite{biamonte2011categorical} for a categorical approach to tensor networks.}.
-
+The main difference between tensor networks and the string diagrams described in this chapter is that the latter represente data as boxes and processes as wires, whereas the former do the opposite. In tensor network an edge linking two tensors represents a tensor contradction: this choice yields intuitive representations for sophisticated tensor operations such as the Tucker product (\cite{xu2023graph}) and for various tensor decompositions tecniques (\cite{taylor2024introduction}), but it also makes it much more difficult to conceptualize how data moves through a model. For instance, the reader can observe \textit{Fig. \ref{fig: gpt2}} to understand how much more difficult it is to represent copy maps in the notation of \cite{taylor2024introduction}. Moreover, while the diagrams of \cite{abbott2023robust} and \cite{khatri2024anatomy} have sophisticated categorical semantics, the notation of \cite{xu2023graph} and \cite{taylor2024introduction} mainly relies on human intuition\footnote{We see no reason why the diagrams in \cite{xu2023graph} and \cite{taylor2024introduction} should not be interpreted under the lens of category theory. Refer to \cite{biamonte2011categorical} for a categorical approach to tensor networks.}.
 
 \begin{figure}[h]
   \begin{center}
@@ -1711,8 +1579,7 @@ The main difference between tensor networks and the diagrams described above is 
   \end{center}
 \end{figure}
 
-Despite their weaknesses, tensor networks can be of great utility to deep learning practictioners as they can offer clear insight into tensorization processes. Tensorization is an architecture design patter that aims to reduce the number of parameters of a neural network without compromising its expressivity: this can be done by replacing large matrices with appropriately decomposed low-rank tensors. Thanks to the redundance of ordinary fully connected layers (see e.g. \cite{sainath2013low}), this strategy leads to remarkable levels of compression (\cite{novikov2015tensorizing}, \cite{xu2023graph}). Tensorization yields improved efficiency at the price of human intuition, as it is much more difficult to think in terms of tensor operations across many modes than in terms of matrix-vector multiplication (\cite{xu2023graph}). Tensor networks such as the ones discussed in \cite{xu2023graph} and \cite{taylor2024introduction} can bridge this gap by helping practitioners to visualize tensor-based architectures. We refer to the original papers for examples and further information.
-
+Despite their weaknesses, tensor networks can be of great usefulness to deep learning practictioners as they can offer clear insight into tensorization processes. Tensorization is an architecture design patter that aims to reduce the number of parameters of a neural network without compromising its expressivity: this can be done by replacing large matrices with appropriately decomposed low-rank tensors. Owing to the redundance of ordinary fully connected layers (see e.g. \cite{sainath2013low}), this strategy leads to remarkable levels of compression (\cite{novikov2015tensorizing}, \cite{xu2023graph}). The improved efficiency comes at the price of human intuition, as it is much more difficult to think in terms of tensor operations across many modes than in terms of matrix-vector multiplication (\cite{xu2023graph}). Diagrams can help bridge this gap.
 
 \subsection{Non-diagrammatic notations}
 
@@ -1721,100 +1588,18 @@ An alternative to diagrammatic notation is the enhancement of algebraic notation
   \label{eq: attention}
   \mathrm{Attention(Q,K,V) = \left(\nbin{\name{seq}}{\mathrm{softmax}}\frac{Q \ndot{\name{key}} K}{\sqrt{|\mathsf{key}|}}\right)} \ndot{\name{seq}} V,
 \end{equation}
-where $\mathsf{key}$ represents the axes dedicated to query and key features, and $\mathsf{seq}$ represents the axis of sequence tokens. The authors argue that their named tensor notation is an improvement over the popular Einstein notation for sums as the axes having English names allows the reader to immediately understand what kind of information they encode; moreover, they claim that named tensor notation limits repetition of indices and thus makes equations cleaner.
+where $\mathsf{key}$ represents the axes dedicated to query and key features, and $\mathsf{seq}$ represents the axis of sequence tokens. The authors argue that their named tensor notation is an improvement over the popular Einstein notation for sums as axes with English names allow the reader to immediately understand what kind of information they encode; moreover, they claim that named tensor notation limits repetition of indices and thus makes equations cleaner.
 
-Another viable alternative approach is described in \cite{phuong2022formal}, where it is suggested that neural network architectures should be represented using pseudocode analogous to the one used in algorithm design and analysis (see e.g. \cite{cormen2022introduction}). The authors claim that writing pseudocode distills each architecture down to its fundamental components and remove incidental distractions, while preserving all the detail necessary for implementation. One disadvantage of using pseudocode is that the structure of the involved tensors and the flow of information are partially obscured, which is detrimental to intuition. More generally, one can argue that pseudocode is readily implementable but hides away mathematics and structure.
+Another viable alternative approach is described in \cite{phuong2022formal}, where it is suggested that neural network architectures should be represented using pseudocode analogous to the one used in algorithm design and analysis (see e.g. \cite{cormen2022introduction}). The authors claim that writing pseudocode distills each architecture down to its fundamental components and removes incidental distractions, all the while preserving the detail necessary for implementation. One disadvantage of using pseudocode is that the structure of the involved tensors and the flow of information are partially obscured, which is detrimental to intuition. More generally, one can argue that pseudocode is readily implementable but hides away mathematics and structure.
 
 
 \subsection{A multifaceted approach}
 
-In our opinion, the problem of representing neural network architectures is best solved by using a combination of methods. For instance, there is no reason (aside maybe from space concerns rendered null by the use of appendices) why the same architecture cannot be described with a string diagram, a tensor network, named tensor equations, pseudocode, and even code in the same paper. One or more string diagrams might be designed using either of the two approaches described in this chapter; tensor networks and named tensor equations might be employed to clarify the dynamics of complex tensor operations\footnote{Since the edges of tensor networks represent axes, we see no reason why they cannot be themselves labelled, effectively integrating the approaches of \cite{xu2023graph} and \cite{chiang2021named}.}; pseudocode could be provided so that practitioners can readily implement the architecture; finally, providing source code might clarify any ambiguity left by the previous representations. It is argued in \cite{phuong2022formal} that writing pseudocode might highlight mistakes in the actual source code that remained unnoticed by coincidence. We believe that the same is true for every other representation discussed in this chapter.
-
+In our opinion, the problem of representing neural network architectures is best solved by using a combination of methods. For instance, there is no reason (aside maybe from space concerns that could be mitigated by the use of appendices) why the same architecture cannot be described with a string diagram, a tensor network, named tensor equations, pseudocode, and even code in the same paper. One or more string diagrams might be designed using either of the two approaches described in this chapter; tensor networks and named tensor equations might be employed to clarify the dynamics of complex tensor operations\footnote{Since the edges of tensor networks represent axes, we see no reason why they cannot be themselves labelled, effectively integrating the approaches of \cite{xu2023graph} and \cite{chiang2021named}.}; pseudocode could be provided so that practitioners can readily implement the architecture; finally, providing source code might clarify any ambiguity left by these high-level representations.
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ------------- CONCLUSIONS
 
 \chapter*{Conclusions}
 \rhead[\fancyplain{}{\bfseries
@@ -1822,46 +1607,13 @@ Conclusions}]{\fancyplain{}{\bfseries\thepage}}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries Conclusions}}
 \addcontentsline{toc}{chapter}{Conclusions} 
 
+When discussing applications of category theory outside of pure mathematics, one might ask whether formalizing a concept in categorical terms is really worth the effort. Does a categorical formalization yield any novel insight? Does there exist some aspect of the subject at hand which can be analyzed with category theory more easily or elegantly than without?  Experiments confirm that it possible to elegantly model gradient-based learning with parametric lenses; they confirm that thinking in terms of integral transforms leads to better algorithmic alignment; finally, they confirm that functor learning techniques preserve expressivity while reducing the number of parameters. It also appears clear that string diagrams can effectively describe neural network architectures. Hence, in the light of the many categorical approaches discussed in this thesis, we believe that categorical thinking can indeed be productive even in an applied field like deep learning.
 
-When reading about the applications of category theory outside of pure mathematics, one might ask whether formalizing a concept in categorical terms is really worth it. Does a categorical formalization yield any novel insight? Is there something which can be done with category theory but cannot be done (as easily) without? In the light of the many categorical approaches to machine learning we discussed in this thesis, we believe that categorical thinking can indeed be productive even in such an applied field. Experiments confirm that it possible to model gradeint-based learning with parametric lenses, they confirm that thinkin in terms of integral transforms leads to better algorithmic alignment, and they confirm that functor learning techniques preserve expressiveness while reducing the number of parameters. Finally, it appears clear that string diagrams can effectively describe neural network architectures.  
-
-Category theory is not the only area of mathematics that has been proposed to attack open problems in machine learning. Topology is also a good contender (see e.g. \cite{hensel2021survey}) and even mathematical physics has been successfully applied to these problems (see e.g. \cite{roberts2022principles}). Having no access to magical crystal balls, we cannot be sure of which approach will be more effective in the long term. Nevertheless, even if better non-categorical approaches will be found, we believe research into categorical machine learning will still have yielded at least some insight in a field where insight is often missing. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Category theory is not the only area of mathematics that has been proposed to attack the open problems of deep learning and machine learning in general. For instance, both topology (see e.g. \cite{hensel2021survey}) and mathematical physics (see e.g. \cite{roberts2022principles}) seem to be good contenders, and linear algebra and probability theory are so foundational to the field that it is hard to imagine that they will not yield important advancements in the future. However, category theory holds a position of high regard in the hierarchy of mathematics because it can be used to build bridges between disparate fields. Thus, while no prediction about the future can be certain, it seems reasonable to expect that, on top of providing important techniques on its own, category theory will be used to build bridges between non-categorical approaches. Hopefully, bringing all these contributions together will lead us to a general theory of deep learning and machine learning at large.
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAPHY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ------------- Bibliography
 
 \bibliographystyle{alpha}
 %{\footnotesize \bibliography{references}}
@@ -1869,21 +1621,15 @@ Category theory is not the only area of mathematics that has been proposed to at
 \rhead[\fancyplain{}{\bfseries \:Bibliography}]{\fancyplain{}{\bfseries\thepage}} 
 \addcontentsline{toc}{chapter}{Bibliography}
 
-
-
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ------------- ACKNOLEDGEMENTS
 
 \chapter*{Acknowledgements}
 
 \thispagestyle{empty}
 
-I wish to acknowledge the essential role my advisor Professor F. Zanasi had in guiding me through the process of writing this thesis. He introduced me to applied category theory, to machine learning, and to the world of academic research, and I will be forever grateful for it. I also wish to thank my family and my friends, who supported me throughout my academic journey, and without whom I would not have been here writing. To all of you, my most sincere gratitude.
-
+I wish to acknowledge the essential role my advisor Professor F. Zanasi has had in guiding me through the process of writing this thesis. He introduced me to applied category theory, to machine learning, and to the world of academic research in general. I will be forever grateful for it. I also wish to thank my family and my friends, who supported me throughout my academic journey, and without whom I would not have been here writing. To all of you, my most sincere gratitude.
 
 
 \end{document}
