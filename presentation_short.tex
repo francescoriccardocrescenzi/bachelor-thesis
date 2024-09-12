@@ -89,7 +89,7 @@
 \begin{frame}{Teoria delle categorie applicata}
     \begin{itemize}
         \item<1-> \textbf{ottiche parametriche} {\footnotesize (\cite{gavranovic2024fundamental}, \cite{cruttwell2022categorical})}
-        \item<2-> \textbf{(co)algebre categoriche} {\footnotesize(\cite{gavranovicposition})}
+        \item<2-> \textbf{categorical deep learning} {\footnotesize(\cite{gavranovicposition})}
         \item<3-> \textbf{integral transforms} {\footnotesize(\cite{dudzik2022graph}, \cite{dudzik2024asynchronous})}
         \item<4-> \textbf{functor learning} {\footnotesize(\cite{gavranovic2019compositional}, \cite{sheshmani2021categorical}, \cite{chytas2024poolingimagedatasetsmultiple})}
         \item<5-> \textbf{compositional distributional model of meaning} {\footnotesize(\cite{clark2007combining}, \cite{coecke2010mathematical}, \cite{lewis2019compositionality})}
@@ -229,24 +229,6 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}{Gradient-based learning con lenti parametriche}
-    \begin{figure}
-        \begin{center}
-            \includegraphics[width=0.5\textwidth]{figures/weight_tying.png}
-            \caption*{\cite{cruttwell2022categorical}}
-        \end{center}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Gradient-based learning con lenti parametriche}
-    \begin{figure}
-        \begin{center}
-            \includegraphics[width=0.5\textwidth]{figures/batching.png}
-            \caption*{\cite{cruttwell2022categorical}}
-        \end{center}
-    \end{figure}
-\end{frame}
-
 \begin{frame}[standout]
     \huge Categorical deep learning: \\\large (co)algebre categoriche \\come teoria delle architetture
 \end{frame}
@@ -265,7 +247,7 @@
     \end{block}
 
     \begin{block}{ESEMPIO}
-        I convolutional layers delle reti neurali rappresentano mappe invarianti rispetto a traslazioni.
+        I \textit{convolutional layers} rappresentano mappe invarianti rispetto a traslazioni.
     \end{block}
 \end{frame}
 
@@ -295,18 +277,20 @@
 \end{frame}
 
 \begin{frame}{Dal GDL al CDL}
-    Il CDL generalizza il GDL poiché le azioni di un grouppo $G$ si possono definire come algebre su una monade, e le mappe invarianti si recuperano come omomorfismi tra queste algebre.
-
-    \vspace{5mm}
-
     \begin{block}{DEFINIZIONE: Monade delle azioni di $G$}
         Consideriamo l'endofuntore $G \times -: \mathbf{Set} \to \mathbf{Set}$ che mappa $A \mapsto G \times A$ e $f \mapsto G \times f$.
         La monade delle azioni di $G$ è definita dotando l'endofuntore delle transformazioni naturali di $\mu_A: (g,h,a) \mapsto (gh,a)$ e  $\eta_A: a \mapsto (e,a)$. (Vedasi \cite{gavranovicposition}.)
     \end{block}
 \end{frame}
 
+\begin{frame}
+    Il CDL generalizza il GDL poiché le azioni di un gruppo $G$ si possono definire come algebre sulla monade $(G \times -, \eta, \mu)$, e le mappe invarianti si recuperano come omomorfismi tra queste algebre.
+
+    D'altro canto le algebre categoriche possono rappresentare anche operazioni non invertibili.
+\end{frame}
+
 \begin{frame}{Dal GDL al CDL}
-    Il CDL costruisce collega algoritmi e strutture dell'informatica classica con le reti neurali.
+    Il CDL collega algoritmi e strutture dell'informatica classica con le reti neurali.
 \end{frame}
 
 \begin{frame}{Dal GDL al CDL}
@@ -322,7 +306,7 @@
             f(\mathsf{Nil}) &= r_0,\\
             f(\mathsf{Cons}(a,l)) &= r_1(a,f(l)). 
         \end{align*}
-        Hence, $f$ è necessariamente un \textit{fold} che riduce liste di elementi di $A$ a singoli elementi di $Z$. (Esempio da \cite{gavranovicposition}.)
+        Dunque, $f$ è necessariamente un \textit{fold} che riduce liste di elementi di $A$ a singoli elementi di $Z$. (Esempio da \cite{gavranovicposition}.)
     \end{block}
 \end{frame}
 
@@ -376,171 +360,11 @@
 \end{frame}
 
 \begin{frame}[standout]
-    \huge Functor learning: \\\large modelli come funtori che sfruttano la struttura dei dati
-\end{frame}
-
-\begin{frame}{Categorical representation learning}
-    \begin{block}{Categorical representation learning}
-        Il \textit{categorical representation learning} consiste nell'immergere funtorialmente una categoria $\mathcal{C}$ di dati in una categoria $\mathcal{R}$ di vettori latenti (\cite{sheshmani2021categorical}). 
-    \end{block}
-
-    Grazie alla funtorialità dell'embedding, il \textit{categorical representation learning} consente di preservare la struttura dei dati nello spazio latente.
-\end{frame}
-
-\begin{frame}{Categorical representation learning}
-    \begin{block}{DEFINIZIONE: Struttura categorica dello spazio latente}
-        tegoria i cui oggetti sono i vettori di $\mathbb{R}^n$ and tale che, per ogni $u,v$ in $\mathcal{R}$, 
-        i morfismi $u \to v$ sono le matrici $M \in \mathbb{R}^{n \times n}$ tali che $v = Mu$. La composizione è l'ordinario prodotto riga per colonna e l'identità relativa a un generico $v \neq 0$ è $\mathrm{id}_v = \frac{vv^T}{|v|^2}$. L'identià relativa al vettore nullo è la matrice nulla. (Vedasi \cite{sheshmani2021categorical}.)
-    \end{block}
-\end{frame}
-
-\begin{frame}{Categorical representation learning}
-    Data una categoria $\mathcal{C}$ di dati, il funtore di \textit{embedding} $\mathcal{C} \to \mathcal{R}$ è realizzato da due \textbf{neural embedding layers}: il primo produce rappresentazioni degli elementi di $\mathcal{C}$ come vettori, mentre il secondo produce rappresentazioni dei morfismi di $\mathcal{C}$ come matrici. (Vedasi \cite{sheshmani2021categorical}.)
-\end{frame}
-
-\begin{frame}{Categorical representation learning}
-
-    \begin{block}{DEFINIZIONE: Negative sampling loss}
-        La \textit{objective function} utilizzata per addestrare i due \textit{layers} è la \textit{negative sampling loss}
-        \[\mathcal{L} = -\mathbb{E}_{(a,b) \sim p(a,b)}\left(\log P(a \to b) + \mathbb{E}_{b' \sim p(b')}\log (1-P(a \to b'))\right),\]
-        dove la probabilità che sussista una relazione $a \to b$ è misurata come
-        \[P(a \to b) = \mathsf{sigmoid}\left(F\left(\bigoplus_f v_a^TM_fv_b \right)\right).\]
-        (Vedasi \cite{sheshmani2021categorical}.)
-    \end{block}
-    
-\end{frame}
-
-\begin{frame}{Categorical representation learning}
-    \begin{block}{ESEMPIO: Traduzione non supervisionata}
-        Se $\mathcal{C}$ e $\mathcal{D}$ sono database di formule chimiche in inglese e cinese, rispettivamente, possiamo usare il CRL per immergere le due categorie in $\mathcal{R}$ funtorialmente. Poi si può imparare un funtore $\mathcal{F}: \mathcal{R} \to \mathcal{R}$ che preservi la struttura categorica. Tale funtore opererà la traduzione. (Esempio da \cite{sheshmani2021categorical}.)
-    \end{block}
-\end{frame}
-
-\begin{frame}{Categorical representation learning}
-    \begin{block}{ESEMPIO: Traduzione non supervisionata}
-        Se $\mathcal{C}$ e $\mathcal{D}$ sono database di formule chimiche in inglese e cinese, rispettivamente, possiamo usare il categorical representation learning per immergere le due categorie in $\mathcal{R}$ funtorialmente. Poi si può imparare un funtore $\mathcal{F}: \mathcal{R} \to \mathcal{R}$ che preservi la struttura categorica. Tale funtore effettuerà la traduzione. $\mathcal{F}$ può essere implementato come una matrice $V_{\mathcal{F}}$ che mappa
-        \begin{align*}
-            v &\mapsto V_{\mathcal{F}}v,\\
-            M_f &\mapsto V_{\mathcal{F}}M_f.
-        \end{align*}
-        (Esempio da \cite{sheshmani2021categorical}.)
-    \end{block}
-\end{frame}
-
-\begin{frame}{Categorical representation learning}
-    \begin{block}{ESEMPIO: Traduzione non supervisionata}
-        La matrice può essere imparata minimizzando la \textit{loss function}
-        \[\mathcal{L}_{\mathrm{struc}} = \sum_{f}\|V_{\mathcal{F}}M_f - M_{\mathcal{F}(f)}V_{\mathcal{F}}\|^2,\]
-        a cui si può aggiungere anche la \textit{loss} 
-        \[\mathcal{L}_{\mathrm{align}} = \sum_{a \in A}\|V_{\mathcal{F}}v_a - v_{\mathcal{F}(a)}\|,\]
-        per dare parziale supervisione.
-        (Esempio da \cite{sheshmani2021categorical}.)
-    \end{block}
-\end{frame}
-
-\begin{frame}[standout]
-    \huge Neural circuit diagrams: \\\large rappresentazioni dettagliate di architetture neurali
-\end{frame}
-
-\begin{frame}{Neural circuit diagrams}
-    \begin{figure}
-        \begin{center}
-            \includegraphics[width=0.6\textwidth,angle=90]{figures/transformer_original.png}
-            \caption*{\cite{abbott2024neural}}
-        \end{center}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Neural circuit diagrams}
-    I diagrammi di \textit{deep learning models} generalmente utilizzati nella letteratura scientifica sono inadeguati in quanto non riportano molti dettagli importanti ai fini dell'implementazione (\cite{abbott2024neural,khatri2024anatomy}).
-\end{frame}
-
-\begin{frame}{Neural circuit diagrams}
-    I \textit{monoidal string diagrams} usati in teoria delle categorie applicata sono inadeguati poiché non riescono a rappresentare funtori e trasformazioni naturali (\cite{abbott2024functor}).
-\end{frame}
-
-\begin{frame}{Neural circuit diagrams}
-    I \textit{functor string diagrams} prendono ispirazione dai \textit{monoidal string diagrams} e li adattano per rappresentare funtori e trasformazioni naturali (\cite{abbott2024functor}).
-\end{frame}
-
-\begin{frame}{Neural circuit diagrams}
-    \begin{block}{PRINCIPIO di decomposizione verticale}
-        Uno \textit{string diagram} può essere diviso in colonne verticali. Una singola colonna deve contenere solo oggetti o solo morfismi. Colonne con oggetti e colonne con morfismi devono alternarsi.
-      \end{block}
-      
-      \begin{block}{PRINCIPIO dell'espressione equivalente}
-        Deve essere possibile sostituire ogni diagramma che segue una nuova notazione grafica con uno diagramma equivalente che segue la vecchia notazione.
-      \end{block}
-
-      Vedasi \cite{abbott2024functor}.
-\end{frame}
-
-\begin{frame}{Neural circuit diagrams}
-    \begin{figure}
-        \begin{center}
-            \includegraphics[width=0.9\textwidth]{figures/functors.png}
-            \caption*{\cite{abbott2024functor}}
-        \end{center}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Neural circuit diagrams}
-    \begin{figure}
-        \begin{center}
-            \includegraphics[width=\textwidth]{figures/natural_transformations.png}
-            \caption*{\cite{abbott2024functor}}
-        \end{center}
-    \end{figure}
-\end{frame}
-
-
-\begin{frame}{Neural circuit diagrams}
-    \begin{figure}
-        \begin{center}
-            \includegraphics[width=\textwidth]{figures/product_diagram.png}
-            \caption*{\cite{abbott2024functor}}
-        \end{center}
-    \end{figure}
-\end{frame}
-
-
-\begin{frame}{Neural circuit diagrams}
-    \begin{figure}
-        \begin{center}
-            \includegraphics[width=\textwidth]{figures/monoidal_product_diagram.png}
-            \caption*{\cite{abbott2024functor}}
-        \end{center}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Neural circuit diagrams}
-    I \textit{neural circuit diagrams} sono \textit{functor string diagrams} specializzati nel rappresentare architetture di reti neurali (\cite{abbott2024functor}).
-\end{frame}
-
-\begin{frame}{Neural circuit diagrams}
-    \begin{figure}
-        \begin{center}
-            \includegraphics[width=\textwidth]{figures/from_fsd_to_ncd.png}
-            \caption*{\cite{abbott2024functor}}
-        \end{center}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Neural circuit diagrams}
-    \begin{figure}
-        \begin{center}
-            \includegraphics[width=\textwidth]{figures/transformer_ncd.png}
-            \caption*{\cite{abbott2023robust}}
-        \end{center}
-    \end{figure}
-\end{frame}
-
-\begin{frame}[standout]
     \huge Prospettive future
 \end{frame}
 
 \begin{frame}{Prospettive future}
-    C'è una competizione in corso tra varie discipline, che puntano a spiegare le reti neurali utilizzando ciascuna i propri strumenti:
+    C'è una competizione in corso tra varie discipline che puntano a spiegare il deep learning utilizzando ciascuna i propri strumenti:
     \begin{itemize}
         \item<1-> \textbf{fisica matematica} {\footnotesize (e.g. \cite{roberts2022principles})},
         \item<2-> \textbf{topologia} {\footnotesize (e.g. \cite{hensel2021survey})},
